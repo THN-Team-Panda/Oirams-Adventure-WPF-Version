@@ -9,7 +9,7 @@ namespace GameEngine
     public class LoopDispatcher
     {
         /// <summary>
-        /// Instance of System.Threading.CancellationTokenSource to cancel the running loop.
+        /// Stop the current loop execution
         /// </summary>
         private bool cancelToken = false;
 
@@ -24,7 +24,7 @@ namespace GameEngine
         public TimeSpan MinRunTime { get; set; }
 
         /// <summary>
-        /// Each element has to follow the LoopElement delegate pattern.
+        /// Each event has to follow the LoopElement delegate pattern.
         /// </summary>
         public delegate void DispatchedItem();
 
@@ -42,9 +42,10 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// Starts the execution loop in a parallel task.
+        /// Starts the execution loop in a async function.
         /// </summary>
         /// <exception cref="MissingFieldException">MinRunTime must be set.</exception>
+        /// <exception cref="MissingFieldException">No Event is registered.</exception>
         public void Start()
         {
             if (MinRunTime == TimeSpan.Zero)
@@ -59,8 +60,8 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// Stops the execution by using the System.Threading.CancellationTokenSource.
-        /// Note: It will finish the current running list element first.
+        /// Stops the execution by using the cancelToken.
+        /// Note: It will finish the current running events.
         /// </summary>
         public void Stop()
         {
@@ -68,7 +69,7 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// Called from the System.Threading.Task to execute the LoopElement list
+        /// Called as an async loop to execute the event list
         /// with a minimum execution time of MinRunTime for each iteration step.
         /// Can only be stopped with the LoopDispatcher.Stop() method.
         /// </summary>
