@@ -16,7 +16,7 @@ namespace Game_Engine
         Obstacle,
         EnemySpawn,
     }
-
+    
     /// <summary>
     /// holds the TileMap data and renders the Map as an image
     /// </summary>
@@ -26,7 +26,7 @@ namespace Game_Engine
         /// Size of an Tile in pixel
         /// </summary>
         public int TileSize { get; }
-
+        
         /// <summary>
         /// number of Tiles in the horizontal direction
         /// </summary>
@@ -38,12 +38,12 @@ namespace Game_Engine
         public int TileRows { get; }
 
         /// <summary>
-        /// TODO
+        /// Raw Data Array with Tile Ids
         /// </summary>
         public int[] TileMapDataRaw { get; }
 
         /// <summary>
-        /// TODO
+        /// Two Dimensional Array with TileTypes based on TilemapDataRaw
         /// </summary>
         public TileTypes[,] TileMap { get; }
 
@@ -127,8 +127,7 @@ namespace Game_Engine
 
             //set Properties
             TileSize = _tileset.TileWidth;
-            TiledLayer
-                layer = _map.Layers.First(l =>
+            TiledLayer layer = _map.Layers.First(l =>
                     l.type == TiledLayerType.TileLayer); // get first layer of tile map that is a tile layer
             TileMapDataRaw = layer.data; //2 dimensional array of tile ids
             TileRows = layer.height;
@@ -151,7 +150,7 @@ namespace Game_Engine
 
             for (int i = 0; i < TileMapDataRaw.Length; i++)
             {
-                int data = (int)TileMapDataRaw[i];
+                int data =TileMapDataRaw[i];
                 if (data == 0) continue;
                 int posX = i % TileColumns;
                 int posY = i / TileColumns;
@@ -196,7 +195,7 @@ namespace Game_Engine
             //convert raw data to 
             for (int i = 0; i < TileMapDataRaw.Length; i++)
             {
-                int data = (int)TileMapDataRaw[i];
+                int data =TileMapDataRaw[i];
                 if (data == 0) continue;
                 int posX = i % TileColumns;
                 int posY = i / TileColumns;
