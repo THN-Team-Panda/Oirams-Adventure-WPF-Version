@@ -9,24 +9,14 @@ namespace GameEngine
     public class LoopDispatcher
     {
         /// <summary>
-        /// List of all methods to call in the loop.
-        /// </summary>
-        private List<LoopElement> functions = new List<LoopElement>();
-
-        /// <summary>
-        /// System.Threading.Tasks.Task instance to run the loop in another thread.
-        /// </summary>
-        private Task? task;
-
-        /// <summary>
         /// Instance of System.Threading.CancellationTokenSource to cancel the running loop.
         /// </summary>
-        private CancellationTokenSource cancelToken = new CancellationTokenSource();
+        private bool cancelToken = false;
 
         /// <summary>
-        /// Priority label effects the method execution order.
+        /// List of all methods to call in the loop.
         /// </summary>
-        public enum Priority { Important, Secondary }
+        public event DispatchedItem ?Events;
 
         /// <summary>
         /// System.TimeSpan instance minimum time for each iteration.
@@ -36,7 +26,7 @@ namespace GameEngine
         /// <summary>
         /// Each element has to follow the LoopElement delegate pattern.
         /// </summary>
-        public delegate void LoopElement();
+        public delegate void DispatchedItem();
 
         /// <summary>
         /// Creates a GameEngine.LoopDispatcher instance.
@@ -52,53 +42,20 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// Add a method with the GameEngine.LoopDispatcher.Priority Important
-        /// to the execution queue.
-        /// </summary>
-        /// <param name="function">Delegate to add.</param>
-        public void AddElement(LoopElement function)
-        {
-            AddElement(function, Priority.Important);
-        }
-
-        /// <summary>
-        /// Add a method to the execution queue.
-        /// </summary>
-        /// <param name="function">Delegate to add.</param>
-        /// <param name="priority">Important inserts the element at the beginning of the
-        /// execution list. Secondary appends it.
-        /// </param>
-        public void AddElement(LoopElement function, Priority priority)
-        {
-            if (priority == Priority.Important)
-                functions.Insert(0, function);
-            else if (priority == Priority.Secondary)
-                functions.Add(function);
-        }
-
-        /// <summary>
-        /// Removes the given function from the execution queue.
-        /// </summary>
-        /// <param name="function">Method to remove.</param>
-        public void RemoveElement(LoopElement function)
-        {
-            functions.Remove(function);
-        }
-
-        /// <summary>
         /// Starts the execution loop in a parallel task.
         /// </summary>
         /// <exception cref="MissingFieldException">MinRunTime must be set.</exception>
         public void Start()
         {
             if (MinRunTime == TimeSpan.Zero)
-                throw new MissingFieldException("MinRunTime is Zero!");
+                throw new MissingFieldException("MinRunTime is zero!");
 
-            // Instance new task with the cancel token
-            // https://stackoverflow.com/questions/33713298/c-sharp-run-a-loop-in-the-background
-            task = new Task(ExecuteLoop, cancelToken.Token);
+            if (Events == null)
+                throw new MissingFieldException("No Events registered!");
 
-            task.Start();
+            cancelToken = false;
+
+            ExecuteLoop();
         }
 
         /// <summary>
@@ -107,7 +64,7 @@ namespace GameEngine
         /// </summary>
         public void Stop()
         {
-            cancelToken.Cancel();
+            cancelToken = true;
         }
 
         /// <summary>
@@ -115,25 +72,18 @@ namespace GameEngine
         /// with a minimum execution time of MinRunTime for each iteration step.
         /// Can only be stopped with the LoopDispatcher.Stop() method.
         /// </summary>
-        private void ExecuteLoop()
+        private async void ExecuteLoop()
         {
             Stopwatch sw = new Stopwatch();
 
-            while (true)
+            while (!cancelToken)
             {
                 sw.Restart();
 
-                foreach (LoopElement function in functions)
-                {
-                    // Check the token status befor calling the function
-                    if (cancelToken.IsCancellationRequested)
-                        return;
-
-                    function();
-                }
+                Events();
 
                 // Check the token a second time
-                if (cancelToken.IsCancellationRequested)
+                if (cancelToken)
                     return;
 
                 // Calculate the total time of execution
@@ -145,7 +95,7 @@ namespace GameEngine
                     Debug.WriteLine("Execute game loop takes longer than the given TimeSpan!");
                 else
                     // Fill up to get MinRunTime in total
-                    Thread.Sleep(timeDiff);
+                    await Task.Delay(timeDiff);
             }
         }
     }
