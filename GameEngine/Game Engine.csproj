@@ -7,4 +7,9 @@
     <RootNamespace>GameEngine</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="TiledCS" Version="3.3.3" />
+	<FrameworkReference Include="Microsoft.WindowsDesktop.App" />
+  </ItemGroup>
+
 </Project>
