@@ -219,7 +219,18 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// Moves the camera in the given vector
+        /// Moves the camera to the given position without using the focus angel
+        /// Note: Without calculation the best movement
+        /// </summary>
+        /// <param name="position">Point with the new position</param>
+        public void CameraCenter(Point position)
+        {
+            CurrentAngelHorizontal = -(position.X - ViewWidth / 2);
+            CurrentAngelVertical = -(position.Y - ViewHeight / 2);
+        }
+
+        /// <summary>
+        /// Moves the camera in the given vector without using the focus angel
         /// Note: Without calculation the best movement
         /// </summary>
         /// <param name="position">Point with the new position</param>
