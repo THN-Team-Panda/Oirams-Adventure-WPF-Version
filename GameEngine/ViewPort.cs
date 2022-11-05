@@ -16,13 +16,13 @@ namespace GameEngine
         /// <summary>
         /// Instance of the view canvas
         /// </summary>
-        private Canvas view;
+        private readonly Canvas view;
 
         /// <summary>
         /// Instance of the map canvas
         /// Note: the map must be inside the view canvas
         /// </summary>
-        private Canvas map;
+        private readonly Canvas map;
 
         /// <summary>
         /// A readonly with the view limit for the top max
@@ -46,9 +46,21 @@ namespace GameEngine
 
         /// <summary>
         /// The horizontal free movement zone describes the horizontal border before the camera starts to move
-        /// Note: Starts from the left side 
+        /// Note: Value starts from the left hand side 
         /// </summary>
         private double horizontalFreeMovementZone = 0.45;
+
+        /// <summary>
+        /// The vertical free movement zone top describes the vertical top border before the camera starts to move
+        /// Note: Value starts from the top side 
+        /// </summary>
+        private double verticalFreeMovementZoneTop = 0.35;
+
+        /// <summary>
+        /// The vertical free movement zone bottom describes the vertical bottom border before the camera starts to move
+        /// Note: Value starts from the top side 
+        /// </summary>
+        private double verticalFreeMovementZoneBottom = 0.9;
 
         /// <summary>
         /// The Camera will try to align the camera at this point
@@ -168,6 +180,44 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// Method to get/set the verticalFreeMovementZoneTop
+        /// Note: Value between 0 and 1
+        /// </summary>
+        public double VerticalFreeMovementZoneTop
+        {
+            get
+            {
+                return verticalFreeMovementZoneTop;
+            }
+            set
+            {
+                if (value < 0 || value > 1)
+                    throw new ArgumentOutOfRangeException("Value must be between 0 and 1!");
+
+                verticalFreeMovementZoneTop = value;
+            }
+        }
+
+        /// <summary>
+        /// Method to get/set the verticalFreeMovementZoneBottom
+        /// Note: Value between 0 and 1
+        /// </summary>
+        public double VerticalFreeMovementZoneBottom
+        {
+            get
+            {
+                return verticalFreeMovementZoneBottom;
+            }
+            set
+            {
+                if (value < 0 || value > 1)
+                    throw new ArgumentOutOfRangeException("Value must be between 0 and 1!");
+
+                verticalFreeMovementZoneBottom = value;
+            }
+        }
+
+        /// <summary>
         /// Helper Method for the view width
         /// </summary>
         public double ViewWidth
@@ -192,8 +242,12 @@ namespace GameEngine
         /// <param name="view">view canvas with a init size</param>
         /// <param name="map">map canvas with a init size</param>
         /// <param name="initPosition">position where the camera starts</param>
+        /// <exception cref="ArgumentException">Map must be a child element of view!</exception>
         public ViewPort(Canvas view, Canvas map, Point initPosition)
         {
+            if (!view.Children.Contains(map))
+                throw new ArgumentException("Map must be a child element of view!");
+
             this.view = view;
             this.map = map;
 
@@ -257,18 +311,31 @@ namespace GameEngine
         /// <summary>
         /// Calculate the best next point by using the last applyed points
         /// </summary>
-        /// <param name="applyedMovement"></param>
-        /// <returns>Calculated point</returns>
+        /// <param name="applyedMovement">Current position</param>
+        /// <returns>Calculated new Vector</returns>
         private Vector CalculateAngel(Point applyedMovement)
         {
-            // Testing the vertical right border
-            double verticalBorder = -1 * ViewWidth * HorizontalFreeMovementZone + CurrentAngelHorizontal;
+            double newX = 0, newY = 0;
 
-            // If the point hits the horizontal border, move
-            if (-applyedMovement.X < verticalBorder)
-                return new Vector(applyedMovement.X + verticalBorder, 0);
+            // Testing the horizontal right border
+            // If the point hits the horizontal border, move the point
+            double horizontalBorder = -1 * ViewWidth * HorizontalFreeMovementZone + CurrentAngelHorizontal;
 
-            return new Vector(0, 0);
+            if (-applyedMovement.X < horizontalBorder)
+                newX = applyedMovement.X + horizontalBorder;
+
+            // Testing the vertical border
+            // If the point hits the vertical borders, move the point
+            double verticalBorderTop = -1 * ViewHeight * VerticalFreeMovementZoneTop + CurrentAngelVertical;
+            double verticalBorderBottom = -1 * ViewHeight * VerticalFreeMovementZoneBottom + CurrentAngelVertical;
+
+            if (-applyedMovement.Y > verticalBorderTop)
+                newY = applyedMovement.Y + verticalBorderTop;
+            else if(-applyedMovement.Y < verticalBorderBottom)
+             newY = applyedMovement.Y + verticalBorderBottom;
+
+            // Return a changed vector
+            return new Vector(newX, newY);
         }
 
     }
