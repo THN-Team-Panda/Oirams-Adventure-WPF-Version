@@ -104,7 +104,6 @@ namespace GameEngine
             }
 
             isRunning = false;
-            Debug.WriteLine(isRunning);
         }
     }
 }
