@@ -10,11 +10,18 @@ namespace GameEngine.GameObjects
 {
     public class AnimatedObject : DrawableObject
     {
-        ImageBrush[] sprites;
+        private ImageBrush[] sprites;
+
+        private int currentSprite;
 
         public int SpritesCount
         {
             get { return sprites.Length; }
+        }
+
+        public int CurrentSprite
+        {
+            get { return currentSprite; }
         }
 
         public AnimatedObject(Rectangle mapObject, ImageSource[] sprites, int initSprite = 0) : base(mapObject)
@@ -31,6 +38,7 @@ namespace GameEngine.GameObjects
 
         public void SetSprite(int number)
         {
+            currentSprite = number;
             MapObject.Fill = sprites[number];
         }
     }
