@@ -10,36 +10,38 @@ namespace GameEngine.GameObjects
 {
     public class AnimatedObject : DrawableObject
     {
-        private ImageBrush[] sprites;
+        private ImageSource[] sprites;
 
-        private int currentSprite;
-
-        public int SpritesCount
+        public int SpriteCount
         {
             get { return sprites.Length; }
         }
 
         public int CurrentSprite
         {
-            get { return currentSprite; }
+            get; private set;
         }
 
-        public AnimatedObject(Rectangle mapObject, ImageSource[] sprites, int initSprite = 0) : base(mapObject)
+        public AnimatedObject(Rectangle Rectangel, ImageSource[] images, int initSprite = 0) : base(Rectangel)
         {
-            // Copy Image Source array into the image brush
-            this.sprites = new ImageBrush[sprites.Length];
+            if(initSprite >= images.Length)
+                throw new ArgumentOutOfRangeException("Initial number out of range!");
 
-            for (int i = 0; i < sprites.Length; i++)
-                this.sprites[i].ImageSource = sprites[i];
+            // Copy Image Source array into the image brush
+            sprites = images;
 
             // Set the initSprite
-            MapObject.Fill = this.sprites[initSprite];
+            Rectangel.Fill = new ImageBrush(sprites[initSprite]);
         }
 
         public void SetSprite(int number)
         {
-            currentSprite = number;
-            MapObject.Fill = sprites[number];
+            if (number >= sprites.Length)
+                throw new ArgumentOutOfRangeException("Number out of range!");
+
+            CurrentSprite = number;
+
+            Rectangel.Fill = new ImageBrush(sprites[CurrentSprite]);
         }
     }
 }

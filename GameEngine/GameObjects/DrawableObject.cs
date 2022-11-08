@@ -12,31 +12,31 @@ namespace GameEngine.GameObjects
 {
     public class DrawableObject : GameObject
     {
-        public Rectangle MapObject
+        public Rectangle Rectangel
         {
             get; private set;
         }
 
         public double Height
         {
-            get { return MapObject.Height; }
-            set { MapObject.Height = value; }
+            get { return Rectangel.Height; }
+            set { Rectangel.Height = value; }
         }
 
         public double Width
         {
-            get { return MapObject.Width; }
-            set { MapObject.Width = value; }
+            get { return Rectangel.Width; }
+            set { Rectangel.Width = value; }
         }
 
         public bool InCanvas
         {
-            get { return MapObject.Parent is Canvas; }
+            get { return Rectangel.Parent is Canvas; }
         }
 
         public DrawableObject(Rectangle mapObject)
         {
-            MapObject = mapObject;
+            Rectangel = mapObject;
         }
     }
 }
