@@ -1,39 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
-using System.Windows.Shapes;
-using System.Windows;
+﻿using System.Windows.Shapes;
 using System.Windows.Controls;
+using System.Windows;
 
 namespace GameEngine.GameObjects
 {
+    /// <summary>
+    /// Drawable object represents a visible element
+    /// </summary>
     public class DrawableObject : GameObject
     {
-        public Rectangle Rectangel
+        /// <summary>
+        /// Element on map
+        /// </summary>
+        protected Rectangle Rectangel
         {
             get; private set;
         }
 
+        /// <summary>
+        /// Helper method to set/get the height
+        /// </summary>
         public double Height
         {
             get { return Rectangel.Height; }
-            set { Rectangel.Height = value; }
+            protected set { Rectangel.Height = value; }
         }
+
+        /// <summary>
+        /// Helper method to set/get the width
+        /// </summary>
 
         public double Width
         {
             get { return Rectangel.Width; }
-            set { Rectangel.Width = value; }
+            protected set { Rectangel.Width = value; }
         }
 
+        /// <summary>
+        /// Check if the rectangel is in a canvas
+        /// </summary>
         public bool InCanvas
         {
             get { return Rectangel.Parent is Canvas; }
         }
 
+        /// <summary>
+        /// Construct the element
+        /// </summary>
+        /// <param name="mapObject">Object reference on the map</param>
         public DrawableObject(Rectangle mapObject)
         {
             Rectangel = mapObject;
