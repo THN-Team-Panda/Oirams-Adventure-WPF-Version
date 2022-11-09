@@ -1,26 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GameEngine
 {
-    class Saving
+    public class Saving
     {
-        private static string? Path; //Wert ist nullable
+        private string path;
         int zeilencounter = 0;
 
-
-        public Saving(string path)
+        public Saving(string path) //Konstruktor
         {
-            Path = path;
+            this.path = path;
+            StreamWriter stw = new StreamWriter(path);
+            StreamReader str = new StreamReader(path);
         }
-        StreamWriter stw = new StreamWriter(Path);
-        StreamReader str = new StreamReader(Path);
 
-        void Save(int level)
+
+        public static void Save(int level, string path) //Methode zum Speichern
         {
+            StreamWriter stw = new StreamWriter(path);
+            StreamReader str = new StreamReader(path);
+
             bool saved = true;
 
             for (int i = 1; !str.EndOfStream; i++)
@@ -41,11 +45,14 @@ namespace GameEngine
         }
 
         //zurückgeben, ob level bereits gespeichert wurde
-        void AlreadySaved(int level)
+        void AlreadySaved(int level, string path) 
         {
+            StreamWriter stw = new StreamWriter(path);
+            StreamReader str = new StreamReader(path);
+
             string zeile = str.ReadLine();
 
-            zeilencounter += 1;
+            zeilencounter += 1; //zeilencounter ist äquivalent zu leveln: zeile 1, level 1; zeile 2, level 2 etc.
 
             if (zeilencounter == level && zeile == "1")
             {
@@ -56,5 +63,6 @@ namespace GameEngine
                 Console.WriteLine("Kein Spielfortschritt in diesem Level festgehalten!");
             }
         }
+
     }
 }
