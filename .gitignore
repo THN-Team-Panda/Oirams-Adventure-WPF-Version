@@ -6,7 +6,6 @@
 # Exclude tiled project files
 *.tiled-project
 *.tiled-session
-*.[Mm][Dd]
 
 # User-specific files
 *.rsuser
