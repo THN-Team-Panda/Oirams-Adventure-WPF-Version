@@ -1,0 +1,4 @@
+[submodule "OA Game/Assets"]
+	path = OA Game/Assets
+	url = https://git.informatik.fh-nuernberg.de/team-panda/level-design.git
+	branch = main
