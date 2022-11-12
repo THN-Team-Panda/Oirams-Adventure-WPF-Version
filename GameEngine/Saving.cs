@@ -31,7 +31,7 @@ namespace GameEngine
                     // diese Methode schreibt die Savingsvariable in die Datei des angegeben Pfades
                 }
 
-                else if (j == level)
+                else if (j == level) // && j.data == 1 => dafür Array-Ansatz
                 {
                     savingvar = "1";
                     stw.WriteLine(savingvar);
@@ -46,7 +46,7 @@ namespace GameEngine
 
         }
 
-        public static void AlreadySaved(int level, string path)
+        public static void AlreadySaved(int level, string path) //gibt dem Benutzer auf Anfrage aus, ob das im Parameter angegebene Level bereits gespeichert wurde
         {
             StreamReader str = new StreamReader(path);
 
