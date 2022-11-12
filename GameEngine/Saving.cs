@@ -9,59 +9,62 @@ namespace GameEngine
 {
     public class Saving
     {
-        private string path;
-        int zeilencounter = 0;
 
-        public Saving(string path) //Konstruktor
+        private string path;
+        public Saving(string path)
         {
             this.path = path;
-            StreamWriter stw = new StreamWriter(path);
-            StreamReader str = new StreamReader(path);
         }
 
-
-        public static void Save(int level, string path) //Methode zum Speichern
+        public static async Task Save(int level, string path)
         {
             StreamWriter stw = new StreamWriter(path);
-            StreamReader str = new StreamReader(path);
+            string savingvar = "0";
 
-            bool saved = true;
-
-            for (int i = 1; !str.EndOfStream; i++)
+            for (int j = 0; j <= level; j++) // j entspricht Koordinaten der Level (zeile 1 = level 1 usw.)
             {
 
-                if (saved)
+                if (j != level)
                 {
-                    stw.WriteLine("1");
+                    savingvar = "0";
+                    stw.WriteLine(savingvar);
+                    // diese Methode schreibt die Savingsvariable in die Datei des angegeben Pfades
                 }
-                if (!saved)
+
+                else if (j == level)
                 {
-                    stw.WriteLine("0");
+                    savingvar = "1";
+                    stw.WriteLine(savingvar);
+                    //await File.WriteAllTextAsync(path, savingvar);
+                    // diese Methode schreibt die Savingsvariable in die Datei des angegeben Pfades
+                }
+
+
+            }
+            stw.Close();
+
+
+        }
+
+        public static void AlreadySaved(int level, string path)
+        {
+            StreamReader str = new StreamReader(path);
+
+            while (!str.EndOfStream)
+            {
+                string line = str.ReadLine();
+
+                if (line == "1")
+                {
+                    Console.WriteLine("Level wurde bereits gespeichert!");
+                }
+                else if (line == "0")
+                {
+                    Console.WriteLine("Noch kein Spielfortschritt in diesem Level vorhanden!");
                 }
             }
 
             str.Close();
-            stw.Close();
-        }
-
-        //zurückgeben, ob level bereits gespeichert wurde
-        void AlreadySaved(int level, string path) 
-        {
-            StreamWriter stw = new StreamWriter(path);
-            StreamReader str = new StreamReader(path);
-
-            string zeile = str.ReadLine();
-
-            zeilencounter += 1; //zeilencounter ist äquivalent zu leveln: zeile 1, level 1; zeile 2, level 2 etc.
-
-            if (zeilencounter == level && zeile == "1")
-            {
-                Console.WriteLine("Level wurde bereits gespeichert!");
-            }
-            else
-            {
-                Console.WriteLine("Kein Spielfortschritt in diesem Level festgehalten!");
-            }
         }
 
     }
