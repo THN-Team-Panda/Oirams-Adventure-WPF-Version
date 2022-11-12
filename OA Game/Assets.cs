@@ -12,6 +12,6 @@ namespace OA_Game
         /// </summary>
         /// <param name="asset">Absolute assets path</param>
         /// <returns>New uri object with the correct schema</returns>
-        public static Uri GetUri(string asset) => new Uri("pack://siteoforigin:,,," + asset);
+        public static Uri GetUri(string asset) => new Uri("pack://siteoforigin:,,,/Assets" + asset);
     }
 }
