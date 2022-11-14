@@ -37,38 +37,32 @@ namespace GameEngine
 
             StreamReader str = new StreamReader(path);
 
+
+            string[] alllines = new string[4];
+
             while (!str.EndOfStream)
             {
-                string line = str.ReadLine();
+
+                for (int i = 0; i < alllines.Length; i++) //content of file is written into an Array
+                {
+                    alllines[i] = str.ReadLine();
+                }
+
 
             }
             str.Close();
 
             StreamWriter stw = new StreamWriter(path);
-            string[] coordinate = new string[4];
+            //string[] coordinate = new string[4];
 
-            for (int j = 0; j < coordinate.Length; j++) // j correlates to the coordinates of the levels (i.e. line 1 = level 1 etc.)
+            alllines[level] = "1";
+
+
+            for (int i = 0; i < alllines.Length; i++)
             {
+                stw.WriteLine(alllines[i]);
 
-                if (j != level)
-                {
-                    coordinate[j] = "0";
-
-                }
-
-                if (j == level) // && j.data == 1 => dafür Array-Ansatz (auch für AlreadySaved-Funktion)
-                {
-                    coordinate[j] = "1";
-
-                    //note for myself: await File.WriteAllTextAsync(path, savingvar);
-                }
-
-
-            }
-
-            for (int i = 0; i < coordinate.Length; i++)
-            {
-                stw.Write(coordinate[i]);
+                Console.WriteLine(alllines[i]);
             }
 
 
