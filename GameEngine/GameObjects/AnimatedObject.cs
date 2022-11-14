@@ -1,5 +1,7 @@
 ﻿using System.Windows.Shapes;
 using System.Windows.Media;
+using GameEngine;
+using GameEngine.Exceptions;
 
 namespace GameEngine.GameObjects
 {
@@ -8,6 +10,8 @@ namespace GameEngine.GameObjects
     /// </summary>
     public class AnimatedObject : DrawableObject
     {
+        protected Dictionary<string, AnimationSequence> animationCollection = new Dictionary<string, AnimationSequence>();
+
         /// <summary>
         /// List of selectable sprites
         /// </summary>
@@ -62,6 +66,26 @@ namespace GameEngine.GameObjects
 
             // To create a clean instance, create a new image brush
             Rectangel.Fill = new ImageBrush(sprites[CurrentSprite]);
+        }
+
+        public void AddSequence(string name, AnimationSequence sequence) => animationCollection.Add(name, sequence);
+
+        public void RemoveSequence(string name)
+        {
+            if (!animationCollection.ContainsKey(name))
+                throw new UnknownAnimationSequenceException();
+
+            animationCollection.Remove(name);
+        }
+
+        public void PlaySequence(string name)
+        {
+            if (!animationCollection.ContainsKey(name))
+                throw new UnknownAnimationSequenceException();
+
+            AnimationSequence sequence = animationCollection[name];
+
+            // TODO
         }
     }
 }
