@@ -9,83 +9,65 @@ namespace GameEngine
 {
     public class Physics
     {
+        /// <summary>
+        /// Vector to represent the Gravity
+        /// </summary>
         public Vector Gravity { get; set; }
 
-        public bool IsCollidingWithMap(Map map, GameObject dyGameObject)
+        /// <summary>
+        /// checks collision between a gameobject and the map, and changes the velocity of gameobject if needed
+        /// </summary>
+        /// <param name="map"></param>
+        /// <param name="gameObject"></param>
+        /// <returns>a array that indicates which sides had collided with the map | 0: bottom of the object | 1: left side of object | 2 : top side | 3 right side| if all fours are set then its in the void</returns>
+        public static bool[] IsCollidingWithMap(Map map, GameObject gameObject)
         {
-            Vector mapPosition = dyGameObject.Position / map.TileSize;
+            Vector position = gameObject.Position + gameObject.Velocity;
+            bool[] sidesCollidedWith = new bool[4]; //number that indicates which side collided with the map
 
-
-            bool down = (map.TileMap[(int)Math.Ceiling((double)(dyGameObject.Position.Y + dyGameObject.height) / map.TileSize) + 1, (int)(dyGameObject.Position.X) / map.TileSize] != TileTypes.Void) ||
-                        (map.TileMap[(int)Math.Ceiling((double)(dyGameObject.Position.Y + dyGameObject.height) / map.TileSize) + 1, (int)Math.Floor((double)(dyGameObject.Position.X + dyGameObject.width * 0.9) / map.TileSize)] !=
+            if (position.X >= map.TileColumns * map.TileSize - map.TileSize || position.X < 0 || position.Y < 0 ||
+                position.Y > map.TileRows * map.TileSize - 3 * map.TileSize)
+            {
+                return new[] { true, true, true, true };
+            }
+            //check if there is a collision with each sides
+            bool down = (map.TileMap[(int)Math.Ceiling((double)(position.Y + gameObject.height) / map.TileSize) + 1, (int)(position.X) / map.TileSize] != TileTypes.Void) ||
+                        (map.TileMap[(int)Math.Ceiling((double)(position.Y + gameObject.height) / map.TileSize) + 1, (int)Math.Floor((double)(position.X + gameObject.width * 0.9) / map.TileSize)] !=
                             TileTypes.Void);
-            bool up = (map.TileMap[(int)Math.Ceiling((double)(dyGameObject.Position.Y) / map.TileSize + 1), (int)(dyGameObject.Position.X) / map.TileSize] != TileTypes.Void) ||
-                      (map.TileMap[(int)Math.Ceiling((double)(dyGameObject.Position.Y) / map.TileSize + 1), (int)Math.Floor((double)(dyGameObject.Position.X + dyGameObject.width * 0.9) / map.TileSize)] !=
+            bool up = (map.TileMap[(int)Math.Ceiling((double)(position.Y) / map.TileSize + 1), (int)(position.X) / map.TileSize] != TileTypes.Void) ||
+                      (map.TileMap[(int)Math.Ceiling((double)(position.Y) / map.TileSize + 1), (int)Math.Floor((double)(position.X + gameObject.width * 0.9) / map.TileSize)] !=
                                             TileTypes.Void);
-            bool right = (map.TileMap[(int)Math.Ceiling((double)(dyGameObject.Position.Y + dyGameObject.height * 0.9) / map.TileSize) + 1, (int)Math.Floor((dyGameObject.Position.X + dyGameObject.width) / map.TileSize)] !=
+            bool right = (map.TileMap[(int)Math.Ceiling((double)(position.Y + gameObject.height * 0.9) / map.TileSize) + 1, (int)Math.Floor((position.X + gameObject.width) / map.TileSize)] !=
                          TileTypes.Void) ||
-                         (map.TileMap[(int)Math.Ceiling((double)(dyGameObject.Position.Y) / map.TileSize + 1), (int)Math.Floor((dyGameObject.Position.X + dyGameObject.width) / map.TileSize)] !=
+                         (map.TileMap[(int)Math.Ceiling((double)(position.Y) / map.TileSize + 1), (int)Math.Floor((position.X + gameObject.width) / map.TileSize)] !=
                                              TileTypes.Void);
-            bool left = (map.TileMap[(int)Math.Ceiling((double)(dyGameObject.Position.Y + dyGameObject.height * 0.9) / map.TileSize) + 1, (int)Math.Floor((dyGameObject.Position.X ) / map.TileSize)] !=
+            bool left = (map.TileMap[(int)Math.Ceiling((double)(position.Y + gameObject.height * 0.9) / map.TileSize) + 1, (int)Math.Floor((position.X) / map.TileSize)] !=
                           TileTypes.Void) ||
-                         (map.TileMap[(int)Math.Ceiling((double)(dyGameObject.Position.Y) / map.TileSize + 1), (int)Math.Floor((dyGameObject.Position.X ) / map.TileSize)] !=
+                         (map.TileMap[(int)Math.Ceiling((double)(position.Y) / map.TileSize + 1), (int)Math.Floor((position.X) / map.TileSize)] !=
                           TileTypes.Void);
 
-            //for (int i = 0; i < map.TileMap.GetLength(0); i++)
-            //{
-            //    for (int k = 0; k < map.TileMap.GetLength(1); k++)
-            //    {
-            //        if ((int)mapPosition.X == k && (int)mapPosition.Y == i) Console.Write("X");
-            //        else if((int)Math.Ceiling((double)(dyGameObject.Position.Y + dyGameObject.height) / map.TileSize) + 1==k &&(int)(dyGameObject.Position.X) / map.TileSize==i)
-            //            Console.Write("D");
-            //        else if((int)Math.Round((double)(dyGameObject.Position.Y) / map.TileSize + 1)==k &&(int)(dyGameObject.Position.X) / map.TileSize==i)
-            //            Console.Write("U");
-            //        else if((int)Math.Round((double)(dyGameObject.Position.Y + dyGameObject.height) / map.TileSize) + 1==k&& (int)Math.Floor((dyGameObject.Position.X + dyGameObject.width) / map.TileSize)==i)
-            //            Console.Write("R");
-            //        else Console.Write((int)map.TileMap[i, k]);
-            //    }
-            //    Console.WriteLine();
-            //}
-            if (down)
+            //set velecity to 0 if moving in this direction
+            if (down && gameObject.Velocity.Y > 0)
             {
-                if (dyGameObject.Velocity.Y > 0)
-                {
-                    dyGameObject.Velocity = new Vector(dyGameObject.Velocity.X, 0);
-                }
+                gameObject.Velocity = new Vector(gameObject.Velocity.X, 0);
+                sidesCollidedWith[0] = true;
             }
-            if (up)
+            if (up && gameObject.Velocity.Y < 0)
             {
-                if (dyGameObject.Velocity.Y < 0)
-                {
-                    dyGameObject.Velocity = new Vector(dyGameObject.Velocity.X, 0);
-                }
+                gameObject.Velocity = new Vector(gameObject.Velocity.X, 0);
+                sidesCollidedWith[2] = true;
             }
-            if (right)
+            if (right && gameObject.Velocity.X > 0)
             {
-                if (dyGameObject.Velocity.X > 0)
-                {
-                    dyGameObject.Velocity = new Vector(0, dyGameObject.Velocity.Y);
-                }
+                gameObject.Velocity = new Vector(0, gameObject.Velocity.Y);
+                sidesCollidedWith[1] = true;
             }
-            if (left)
+            if (left && gameObject.Velocity.X < 0)
             {
-                if (dyGameObject.Velocity.X < 0)
-                {
-                    dyGameObject.Velocity = new Vector(0, dyGameObject.Velocity.Y);
-                }
+                gameObject.Velocity = new Vector(0, gameObject.Velocity.Y);
+                sidesCollidedWith[3] = true;
             }
-            return false;
+            return sidesCollidedWith;
         }
     }
 }
-//for (int i = 0; i < map.TileMap.GetLength(0); i++)
-//{
-//for (int k = 0; k < map.TileMap.GetLength(1); k++)
-//{
-//    //put a single value
-//    if((int)mapPosition.X == k&&(int)mapPosition.Y ==i) Console.Write("X");
-//    else Console.Write((int)map.TileMap[i, k]);
-//}
-////next row
-//Console.WriteLine();
-//}
