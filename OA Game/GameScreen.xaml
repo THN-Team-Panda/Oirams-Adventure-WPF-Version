@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OA_Game"
         mc:Ignorable="d"
-        Title="GameScreen" Height="450" Width="800">
+        Title="GameScreen" Height="480" Width="640" ResizeMode="NoResize">
     <Grid>
-        <Canvas Name="viewPort" Height="x" Width="x" Focusable="True">
-            <Canvas Name="map" Height="x" Width="x">
+        <Canvas Name="viewPort" Height="480" Width="640" Focusable="True">
+            <Canvas Name="map" Height="480" Width="3200">
 
             </Canvas>
         </Canvas> 
