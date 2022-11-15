@@ -33,9 +33,15 @@ namespace GameEngine
         public void Save(int level)
         {
             //erst öffnen StreamReader dann StreamWriter
-            //und Exceptions für versch. Fälle machen
+            //und Exceptions für versch. Fälle machen                    
 
             StreamReader str = new StreamReader(path);
+
+            if ((!File.Exists("SavingTest.txt"))) //Checking if scores.txt exists or not
+            {
+                FileStream path = File.Create("SavingLevels.txt"); //Creates Scores.txt
+                path.Close(); //Closes file stream
+            }
 
 
             string[] alllines = new string[4];
@@ -47,7 +53,6 @@ namespace GameEngine
                 {
                     alllines[i] = str.ReadLine();
                 }
-
 
             }
             str.Close();
@@ -69,7 +74,6 @@ namespace GameEngine
 
             stw.Close();
 
-
         }
 
         /// <summary>
@@ -79,26 +83,39 @@ namespace GameEngine
         /// <returns></returns>
         public bool AlreadySaved(int level)
         {
-            //eventuelle Änderung: statt jedes Level anzuzeigen, nur den Speicherfortschritt des angefragten Levels anzeigen
+            //nochmal überarbeiten
             StreamReader str = new StreamReader(path);
             bool issaved = false;
 
             while (!str.EndOfStream)
             {
+                string[] alllines = new string[4];
                 string line = str.ReadLine();
 
-                if (line == "1")
+                for (int i = 0; i < alllines.Length; i++) //lines of the file are being put into an array for locating the level of the parameter
                 {
-                    issaved = true;
+                    alllines[i] = str.ReadLine();
                 }
-                else if (line == "0")
+
+                for (int j = 0; j < alllines.Length; j++)
                 {
-                    issaved = false;
+                    if (alllines[level - 1] == "1") // level - 1 because the index is shifted and without it would the return value be incorrect
+                    {
+                        issaved = true;
+                    }
+                    else if (line == "0")
+                    {
+                        issaved = false;
+                    }
+                    j++;
                 }
+
             }
+
 
             str.Close();
 
+            // Console.WriteLine(issaved); //for testing purposes
             return issaved;
         }
 
