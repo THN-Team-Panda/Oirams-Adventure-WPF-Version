@@ -99,15 +99,25 @@ namespace GameEngine
 
                 for (int j = 0; j < alllines.Length; j++)
                 {
-                    if (alllines[level - 1] == "1") // level - 1 because the index is shifted and without it would the return value be incorrect
+                    try
                     {
-                        issaved = true;
+                        if (alllines[level - 1] == "1") // level - 1 because the index is shifted and without it would the return value be incorrect
+                        {
+                            issaved = true;
+                        }
+                        else if (line == "0")
+                        {
+                            issaved = false;
+                        }
+                        j++;
                     }
-                    else if (line == "0")
+                    catch
                     {
-                        issaved = false;
+                        throw new IndexOutOfRangeException("Level muss zwischen einschließlich 0 und 3 liegen!");
                     }
-                    j++;
+
+
+
                 }
 
             }
