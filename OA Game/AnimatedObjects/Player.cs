@@ -33,7 +33,7 @@ namespace OA_Game
         /// <summary>
         /// checks if player can lose the hat if not he dies
         /// </summary>
-        public void getDemage()
+        public void getDamage()
         {
             if (this.hat) this.hat = false;
             else die();
