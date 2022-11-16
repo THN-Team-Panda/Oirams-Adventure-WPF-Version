@@ -10,8 +10,25 @@ namespace OA_Game.DrawableObjects
 {
     public class Items : DrawableObject
     {
+        /// <summary>
+        /// shows if item is collected
+        /// </summary>
+        public bool collected = false;
+
+        public bool visible = true; // evtl in Gameoject class da es für alle elemente wichtig ist ob sie sichtbar sind oder nicht 
+
         public Items(Rectangle mapObject) : base(mapObject)
         {
+        }
+
+        /// <summary>
+        /// when the item is collected it is no longer visible on the map and cannot be collected a second time 
+        /// </summary>
+        /// <param name="item"></param>
+        public void getCollected(Items item)
+        {
+            item.collected = true;
+            item.visible = false;
         }
     }
 }
