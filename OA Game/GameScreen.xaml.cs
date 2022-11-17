@@ -28,17 +28,7 @@ namespace OA_Game
 
             
 
-            static Image Map_Loading(int level_id)
-            {
-                string file_name = $"Level" + level_id + "_tmx";
-                int[] groundTiles = { 0, 1, 2, 3 };
-                Map level = new Map(file_name, "", groundTiles, groundTiles, groundTiles);
-
-                Image MapImage = level.RenderTiles();
-                return MapImage;
-                
-
-            }
+            
 
             map.Children.Add(Map_Loading(3));
             Canvas.SetTop(Map_Loading(3), 0);
@@ -47,12 +37,24 @@ namespace OA_Game
 
         }
 
-        
-
 
     }
 
-    public class Map_Generator { }
+    public class Map_Generator 
+    {
+        static Image Map_Loading(int level_id)
+        {
+            string file_name = $"Level" + level_id + "_tmx";
+            int[] groundTiles = { 0, 1, 2, 3 };
+            Map level = new Map(file_name, "", groundTiles, groundTiles, groundTiles);
+
+            Image MapImage = level.RenderTiles();
+            return MapImage;
+
+
+        }
+
+    }
     
     
 }
