@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -24,6 +25,8 @@ namespace OA_Game
         public GameScreen()
         {
             InitializeComponent();
+
+            
 
             static Image Map_Loading(int level_id)
             {
@@ -49,8 +52,7 @@ namespace OA_Game
 
     }
 
-    
-
+    public class Map_Generator { }
     
     
 }
