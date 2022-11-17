@@ -49,14 +49,6 @@ namespace OA_Game
 
     }
 
-    public class Map_Laden
-    {
-
-
-
-        
-    }
-
     
 
     
