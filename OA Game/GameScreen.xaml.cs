@@ -33,7 +33,7 @@ namespace OA_Game
 
             map.Children.Add(Map_Generator.Map_Loading(3));
             Canvas.SetTop(Map_Generator.Map_Loading(3), 0);
-            Canvas.SetLeft(Map_Generator.Map_Loading(3), 0);
+            Canvas.SetLeft(Map_Generator.Map_Loading(3), 0);           
             
 
         }
@@ -58,7 +58,14 @@ namespace OA_Game
 
         }
 
+        public static ImageBrush Set_CanvasBackground(int level_id)
+        {
+            ImageBrush background = new ImageBrush();
+            string file_name = "Background" + level_id;
+            background.ImageSource = new BitmapImage(new Uri(background_path));
+            return background;
 
+        }
 
     }
     
