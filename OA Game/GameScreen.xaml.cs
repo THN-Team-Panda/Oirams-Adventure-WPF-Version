@@ -33,8 +33,10 @@ namespace OA_Game
 
             map.Children.Add(Map_Generator.Map_Loading(3));
             Canvas.SetTop(Map_Generator.Map_Loading(3), 0);
-            Canvas.SetLeft(Map_Generator.Map_Loading(3), 0);           
-            
+            Canvas.SetLeft(Map_Generator.Map_Loading(3), 0);
+
+            map.Background = Map_Generator.Set_CanvasBackground(1);
+
 
         }
 
@@ -46,10 +48,17 @@ namespace OA_Game
 
         public int level_id = 1;
 
+        public Map_Generator(int level_id)
+        {
+            this.level_id = level_id;
+            Map_Loading(level_id);
+        }
+            
+
         public static Image Map_Loading(int level_id)
         {
             string file_name = $"Level" + level_id + ".tmx";
-            int[] groundTiles = { 0, 1, 2, 3 };
+            
             Map level = new Map(file_name, "C:\\Users\\Vincent\\source\\repos\\level-design\\Level_Panda",new int[] { 2 }, new int[] { 3 }, new int[] { 4 });
 
             Image MapImage = level.RenderTiles();
@@ -62,7 +71,7 @@ namespace OA_Game
         {
             ImageBrush background = new ImageBrush();
             string file_name = "Background" + level_id;
-            background.ImageSource = new BitmapImage(new Uri(background_path));
+            background.ImageSource = new BitmapImage(new Uri("E:\\pictures\\schule.jpg"));
             return background;
 
         }
