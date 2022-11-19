@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Text;
@@ -62,6 +63,7 @@ namespace OA_Game
             Map level = new Map(file_name, "C:\\Users\\Vincent\\source\\repos\\level-design\\Level_Panda",new int[] { 2 }, new int[] { 3 }, new int[] { 4 });
 
             Image MapImage = level.RenderTiles();
+
             return MapImage;
 
 
