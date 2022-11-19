@@ -10,9 +10,9 @@
 
         <Image Stretch ="Fill"  VerticalAlignment="Center" HorizontalAlignment="Center" Source="C:\Users\eddi6\OneDrive\Bilder\Saved Pictures\carl-raw-m3hn2Kn5Bns-unsplash.jpg"/>
 
-        <Button Name ="Level1" Content="Level 1" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" Height="50" Width="496" Background="#FF00CBFA" Click="StartLevel_Click" />
-        <Button Name ="Level2" Content="Level 2" HorizontalAlignment="Center" Margin="0,200,0,0" VerticalAlignment="Top" Height="50" Width="496" Background="#FF00CBFA" Click="StartLevel_Click" />
-        <Button Name ="Level3" Content="Level 3" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" Height="50" Width="496" Background="#FF00CBFA" Click="StartLevel_Click"/>
+        <Button Name ="Level1" Content="Level 1" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" Height="50" Width="500" Background="#FF00CBFA" Click="StartLevel_Click" />
+        <Button Name ="Level2" Content="Level 2" HorizontalAlignment="Center" Margin="0,200,0,0" VerticalAlignment="Top" Height="50" Width="500" Background="#FF00CBFA" Click="StartLevel_Click" />
+        <Button Name ="Level3" Content="Level 3" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" Height="50" Width="500" Background="#FF00CBFA" Click="StartLevel_Click"/>
 
     </Grid>
 </Window>
