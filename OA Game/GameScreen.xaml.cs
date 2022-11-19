@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -30,9 +31,9 @@ namespace OA_Game
 
             
 
-            map.Children.Add(Map_Loading(3));
-            Canvas.SetTop(Map_Loading(3), 0);
-            Canvas.SetLeft(Map_Loading(3), 0);
+            map.Children.Add(Map_Generator.Map_Loading(3));
+            Canvas.SetTop(Map_Generator.Map_Loading(3), 0);
+            Canvas.SetLeft(Map_Generator.Map_Loading(3), 0);
             
 
         }
@@ -42,17 +43,22 @@ namespace OA_Game
 
     public class Map_Generator 
     {
-        static Image Map_Loading(int level_id)
+
+        public int level_id = 1;
+
+        public static Image Map_Loading(int level_id)
         {
-            string file_name = $"Level" + level_id + "_tmx";
+            string file_name = $"Level" + level_id + ".tmx";
             int[] groundTiles = { 0, 1, 2, 3 };
-            Map level = new Map(file_name, "", groundTiles, groundTiles, groundTiles);
+            Map level = new Map(file_name, "C:\\Users\\Vincent\\source\\repos\\level-design\\Level_Panda",new int[] { 2 }, new int[] { 3 }, new int[] { 4 });
 
             Image MapImage = level.RenderTiles();
             return MapImage;
 
 
         }
+
+
 
     }
     
