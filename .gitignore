@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Exclude tiled project files
+*.tiled-project
+*.tiled-session
+
 # User-specific files
 *.rsuser
 *.suo
