@@ -24,19 +24,20 @@ namespace OA_Game
     /// </summary>
     public partial class GameScreen : Window
     {
+        private int level_id;
         public GameScreen()
         {
             InitializeComponent();
 
             
-
+            this.level_id = 1;
             
 
             map.Children.Add(Map_Generator.Map_Loading(3));
             Canvas.SetTop(Map_Generator.Map_Loading(3), 0);
             Canvas.SetLeft(Map_Generator.Map_Loading(3), 0);
 
-            map.Background = Map_Generator.Set_CanvasBackground(1);
+            //map.Background = Map_Generator.Set_CanvasBackground(1);
 
 
         }
@@ -59,8 +60,10 @@ namespace OA_Game
         public static Image Map_Loading(int level_id)
         {
             string file_name = $"Level" + level_id + ".tmx";
+
+            string mapdirectory = Assets.GetPath("Level_Panda");
             
-            Map level = new Map(file_name, "C:\\Users\\Vincent\\source\\repos\\level-design\\Level_Panda",new int[] { 2 }, new int[] { 3 }, new int[] { 4 });
+            Map level = new Map(file_name, mapdirectory, new int[] { 2 }, new int[] { 3 }, new int[] { 4 });
 
             Image MapImage = level.RenderTiles();
 
@@ -73,7 +76,7 @@ namespace OA_Game
         {
             ImageBrush background = new ImageBrush();
             string file_name = "Background" + level_id;
-            background.ImageSource = new BitmapImage(new Uri("E:\\pictures\\schule.jpg"));
+            background.ImageSource = new BitmapImage(Assets.GetUri("Platzhalter"));
             return background;
 
         }
