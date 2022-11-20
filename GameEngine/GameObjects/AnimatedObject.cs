@@ -1,5 +1,7 @@
 ﻿using System.Windows.Shapes;
 using System.Windows.Media;
+using GameEngine;
+using GameEngine.Exceptions;
 
 namespace GameEngine.GameObjects
 {
@@ -8,6 +10,11 @@ namespace GameEngine.GameObjects
     /// </summary>
     public class AnimatedObject : DrawableObject
     {
+        /// <summary>
+        /// A collection of playable sequences to animate drawable objects
+        /// </summary>
+        protected Dictionary<string, PlayableSequence> animationCollection = new Dictionary<string, PlayableSequence>();
+
         /// <summary>
         /// List of selectable sprites
         /// </summary>
@@ -55,13 +62,73 @@ namespace GameEngine.GameObjects
         /// <exception cref="ArgumentOutOfRangeException">number out of range</exception>
         public void SetSprite(int number)
         {
-            if (number >= sprites.Length)
+            if (number >= sprites.Length || number < 0)
                 throw new ArgumentOutOfRangeException("Number out of range!");
 
             CurrentSprite = number;
 
             // To create a clean instance, create a new image brush
             Rectangel.Fill = new ImageBrush(sprites[CurrentSprite]);
+        }
+
+        /// <summary>
+        /// Add a playable sequence to the object
+        /// </summary>
+        /// <param name="name">Identifier of the sequence</param>
+        /// <param name="sequence">Sequence object</param>
+        public void AddSequence(string name, PlayableSequence sequence) => animationCollection.Add(name, sequence);
+
+        /// <summary>
+        /// Remove a playable sequence from the object
+        /// </summary>
+        /// <param name="name">Identifier of the sequence</param>
+        /// <exception cref="UnknownAnimationSequenceException">If the sequence name is unkown</exception>
+        public void RemoveSequence(string name)
+        {
+            if (!animationCollection.ContainsKey(name))
+                throw new UnknownAnimationSequenceException();
+
+            animationCollection.Remove(name);
+        }
+
+        /// <summary>
+        /// Play a sequence one time
+        /// </summary>
+        /// <param name="name">Identifier of the sequence</param>
+        /// <exception cref="UnknownAnimationSequenceException">If the sequence name is unkown</exception>
+        public void PlaySequence(string name)
+        {
+            if (!animationCollection.ContainsKey(name))
+                throw new UnknownAnimationSequenceException();
+
+            PlayableSequence sequence = animationCollection[name];
+
+            while(!sequence.EndOfSequence)
+            {
+                SetSprite(sequence.CurrentSpriteNumber);
+
+                Thread.Sleep(sequence.Between);
+            }
+        }
+
+        /// <summary>
+        /// Play a sequence one time async in the background
+        /// </summary>
+        /// <param name="name">Identifier of the sequence</param>
+        /// <exception cref="UnknownAnimationSequenceException">If the sequence name is unkown</exception>
+        public async void PlaySequenceAsync(string name)
+        {
+            if (!animationCollection.ContainsKey(name))
+                throw new UnknownAnimationSequenceException();
+
+            PlayableSequence sequence = animationCollection[name];
+
+            while (!sequence.EndOfSequence)
+            {
+                SetSprite(sequence.CurrentSpriteNumber);
+
+                await Task.Delay(sequence.Between);
+            }
         }
     }
 }
