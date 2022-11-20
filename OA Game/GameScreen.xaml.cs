@@ -25,17 +25,17 @@ namespace OA_Game
     public partial class GameScreen : Window
     {
         private int level_id;
-        public GameScreen()
+        public GameScreen(int level_id = 1)
         {
             InitializeComponent();
 
             
-            this.level_id = 1;
+            this.level_id = level_id;
             
 
-            map.Children.Add(Map_Generator.Map_Loading(3));
-            Canvas.SetTop(Map_Generator.Map_Loading(3), 0);
-            Canvas.SetLeft(Map_Generator.Map_Loading(3), 0);
+            map.Children.Add(Map_Generator.Map_Loading(level_id));
+            Canvas.SetTop(Map_Generator.Map_Loading(level_id), 0);
+            Canvas.SetLeft(Map_Generator.Map_Loading(level_id), 0);
 
             //map.Background = Map_Generator.Set_CanvasBackground(1);
 
