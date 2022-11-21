@@ -31,37 +31,66 @@ namespace OA_Game
             */
         }
 
-        private void StartLevel_Click(object sender, RoutedEventArgs e)
+        private bool button1WasClicked = false;
+        private void Level1_Click(object sender, RoutedEventArgs e)
         {
-            //Punkt 2
-            GameScreen openlvl = new GameScreen(Level1);
-            
+            //switch from Startscreen to GameScreen
 
-            //Punkt 3
-            if(Savings.AlreadySaved())
+            button1WasClicked = true;
+        }
+
+        private bool button2WasClicked = false;
+        private void Level2_Click(object sender, RoutedEventArgs e)
+        {
+            //switch from Startscreen to GameScreen
+
+            button2WasClicked = true;
+        }
+
+        private bool button3WasClicked = false;
+        private void Level3_Click(object sender, RoutedEventArgs e)
+        {
+            //switch from Startscreen to GameScreen
+
+            button3WasClicked = true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void StartLevel_Click(object sender, RoutedEventArgs e)
+        {
+            int[] level_id = {1, 2, 3};
+
+            List<int> id_list = level_id.ToList(); //ToList macht level_id Array zu Liste
+
+            //the following if-else cases enable buttons when the previous button is finished
+
+            if (SavingTest.AlreadySaved(1)) // Level 2 will be available to play after Level 1 has been saved (after player has finished level 1)
             {
-                //Level ist spielbar
+                Level2.IsEnabled = true;
+            }          
+
+            if(SavingTest.AlreadySaved(2)) // Level 3 will be available to play after Level 2 has been saved (after player has finished level 2)
+            {
+                Level3.IsEnabled = true;
             }
-            else if(Savings.AlreadySaved())
+
+            if (button1WasClicked)
             {
-                //Level ist nicht spielbar
+                //commit Levelid to Gamescreen
             }
 
-            //Punkt 4
-            List<T> id_list = new List<T>();
-
-            //Werte in Liste hinzufügen
-            id_list.Add();
-            id_list.Add();
-            id_list.Add();
-
-            //einzelnen Wert aus Liste auslesen
-            T wert1 = id_list[0];
-
-            //alle Werte aus Liste ausgeben
-            foreach(var wert in id_list)
+            if(button2WasClicked)
             {
-                Console.WriteLine(wert);
+                 //commit Levelid to Gamescreen
+            }
+
+            if (button3WasClicked)
+            {
+                 //commit Levelid to Gamescreen
             }
         }
     }

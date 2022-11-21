@@ -19,7 +19,7 @@ namespace OA_Game
     /// </summary>
     public partial class GameScreen : Window
     {
-        public GameScreen( int levelid = 1)
+        public GameScreen()
         {
             InitializeComponent();
         }
