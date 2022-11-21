@@ -24,7 +24,11 @@ namespace OA_Game
     /// </summary>
     public partial class GameScreen : Window
     {
+        /// <summary>
+        /// Levelid to load the Level;
+        /// </summary>
         private int level_id;
+        /// <param name="level_id">which Map should be loaded</param>
         public GameScreen(int level_id = 1)
         {
             InitializeComponent();
@@ -40,7 +44,7 @@ namespace OA_Game
             Map level = new Map(file_name, mapdirectory, new int[] {1,2,3,4,13,14,15,26,27,28 }, new int[] {84,78,91 }, new int[] {104,105,106,107,108,109,117,118,76});
 
             Image MapImage = level.RenderTiles();
-
+            
             map.Children.Add(MapImage);
             Canvas.SetTop(MapImage, 0);
             Canvas.SetLeft(MapImage, 0);
@@ -49,7 +53,10 @@ namespace OA_Game
 
 
         }
-
+        /// <summary>
+        /// Set the Background for the map
+        /// </summary>
+        /// <param name="level_id"></param>
         public static void Set_CanvasBackground(int level_id)
         {
             ImageBrush background = new ImageBrush();
