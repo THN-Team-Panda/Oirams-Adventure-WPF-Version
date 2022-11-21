@@ -1,5 +1,8 @@
-﻿using System;
+﻿using GameEngine;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 
 namespace OA_Game
 {
@@ -21,77 +25,71 @@ namespace OA_Game
     /// </summary>
     public partial class StartScreen : Window
     {
+        private string path = "Save.txt";
         public StartScreen()
-        {
+        {   
             InitializeComponent();
 
-            /*GameScreen gs = new GameScreen(1);
+            Backscreen.Source = new BitmapImage(Assets.GetUri("Images/StartScreen/Background.jpg"));
 
-            gs.Show();
-            */
+            EnableButton();
         }
 
-        private bool button1WasClicked = false;
-        private void Level1_Click(object sender, RoutedEventArgs e)
+        
+        private void OpenLevel_Click(object sender, RoutedEventArgs e)
         {
-            //switch from Startscreen to GameScreen
+            int clicklevel = 0;
 
-            button1WasClicked = true;
+            if(sender.Equals(Level1))
+            {
+                clicklevel = 1;
+            }
+
+            else if(sender.Equals(Level2))
+            {
+                clicklevel = 2;
+            }
+
+            else if (sender.Equals(Level3))
+            {
+                clicklevel = 3;
+            }
+
+            OpenLeveL(clicklevel);
+            
         }
 
-        private bool button2WasClicked = false;
-        private void Level2_Click(object sender, RoutedEventArgs e)
+        public void OpenLeveL(int clicklevel)
         {
-            //switch from Startscreen to GameScreen
+            GameScreen openscreen = new GameScreen(clicklevel);
 
-            button2WasClicked = true;
+            openscreen.Owner = this; //the popup-window is a child of the current screen
+
+            openscreen.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
+            openscreen.ResizeMode = ResizeMode.NoResize;
+
+            openscreen.ShowDialog(); //show the gamescreen; dialog is a popup-window
+
+            EnableButton();
         }
 
-        private bool button3WasClicked = false;
-        private void Level3_Click(object sender, RoutedEventArgs e)
+        public void EnableButton()
         {
-            //switch from Startscreen to GameScreen
+            Saving saving = new Saving(path);
 
-            button3WasClicked = true;
-        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void StartLevel_Click(object sender, RoutedEventArgs e)
-        {
-            int[] level_id = {1, 2, 3};
-
-            List<int> id_list = level_id.ToList(); //ToList macht level_id Array zu Liste
-
-            //the following if-else cases enable buttons when the previous button is finished
-
-            if (SavingTest.AlreadySaved(1)) // Level 2 will be available to play after Level 1 has been saved (after player has finished level 1)
+            if (saving.AlreadySaved(1)) // Level 2 will be available to play after Level 1 has been saved (after player has finished level 1)
             {
                 Level2.IsEnabled = true;
-            }          
+            }
 
-            if(SavingTest.AlreadySaved(2)) // Level 3 will be available to play after Level 2 has been saved (after player has finished level 2)
+            if (saving.AlreadySaved(2)) // Level 3 will be available to play after Level 2 has been saved (after player has finished level 2)
             {
                 Level3.IsEnabled = true;
             }
-
-            if (button1WasClicked)
-            {
-                //commit Levelid to Gamescreen
-            }
-
-            if(button2WasClicked)
-            {
-                 //commit Levelid to Gamescreen
-            }
-
-            if (button3WasClicked)
-            {
-                 //commit Levelid to Gamescreen
-            }
         }
+
+        
     }
 }

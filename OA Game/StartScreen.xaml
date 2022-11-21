@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OA_Game"
         mc:Ignorable="d"
-        Title="MainWindow" Height="480" Width="640">
+        Title="Welcome!" Height="480" Width="640" ResizeMode="NoResize">
 	<Grid>
 
-		<Image Stretch ="Fill"  VerticalAlignment="Center" HorizontalAlignment="Center" Source="C:\Users\eddi6\OneDrive\Bilder\Saved Pictures\carl-raw-m3hn2Kn5Bns-unsplash.jpg"/>
+		<Image Name="Backscreen" Stretch ="Fill"  VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-		<Button Name ="Level1" Content="Level 1"  HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top" Height="50" Width="400" Background="#FF00CBFA" Click="Level1_Click" />
-		<Button Name ="Level2" Content="Level 2"  HorizontalAlignment="Center" Margin="0,220,0,0" VerticalAlignment="Top" Height="50" Width="400" Background="#FF00CBFA" Click ="Level2_Click" IsEnabled="false" />
-		<Button Name ="Level3" Content="Level 3"  HorizontalAlignment="Center" Margin="0,290,0,0" VerticalAlignment="Top" Height="50" Width="400" Background="#FF00CBFA" Click="Level3_Click" IsEnabled="false"/>
+		<Button Name ="Level1" Content="Level 1"  HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top" Height="50" Width="400" Background="#FF00CBFA" Click="OpenLevel_Click" />
+		<Button Name ="Level2" Content="Level 2"  HorizontalAlignment="Center" Margin="0,220,0,0" VerticalAlignment="Top" Height="50" Width="400" Background="#FF00CBFA" Click ="OpenLevel_Click" IsEnabled="false" />
+		<Button Name ="Level3" Content="Level 3"  HorizontalAlignment="Center" Margin="0,290,0,0" VerticalAlignment="Top" Height="50" Width="400" Background="#FF00CBFA" Click="OpenLevel_Click" IsEnabled="false"/>
 
 
 	</Grid>
