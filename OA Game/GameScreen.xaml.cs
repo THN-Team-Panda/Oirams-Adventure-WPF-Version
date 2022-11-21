@@ -29,7 +29,7 @@ namespace OA_Game
         /// </summary>
         private int level_id;
         /// <param name="level_id">which Map should be loaded</param>
-        public GameScreen(int level_id = 1)
+        public GameScreen(int level_id = 2)
         {
             InitializeComponent();
 
