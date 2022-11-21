@@ -34,7 +34,7 @@ namespace OA_Game
             InitializeComponent();
 
             
-            this.level_id = level_id;//vincent ist gay
+            this.level_id = level_id;
             
 
             string file_name = $"Level" + level_id + ".tmx";
