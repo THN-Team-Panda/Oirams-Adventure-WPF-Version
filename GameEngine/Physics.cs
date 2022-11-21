@@ -23,7 +23,7 @@ namespace GameEngine
         /// <returns>a array that indicates which sides had collided with the map | 0: bottom of the object | 1: left side of object | 2 : top side | 3 right side| if all fours are set then its in the void</returns>
         public static bool[] IsCollidingWithMap(Map map, DrawableObject gameObject)
         {
-            Vector position = gameObject.Position + gameObject.Velocity;
+            Vector position = gameObject.Position + gameObject.Velocity+new Vector(0,-32);
             bool[] sidesCollidedWith = new bool[4]; //number that indicates which side collided with the map
 
             if (position.X >= map.TileColumns * map.TileSize - map.TileSize || position.X < 0 || position.Y < 0 ||
