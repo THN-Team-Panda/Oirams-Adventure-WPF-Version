@@ -17,7 +17,7 @@ namespace GameEngine
         Obstacle,
         EnemySpawn,
     }
-    
+
     /// <summary>
     /// holds the TileMap data and renders the Map as an image
     /// </summary>
@@ -27,7 +27,7 @@ namespace GameEngine
         /// Size of an Tile in pixel
         /// </summary>
         public int TileSize { get; }
-        
+
         /// <summary>
         /// number of Tiles in the horizontal direction
         /// </summary>
@@ -151,18 +151,17 @@ namespace GameEngine
 
             for (int i = 0; i < TileMapDataRaw.Length; i++)
             {
-                int data =TileMapDataRaw[i];
+                int data = TileMapDataRaw[i];
                 if (data == 0) continue;
                 int posX = i % TileColumns;
                 int posY = i / TileColumns;
-
                 //calculate the position of the tile image in the tileset image
                 int xInTileSetImage = data % _tileset.Columns * TileSize;
                 int yInTileSetImage = data / _tileset.Columns * TileSize;
-
+                if (xInTileSetImage != 0) xInTileSetImage -= TileSize;
                 //crop Tile out of Tileset Image
                 CroppedBitmap tileImage = new(TileSetImg,
-                    new Int32Rect(xInTileSetImage - TileSize, yInTileSetImage, TileSize, TileSize));
+                    new Int32Rect(xInTileSetImage, yInTileSetImage, TileSize, TileSize));
                 ImageDrawing tile = new()
                 {
                     Rect = new Rect(posX * TileSize, posY * TileSize, TileSize, TileSize),
@@ -196,7 +195,7 @@ namespace GameEngine
             //convert raw data to 
             for (int i = 0; i < TileMapDataRaw.Length; i++)
             {
-                int data =TileMapDataRaw[i];
+                int data = TileMapDataRaw[i];
                 if (data == 0) continue;
                 int posX = i % TileColumns;
                 int posY = i / TileColumns;

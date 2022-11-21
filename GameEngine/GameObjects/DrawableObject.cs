@@ -7,7 +7,7 @@ namespace GameEngine.GameObjects
     /// <summary>
     /// Drawable object represents a visible element
     /// </summary>
-    public class DrawableObject : GameObject
+    public class DrawableObject 
     {
         /// <summary>
         /// Element on map
@@ -17,6 +17,15 @@ namespace GameEngine.GameObjects
             get; private set;
         }
 
+        /// <summary>
+        /// Each object has a position vector!
+        /// </summary>
+        public Vector Position { get; set; }
+
+        /// <summary>
+        /// Each object has a velocity vector in which the Object is moving
+        /// </summary>
+        public Vector Velocity { get; set; }
         /// <summary>
         /// Helper method to set/get the height
         /// </summary>
