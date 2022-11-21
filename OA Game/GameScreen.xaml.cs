@@ -33,7 +33,7 @@ namespace OA_Game
             this.level_id = level_id;
             
 
-            string file_name = $"Level" + 1 + ".tmx";
+            string file_name = $"Level" + level_id + ".tmx";
 
             string mapdirectory = Assets.GetPath("Level_Panda");
 
@@ -44,6 +44,7 @@ namespace OA_Game
             map.Children.Add(MapImage);
             Canvas.SetTop(MapImage, 0);
             Canvas.SetLeft(MapImage, 0);
+            Canvas.SetZIndex(MapImage, 0);
            
 
 
