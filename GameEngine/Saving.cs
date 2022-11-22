@@ -10,6 +10,11 @@ namespace GameEngine
     public class Saving
     {
         /// <summary>
+        /// File name for the level save file
+        /// </summary>
+        public const string SaveFileName = "level.panda";
+
+        /// <summary>
         /// a path, that is being given by the user when creating a Saving object; 
         /// private because it is only needed within this class
         /// </summary>
@@ -17,13 +22,24 @@ namespace GameEngine
 
         /// <summary>
         /// a constructor that requires the user to add a path when creating a saving object
+        /// Note: The argument must be a directory
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to the directory where the save file is located</param>
         public Saving(string path)
         {
-            this.path = path;
-        }
+            // Check if the argument is a dir
+            if (!Directory.Exists(path))
+                throw new ArgumentException("The path argument must be a directory");
 
+            // Create path to save file
+            this.path = $"{path}/{SaveFileName}";
+
+            if ((!File.Exists(this.path))) //Checking if scores.txt exists or not
+            {
+                FileStream file = File.Create(this.path);
+                file.Close(); //Closes file stream
+            }
+        }
 
         /// <summary>
         /// a function that saves the current game progress in a data file;
@@ -36,13 +52,6 @@ namespace GameEngine
             //und Exceptions für versch. Fälle machen                    
 
             StreamReader str = new StreamReader(path);
-
-            if ((!File.Exists("SavingTest.txt"))) //Checking if scores.txt exists or not
-            {
-                FileStream path = File.Create("SavingLevels.txt"); //Creates Scores.txt
-                path.Close(); //Closes file stream
-            }
-
 
             string[] alllines = new string[4];
 
