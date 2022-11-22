@@ -29,7 +29,7 @@ namespace OA_Game
         /// </summary>
         private int level_id;
         /// <param name="level_id">which Map should be loaded</param>
-        public GameScreen(int level_id = 2)
+        public GameScreen(int level_id = 1)
         {
             InitializeComponent();
 
@@ -41,7 +41,7 @@ namespace OA_Game
 
             string mapdirectory = Assets.GetPath("Level_Panda");
 
-            Map level = new Map(file_name, mapdirectory, new int[] {1,2,3,4,13,14,15,26,27,28 }, new int[] {84,78,91 }, new int[] {104,105,106,107,108,109,117,118,76});
+            Map level = new Map(file_name, mapdirectory, new int[] {1,2,3,4,13,14,15,26,27,28 }, new int[] {}, new int[] {104,105,106,107,108,109,117,118,76});
 
             Image MapImage = level.RenderTiles();
             
@@ -62,6 +62,7 @@ namespace OA_Game
             ImageBrush background = new ImageBrush();
             string file_name = "Background" + level_id;
             background.ImageSource = new BitmapImage(Assets.GetUri("Platzhalter"));
+            
             
 
         }
