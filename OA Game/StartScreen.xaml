@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OA_Game"
         mc:Ignorable="d"
-        Title="Welcome!" Height="480" Width="640" ResizeMode="NoResize">
-    <Grid>
+        Title="Welcome!" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+    <Grid Height="480" Width="640">
 
         <Image Name="Backscreen" Stretch ="Fill"  VerticalAlignment="Center" HorizontalAlignment="Center" />
 
