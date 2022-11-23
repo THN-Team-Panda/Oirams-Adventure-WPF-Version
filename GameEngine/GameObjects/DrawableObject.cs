@@ -20,7 +20,21 @@ namespace GameEngine.GameObjects
         /// <summary>
         /// Each object has a position vector!
         /// </summary>
-        public Vector Position { get; set; }
+        private Vector _position;
+
+        public Vector Position
+        {
+            get
+            {
+                return _position;
+            }
+            set
+            {
+                _position = value;
+                Canvas.SetTop(Rectangel,_position.Y);
+                Canvas.SetLeft(Rectangel,_position.X);
+            }
+        }
 
         /// <summary>
         /// Each object has a velocity vector in which the Object is moving
