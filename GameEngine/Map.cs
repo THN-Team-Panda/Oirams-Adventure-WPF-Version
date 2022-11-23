@@ -151,14 +151,14 @@ namespace GameEngine
 
             for (int i = 0; i < TileMapDataRaw.Length; i++)
             {
-                int data = TileMapDataRaw[i];
-                if (data == 0) continue;
+                // -1 because tmx void is 0 instead of -1
+                int data = TileMapDataRaw[i]-1;
+                if (data == -1) continue;
                 int posX = i % TileColumns;
                 int posY = i / TileColumns;
                 //calculate the position of the tile image in the tileset image
                 int xInTileSetImage = data % _tileset.Columns * TileSize;
                 int yInTileSetImage = data / _tileset.Columns * TileSize;
-                if (xInTileSetImage != 0) xInTileSetImage -= TileSize;
                 //crop Tile out of Tileset Image
                 CroppedBitmap tileImage = new(TileSetImg,
                     new Int32Rect(xInTileSetImage, yInTileSetImage, TileSize, TileSize));
@@ -176,12 +176,23 @@ namespace GameEngine
             // Freeze the DrawingImage for performance benefits.
             drawingImageSource.Freeze();
 
+            //do not touch
+            DrawingVisual drawingVisual = new DrawingVisual();
+            DrawingContext drawingContext = drawingVisual.RenderOpen();
+            drawingContext.DrawImage(drawingImageSource, new Rect(new Point(0, 0), new Size(TileColumns * TileSize, TileRows * TileSize)));
+            drawingContext.Close();
+
+            RenderTargetBitmap bmp = new RenderTargetBitmap((int)TileColumns * TileSize, (int)TileRows * TileSize, 96, 96, PixelFormats.Pbgra32);
+            bmp.Render(drawingVisual);
+            
+
+
             Image finalImage = new()
             {
                 Stretch = Stretch.None,
                 Width = TileColumns * TileSize,
                 Height = TileRows * TileSize,
-                Source = drawingImageSource
+                Source = bmp
             };
             return finalImage;
         }
