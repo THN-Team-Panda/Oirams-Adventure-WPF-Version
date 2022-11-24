@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using GameEngine;
 
 namespace OA_Game
 {
@@ -19,6 +20,10 @@ namespace OA_Game
     /// </summary>
     public partial class GameScreen : Window
     {
+        Player player;
+        Map map;
+        ViewPort vp;
+
         public GameScreen()
         {
             InitializeComponent();
