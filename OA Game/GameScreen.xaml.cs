@@ -21,7 +21,7 @@ namespace OA_Game
     public partial class GameScreen : Window
     {
         Player player;
-        Map map;
+        Map level;
         ViewPort vp;
 
         public GameScreen()
