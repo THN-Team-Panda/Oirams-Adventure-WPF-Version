@@ -37,6 +37,13 @@ namespace OA_Game
 
         }
         /// <summary>
+        /// Check the user input to move the player or attack.
+        /// </summary>
+        private void InputKeyboard()
+        {
+
+        }
+        /// <summary>
         /// Update ViewPort to the current Position of Player.
         /// </summary>
         private void UpdateCamera()
