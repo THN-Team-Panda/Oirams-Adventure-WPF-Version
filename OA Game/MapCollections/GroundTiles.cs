@@ -23,10 +23,10 @@
         Wood2 = 53,
 
         // Ladder
-        ladder = 45,
+        Ladder = 45,
 
         // Lamp
-        lamp = 84,
+        Lamp = 84,
 
         // Leaf
         Leaf1 = 40,
@@ -51,7 +51,7 @@
         DirtHalfStep3 = 17,
         DirtHalfStep4 = 18,
         DirtHalfStep5 = 30,
-        DirtHalfStep6 = 31
+        DirtHalfStep6 = 31,
 
 
         // Brick tiles
