@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OA_Game"
         mc:Ignorable="d"
-        Title="GameScreen" SizeToContent="Height" Width="640" ResizeMode="NoResize">
+        Title="GameScreen" SizeToContent="WidthAndHeight" MinWidth="200" MinHeight="150" ResizeMode="NoResize">
     <Grid>
-        <Canvas Name="viewPort" Height="480" Width="640" Focusable="True">
+        <Canvas Name="viewPort" Focusable="True">
             <Canvas Name="map">
 
             </Canvas>

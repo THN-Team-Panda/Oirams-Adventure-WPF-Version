@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:OA_Game"
         mc:Ignorable="d"
         Title="Welcome!" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
-    <Grid Height="480" Width="640">
+    <Grid Name="LevelView">
 
         <Image Name="Backscreen" Stretch ="Fill"  VerticalAlignment="Center" HorizontalAlignment="Center" />
 
