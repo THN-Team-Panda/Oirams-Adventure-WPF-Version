@@ -43,7 +43,7 @@ namespace GameEngine.GameObjects
         /// <param name="images">list of sprite sources</param>
         /// <param name="initSprite">init sprite number (default: 0).</param>
         /// <exception cref="ArgumentOutOfRangeException">initSprite out of range</exception>
-        public AnimatedObject(Rectangle Rectangel, ImageSource[] images, int initSprite = 0) : base(Rectangel)
+        public AnimatedObject(int height, int width, ImageSource[] images, int initSprite = 0) : base(height, width)
         {
             if(initSprite >= images.Length)
                 throw new ArgumentOutOfRangeException("Initial number out of range!");
@@ -68,7 +68,7 @@ namespace GameEngine.GameObjects
             CurrentSprite = number;
 
             // To create a clean instance, create a new image brush
-            Rectangel.Fill = new ImageBrush(sprites[CurrentSprite]);
+            Rectangle.Fill = new ImageBrush(sprites[CurrentSprite]);
         }
 
         /// <summary>
