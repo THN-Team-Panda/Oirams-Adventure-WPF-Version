@@ -48,7 +48,7 @@ namespace OA_Game
         /// </summary>
         private void UpdateCamera()
         {
-            vp.SmartCamera(new Point(player.Position.X, player.Position.Y));
+            vp.SmartCamera((Point)player.Position);
         }
         /// <summary>
         /// Delet all collected items, dead Enemies or shooted notes.
