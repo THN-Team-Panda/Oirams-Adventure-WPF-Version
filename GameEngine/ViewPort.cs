@@ -74,6 +74,10 @@ namespace GameEngine
         /// </summary>
         private double horizontalFocusAngel = 0.35;
 
+        /// <summary>
+        /// Value for the spawn border between 0 and 3
+        /// Note: Start on the left edge
+        /// </summary>
         private double horizontalSpawnBorder = 1.3;
 
         /// <summary>
@@ -124,6 +128,10 @@ namespace GameEngine
             }
         }
 
+        /// <summary>
+        /// Method to get/set the horizontalSpawnBorder
+        /// Note: Value between 0 and 3
+        /// </summary>
         public double HorizontalSpawnBorder
         {
             get
@@ -234,6 +242,9 @@ namespace GameEngine
             }
         }
 
+        /// <summary>
+        /// Get a vertical line from the camera where the objects should spawn
+        /// </summary>
         public double SpawnBorder
         {
             get
