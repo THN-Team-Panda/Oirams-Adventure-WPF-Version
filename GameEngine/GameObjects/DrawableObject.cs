@@ -1,6 +1,7 @@
 ﻿using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Media;
 
 namespace GameEngine.GameObjects
 {
@@ -9,12 +10,14 @@ namespace GameEngine.GameObjects
     /// </summary>
     public class DrawableObject 
     {
+        public bool ObjectIsTrash = false;
+
         /// <summary>
         /// Element on map
         /// </summary>
-        protected Rectangle Rectangel
+        public Rectangle Rectangle
         {
-            get; private set;
+            get; protected set;
         }
 
         /// <summary>
@@ -31,8 +34,8 @@ namespace GameEngine.GameObjects
             set
             {
                 _position = value;
-                Canvas.SetTop(Rectangel,_position.Y);
-                Canvas.SetLeft(Rectangel,_position.X);
+                Canvas.SetTop(Rectangle,_position.Y);
+                Canvas.SetLeft(Rectangle,_position.X);
             }
         }
 
@@ -40,13 +43,14 @@ namespace GameEngine.GameObjects
         /// Each object has a velocity vector in which the Object is moving
         /// </summary>
         public Vector Velocity { get; set; }
+
         /// <summary>
         /// Helper method to set/get the height
         /// </summary>
         public double Height
         {
-            get { return Rectangel.Height; }
-            protected set { Rectangel.Height = value; }
+            get { return Rectangle.Height; }
+            protected set { Rectangle.Height = value; }
         }
 
         /// <summary>
@@ -55,8 +59,8 @@ namespace GameEngine.GameObjects
 
         public double Width
         {
-            get { return Rectangel.Width; }
-            protected set { Rectangel.Width = value; }
+            get { return Rectangle.Width; }
+            protected set { Rectangle.Width = value; }
         }
 
         /// <summary>
@@ -64,16 +68,21 @@ namespace GameEngine.GameObjects
         /// </summary>
         public bool InCanvas
         {
-            get { return Rectangel.Parent is Canvas; }
+            get { return Rectangle.Parent is Canvas; }
         }
 
         /// <summary>
         /// Construct the element
         /// </summary>
         /// <param name="mapObject">Object reference on the map</param>
-        public DrawableObject(Rectangle mapObject)
+        public DrawableObject(int height, int width)
         {
-            Rectangel = mapObject;
+            Rectangle = new Rectangle();
+            Rectangle.Height = height;
+            Rectangle.Width = width;
+
+            // Set default background
+            Rectangle.Fill = new SolidColorBrush(Color.FromRgb(255, 192, 203));
         }
     }
 }
