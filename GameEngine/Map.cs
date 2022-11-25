@@ -18,7 +18,6 @@ namespace GameEngine
         Void,
         Ground,
         Obstacle,
-        EnemySpawn,
     }
 
     /// <summary>
@@ -74,23 +73,32 @@ namespace GameEngine
         /// <summary>
         /// Ids of Tiles that are Ground
         /// </summary>
-        public int[] GroundTileIds { get; }
-
-
+        private int[] GroundTileIds { get; }
 
         /// <summary>
         /// Ids of Tiles that represent obstacles
         /// </summary>
-        public int[] ObstacleTileIds { get; }
+        private int[] ObstacleTileIds { get; }
 
-        public Point StartPoint { get; set; }
-        public Point EndPoint { get; set; }
-        public List<DrawableObject> SpawnedObjects { get; set; } = new List<DrawableObject>();
+        /// <summary>
+        /// Position where the Map starts
+        /// </summary>
+        public Point StartPoint { get; private set; }
+        /// <summary>
+        /// position where the Map ends
+        /// </summary>
+        public Point EndPoint { get; private set; }
+        /// <summary>
+        /// List of all Spawned GameObjects in the Map
+        /// </summary>
+        public List<DrawableObject> SpawnedObjects { get; } = new();
 
-        public List<NotSpawnedObject> NotSpawnedObjects { get; private set; } = new List<NotSpawnedObject>();
+        /// <summary>
+        /// List of all GameObjects that are on the Map but not yet spawned
+        /// </summary>
+        private List<NotSpawnedObject> NotSpawnedObjects { get; set; } = new();
 
-        private readonly TiledMap _map;
-        private readonly TiledTileset _tileset;
+        private readonly TiledTileset tileset;
 
         /// <summary>
         /// Sets all Properties and creates the TileMap Array
@@ -98,24 +106,24 @@ namespace GameEngine
         /// <param name="mapFileName">filename of the map.tmx file</param>
         /// <param name="mapDirectory">directory where the map files are stored</param>
         /// <param name="groundTilesIds">id of tiles that belong to the ground </param>
-        /// <param name="enemyTilesIds">id of tiles that should spawn an enemy</param>
         /// <param name="obstacleTilesIds">id of tiles that belong to obstacles</param>
         /// <exception cref="CannotLoadFiles">occurs when an file could not be loaded</exception>
         public Map(string mapFileName, string mapDirectory, int[] groundTilesIds,
             int[] obstacleTilesIds)
         {
+            TiledMap map;
             GroundTileIds = groundTilesIds;
             ObstacleTileIds = obstacleTilesIds;
 
             //load files
             try
             {
-                _map = new TiledMap($"{mapDirectory}/{mapFileName}");
-                _tileset = new TiledTileset($"{mapDirectory}/{_map.Tilesets[0].source}");
-                TileSetImg = new BitmapImage(new Uri($"{Path.GetFullPath(mapDirectory)}/{_tileset.Image.source}"));
+                map = new TiledMap($"{mapDirectory}/{mapFileName}");
+                tileset = new TiledTileset($"{mapDirectory}/{map.Tilesets[0].source}");
+                TileSetImg = new BitmapImage(new Uri($"{Path.GetFullPath(mapDirectory)}/{tileset.Image.source}"));
                 //gets the layer which contains the backgroundImage, if there is no Background layer then null
                 TiledLayer? backgroundLayer =
-                    _map.Layers.FirstOrDefault(l => l.type == TiledLayerType.ImageLayer, null);
+                    map.Layers.FirstOrDefault(l => l is { type: TiledLayerType.ImageLayer }, null);
                 if (backgroundLayer != null)
                 {
                     BackgroundImage =
@@ -132,8 +140,8 @@ namespace GameEngine
             }
 
             //set Properties
-            TileSize = _tileset.TileWidth;
-            TiledLayer layer = _map.Layers.First(l =>
+            TileSize = tileset.TileWidth;
+            TiledLayer layer = map.Layers.First(l =>
                     l.type == TiledLayerType.TileLayer); // get first layer of tile map that is a tile layer
             TileMapDataRaw = layer.data; //2 dimensional array of tile ids
             TileRows = layer.height;
@@ -145,12 +153,16 @@ namespace GameEngine
             CreateTileMapArray();
 
 
-            TiledLayer objectLayer = _map.Layers.First(l => l.type == TiledLayerType.ObjectLayer);
-            getObjects(objectLayer);
+            TiledLayer objectLayer = map.Layers.First(l => l.type == TiledLayerType.ObjectLayer);
+            GetObjectsFromObjectLayer(objectLayer);
 
         }
 
-        private void getObjects(TiledLayer layer)
+        /// <summary>
+        /// Function to extracted all objects from the Tilemap
+        /// </summary>
+        /// <param name="layer">object Layer</param>
+        private void GetObjectsFromObjectLayer(TiledLayer layer)
         {
             //get start and end of lvl
             var lvlStart = layer.objects.First(obj => obj.@class == "Player" && obj.name == "Start");
@@ -162,31 +174,31 @@ namespace GameEngine
 
             foreach (TiledObject obj in layer.objects)
             {
-                if (obj.@class != "Player")
-                {
-                    NotSpawnedObjects.Add(new NotSpawnedObject()
-                    {
-                        className = obj.@class,
-                        name = obj.name,
-                        position = new Vector(obj.x, obj.y)
-                    }
-                    );
-                }
+                if (obj.@class == "Player") continue;
+
+                NotSpawnedObjects.Add(new NotSpawnedObject(obj.name, obj.@class, new Vector(obj.x, obj.y)));
+
             }
             // sort list by X coordinate
-            NotSpawnedObjects = NotSpawnedObjects.OrderBy(obj => obj.position.X).ToList();
+            NotSpawnedObjects = NotSpawnedObjects.OrderBy(obj => obj.Position.X).ToList();
 
         }
 
-
-        public void spawnObjectNearby(Vector position, double maxDistance)
+        /// <summary>
+        /// Checks if an Object should Spawn and returns the Information of an object if it should spawn
+        /// </summary>
+        /// <param name="position">Position from where to check</param>
+        /// <param name="maxDistance">Distance to the right at which point a Game object should Spawn</param>
+        /// <returns></returns>
+        public NotSpawnedObject? SpawnObjectNearby(Vector position, double maxDistance)
         {
-            if (NotSpawnedObjects.Count == 0) return;
-            if (NotSpawnedObjects[0].position.X - position.X < maxDistance)
-            {
-                Console.WriteLine(NotSpawnedObjects[0].name);
-                NotSpawnedObjects.RemoveAt(0);
-            }
+            if (NotSpawnedObjects.Count == 0) return null;
+            if (!(NotSpawnedObjects[0].Position.X - position.X < maxDistance)) return null;
+            //get object and remove at from the List
+            NotSpawnedObject objectToSpawn = NotSpawnedObjects[0];
+            NotSpawnedObjects.RemoveAt(0);
+            return objectToSpawn;
+
         }
 
 
@@ -206,8 +218,8 @@ namespace GameEngine
                 int posX = i % TileColumns;
                 int posY = i / TileColumns;
                 //calculate the position of the tile image in the tileset image
-                int xInTileSetImage = data % _tileset.Columns * TileSize;
-                int yInTileSetImage = data / _tileset.Columns * TileSize;
+                int xInTileSetImage = data % tileset.Columns * TileSize;
+                int yInTileSetImage = data / tileset.Columns * TileSize;
                 //crop Tile out of Tileset Image
                 CroppedBitmap tileImage = new(TileSetImg,
                     new Int32Rect(xInTileSetImage, yInTileSetImage, TileSize, TileSize));
@@ -226,12 +238,12 @@ namespace GameEngine
             drawingImageSource.Freeze();
 
             //do not touch
-            DrawingVisual drawingVisual = new DrawingVisual();
+            DrawingVisual drawingVisual = new();
             DrawingContext drawingContext = drawingVisual.RenderOpen();
             drawingContext.DrawImage(drawingImageSource, new Rect(new Point(0, 0), new Size(TileColumns * TileSize, TileRows * TileSize)));
             drawingContext.Close();
 
-            RenderTargetBitmap bmp = new RenderTargetBitmap((int)TileColumns * TileSize, (int)TileRows * TileSize, 96, 96, PixelFormats.Pbgra32);
+            RenderTargetBitmap bmp = new(TileColumns * TileSize, TileRows * TileSize, 96, 96, PixelFormats.Pbgra32);
             bmp.Render(drawingVisual);
 
 
@@ -265,10 +277,5 @@ namespace GameEngine
         }
     }
 
-    public struct NotSpawnedObject
-    {
-        public string name;
-        public string className;
-        public Vector position;
-    }
+
 }
