@@ -10,7 +10,7 @@ namespace OA_Game.AnimatedObjects
 {
     public class FliegeVieh : Enemies
     {
-        public FliegeVieh(Rectangle Rectangel, ImageSource[] images, int initSprite = 0) : base(Rectangel, images, initSprite)
+        public FliegeVieh(int height, int width, ImageSource[] images, int initSprite = 0) : base(height, width, images, initSprite)
         {
         }
     }
