@@ -9,7 +9,7 @@ namespace OA_Game.DrawableObjects
 {
     public class Hat : Items
     {
-        public Hat(Rectangle mapObject) : base(mapObject)
+        public Hat(int height, int width) : base(height, width)
         {
         }
     }

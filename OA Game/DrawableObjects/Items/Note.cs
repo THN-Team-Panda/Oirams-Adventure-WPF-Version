@@ -9,7 +9,7 @@ namespace OA_Game.DrawableObjects
 {
     public class Note : Items
     {
-        public Note(Rectangle mapObject) : base(mapObject)
+        public Note(int height, int width) : base(height, width)
         {
         }
     }
