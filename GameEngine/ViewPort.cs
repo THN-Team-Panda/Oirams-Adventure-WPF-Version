@@ -75,6 +75,12 @@ namespace GameEngine
         private double horizontalFocusAngel = 0.35;
 
         /// <summary>
+        /// Value for the spawn border between 0 and 3
+        /// Note: Start on the left edge
+        /// </summary>
+        private double horizontalSpawnBorder = 1.3;
+
+        /// <summary>
         /// Method to get vertical the map position. Sets the vertical map position
         /// Note: Set the map means, set the camera
         /// </summary>
@@ -119,6 +125,25 @@ namespace GameEngine
                     newValue = mapLimitLeftMax;
 
                 Canvas.SetLeft(map, newValue);
+            }
+        }
+
+        /// <summary>
+        /// Method to get/set the horizontalSpawnBorder
+        /// Note: Value between 0 and 3
+        /// </summary>
+        public double HorizontalSpawnBorder
+        {
+            get
+            {
+                return horizontalSpawnBorder;
+            }
+            set
+            {
+                if (value < 0 || value > 3)
+                    throw new ArgumentOutOfRangeException("Value must be between 0 and 3!");
+
+                horizontalSpawnBorder = value;
             }
         }
 
@@ -214,6 +239,20 @@ namespace GameEngine
                     throw new ArgumentOutOfRangeException("Value must be between 0 and 1!");
 
                 verticalFreeMovementZoneBottom = value;
+            }
+        }
+
+        /// <summary>
+        /// Get a vertical line from the camera where the objects should spawn
+        /// </summary>
+        public double SpawnBorder
+        {
+            get
+            {
+                if(CurrentAngelHorizontal * horizontalSpawnBorder > mapLimitLeftMax)
+                    return mapLimitLeftMax;
+                else
+                    return CurrentAngelHorizontal * horizontalSpawnBorder;
             }
         }
 
