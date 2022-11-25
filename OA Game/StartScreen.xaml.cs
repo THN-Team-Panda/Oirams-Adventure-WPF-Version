@@ -9,10 +9,13 @@ namespace OA_Game
     /// </summary>
     public partial class StartScreen : Window
     {
-        private string path = "Save.txt";
+
         public StartScreen()
         {
             InitializeComponent();
+
+            LevelView.Height = Preferences.ViewHeight;
+            LevelView.Width = Preferences.ViewWidth;
 
             Backscreen.Source = new BitmapImage(Assets.GetUri("Images/StartScreen/Background.jpg"));
 
@@ -53,14 +56,18 @@ namespace OA_Game
 
             openscreen.ResizeMode = ResizeMode.NoResize;
 
+            Hide();
+
             openscreen.ShowDialog(); //show the gamescreen; dialog is a popup-window
 
             EnableButton();
+
+            Show();
         }
 
         public void EnableButton()
         {
-            Saving saving = new Saving(path);
+            Saving saving = new Saving(Preferences.GameDataPath);
 
 
             if (saving.AlreadySaved(1)) // Level 2 will be available to play after Level 1 has been saved (after player has finished level 1)

@@ -24,9 +24,17 @@ namespace OA_Game
         Map level;
         ViewPort vp;
 
-        public GameScreen()
+        public GameScreen(int level)
         {
             InitializeComponent();
+
+            // Presettings for the view
+            viewPort.Height = Preferences.ViewHeight;
+            viewPort.Width = Preferences.ViewWidth;
+            viewPort.Focus();
+
+
+            // More Code comes here
         }
 
         /// <summary>
