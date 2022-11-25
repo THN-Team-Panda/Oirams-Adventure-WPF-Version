@@ -17,7 +17,7 @@ namespace OA_Game.DrawableObjects
 
         public bool visible = true; // evtl in Gameoject class da es für alle elemente wichtig ist ob sie sichtbar sind oder nicht 
 
-        public Items(Rectangle mapObject) : base(mapObject)
+        public Items(int height, int width) : base(height, width)
         {
         }
 

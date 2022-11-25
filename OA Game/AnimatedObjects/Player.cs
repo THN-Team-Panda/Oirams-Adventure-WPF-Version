@@ -18,7 +18,7 @@ namespace OA_Game
         public int munition = 0;
         public bool hat = false;
         private const int MAX_MUNITION = 10;
-        public Player(Rectangle Rectangel, ImageSource[] images, int initSprite = 0) : base(Rectangel, images, initSprite)
+        public Player(int height, int width, ImageSource[] images, int initSprite = 0) : base(height, width, images, initSprite)
         {
         }
 
