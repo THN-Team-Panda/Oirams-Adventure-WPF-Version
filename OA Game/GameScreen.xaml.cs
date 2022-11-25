@@ -1,40 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using GameEngine;
 
 namespace OA_Game
 {
     /// <summary>
-    /// Interaktionslogik für GameScreen.xaml
+    /// Logic for GameScreen.xaml
     /// </summary>
     public partial class GameScreen : Window
     {
-        Player player;
-        Map level;
-        ViewPort vp;
+        private Player Player;
+        private Map Level;
+        private ViewPort Camera;
 
         public GameScreen(int level)
         {
             InitializeComponent();
 
-            // Presettings for the view
+            // Presetting for the view
             viewPort.Height = Preferences.ViewHeight;
             viewPort.Width = Preferences.ViewWidth;
             viewPort.Focus();
 
 
             // More Code comes here
+            
         }
 
         /// <summary>
@@ -56,7 +45,7 @@ namespace OA_Game
         /// </summary>
         private void UpdateCamera()
         {
-            vp.SmartCamera((Point)player.Position);
+            Camera.SmartCamera((Point)Player.Position);
         }
         /// <summary>
         /// Delet all collected items, dead Enemies or shooted notes.

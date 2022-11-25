@@ -1,29 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
-using System.Windows.Shapes;
+﻿using System.Windows.Media;
 using GameEngine.GameObjects;
 
 namespace OA_Game
 {
     /// <summary>
-    /// Represent the maincaracter O'iram
+    /// Represent the main character O'iram
     /// </summary>
     public class Player : AnimatedObject
     {
-        public bool invincible = false;
-        public int munition = 0;
-        public bool hat = false;
-        private const int MAX_MUNITION = 10;
+        /// <summary>
+        /// TODO Explain
+        /// </summary>
+        public bool Invincible { get; }
+
+        /// <summary>
+        /// TODO Explain
+        /// </summary>
+        public int Munition { get; set; } = 0;
+
+        /// <summary>
+        /// TODO Explain
+        /// </summary>
+        public bool HasHat { get; set; }
+
+        /// <summary>
+        /// TODO Explain
+        /// </summary>
+        private const int MaxMunition = 10;
+
         public Player(int height, int width, ImageSource[] images, int initSprite = 0) : base(height, width, images, initSprite)
         {
         }
 
         /// <summary>
-        /// If player die this Methode will end the game.
+        /// If player die this method will end the game.
         /// </summary>
         public void die()
         {
@@ -33,13 +43,16 @@ namespace OA_Game
         /// <summary>
         /// checks if player can lose the hat if not he dies
         /// </summary>
-        public void getDamage()
+        public void GetDamage()
         {
-            if (this.hat) this.hat = false;
+            if (HasHat) HasHat= false;
             else die();
         }
 
-        public void move()
+        /// <summary>
+        /// TODO Explain
+        /// </summary>
+        public void Move()
         {
             //TODO use class Keyboard
         }
@@ -48,32 +61,36 @@ namespace OA_Game
         /// Check if its possible to collect game items
         /// </summary>
         /// <returns>return true if the item was successfully collected</returns>
-        public bool collectItem(int itemID)
+        public bool CollectItem(int itemId)
         {
-            switch (itemID)
+            switch (itemId)
             {
                 case 0: // Hat
-                    if(this.hat) return false;
-                    else this.hat = true;
+                    if(HasHat) return false;
+                    HasHat = true;
                     break;
                 case 1: // Note
-                    if (this.munition >= MAX_MUNITION) return false;
-                    else this.munition++;
+                    if (Munition >= MaxMunition) return false;
+                     Munition++;
                     break;
             }
             return true;
         }
 
-        public void shoot()
+        /// <summary>
+        /// TODO Explain
+        /// </summary>
+        public void Shoot()
         {
-            if (this.munition > 0)
-            {
-                this.munition--;
+            if (Munition > 0) Munition--;
                 //TODO führe schuss aus
-            }
+            
         }
 
-        public void melee()
+        /// <summary>
+        /// TODO Explain
+        /// </summary>
+        public void Melee()
         {
             //TODO
         }

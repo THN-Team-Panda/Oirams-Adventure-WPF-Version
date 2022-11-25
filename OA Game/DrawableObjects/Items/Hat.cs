@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Shapes;
-
-namespace OA_Game.DrawableObjects
+﻿namespace OA_Game.Items
 {
+    /// <summary>
+    /// TODO Explain
+    /// </summary>
     public class Hat : Items
     {
         public Hat(int height, int width) : base(height, width)
