@@ -73,6 +73,7 @@ namespace OA_Game
             }
 
             if (collidedWithWhat[0] == TileTypes.Ground) player.CanJump = true;
+            else player.CanJump = false;
             //Console.WriteLine(whichSideTouched);
 
             player.Position += player.Velocity;
