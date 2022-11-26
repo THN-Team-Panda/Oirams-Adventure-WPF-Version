@@ -4,29 +4,30 @@ using GameEngine.GameObjects;
 namespace OA_Game
 {
     /// <summary>
-    /// Represent the main character O'iram
+    /// Represent the main character O'iram.
     /// </summary>
     public class Player : AnimatedObject
     {
         /// <summary>
-        /// TODO Explain
+        /// If the player gets damage he is for a short time invincible (can't get damage).
         /// </summary>
         public bool Invincible { get; }
 
         /// <summary>
-        /// TODO Explain
+        /// Is the amount of munition the player has to shoot.
         /// </summary>
         public int Munition { get; set; } = 0;
 
         /// <summary>
-        /// TODO Explain
+        /// Represent the extra live.
         /// </summary>
         public bool HasHat { get; set; }
 
         /// <summary>
-        /// TODO Explain
+        /// Max amount of munition the player can carry.
         /// </summary>
         private const int MaxMunition = 10;
+
         /// <summary>
         /// Bool to Indicates if the Player can jump
         /// </summary>
@@ -37,7 +38,7 @@ namespace OA_Game
         }
 
         /// <summary>
-        /// If player die this method will end the game.
+        /// If player die this method will end the game.  DELETE
         /// </summary>
         public void die()
         {
@@ -45,16 +46,17 @@ namespace OA_Game
         }
 
         /// <summary>
-        /// checks if player can lose the hat if not he dies
+        /// Checks if player can lose the hat if not he dies
         /// </summary>
         public void GetDamage()
         {
+            //TODO code
             if (HasHat) HasHat = false;
             else die();
         }
 
         /// <summary>
-        /// TODO Explain
+        /// TODO Explain DELETE
         /// </summary>
         public void Move()
         {
@@ -62,7 +64,7 @@ namespace OA_Game
         }
 
         /// <summary>
-        /// Check if its possible to collect game items
+        /// Check if its possible to collect game items DELETE
         /// </summary>
         /// <returns>return true if the item was successfully collected</returns>
         public bool CollectItem(int itemId)
@@ -82,7 +84,7 @@ namespace OA_Game
         }
 
         /// <summary>
-        /// TODO Explain
+        /// TODO Explain 
         /// </summary>
         public void Shoot()
         {

@@ -3,7 +3,7 @@
 namespace OA_Game.Enemies
 {
     /// <summary>
-    /// TODO Explain
+    /// KonkeyDong is an enemy that jumps around his jukebox and try to hit the player if he comes close.
     /// </summary>
     public class KonkeyDong : Enemies
     {

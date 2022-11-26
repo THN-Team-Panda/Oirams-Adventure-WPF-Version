@@ -3,7 +3,7 @@
 namespace OA_Game.Enemies
 {
     /// <summary>
-    /// TODO Explain
+    /// FliegeVieh is an enemy that fly around and drops eggs.
     /// </summary>
     public class FliegeVieh : Enemies
     {

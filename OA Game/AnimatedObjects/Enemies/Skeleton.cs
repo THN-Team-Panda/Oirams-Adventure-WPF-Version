@@ -3,7 +3,7 @@
 namespace OA_Game.Enemies
 {
     /// <summary>
-    /// TODO Explain
+    /// Skeleton is an enemy that walk around and try to hit the player if the player comes close to it.
     /// </summary>
     public class Skeleton : Enemies
     {
