@@ -23,19 +23,16 @@ namespace GameEngine.GameObjects
         /// <summary>
         /// Each object has a position vector!
         /// </summary>
-        private Vector _position;
+        private Vector position;
 
         public Vector Position
         {
-            get
-            {
-                return _position;
-            }
+            get => position;
             set
             {
-                _position = value;
-                Canvas.SetTop(Rectangle,_position.Y);
-                Canvas.SetLeft(Rectangle,_position.X);
+                position = value;
+                Canvas.SetTop(Rectangle,position.Y);
+                Canvas.SetLeft(Rectangle,position.X);
             }
         }
 
@@ -49,8 +46,8 @@ namespace GameEngine.GameObjects
         /// </summary>
         public double Height
         {
-            get { return Rectangle.Height; }
-            protected set { Rectangle.Height = value; }
+            get => Rectangle.Height;
+            protected set => Rectangle.Height = value;
         }
 
         /// <summary>
@@ -59,30 +56,29 @@ namespace GameEngine.GameObjects
 
         public double Width
         {
-            get { return Rectangle.Width; }
-            protected set { Rectangle.Width = value; }
+            get => Rectangle.Width;
+            protected set => Rectangle.Width = value;
         }
 
         /// <summary>
         /// Check if the rectangel is in a canvas
         /// </summary>
-        public bool InCanvas
-        {
-            get { return Rectangle.Parent is Canvas; }
-        }
+        public bool InCanvas => Rectangle.Parent is Canvas;
 
         /// <summary>
         /// Construct the element
         /// </summary>
-        /// <param name="mapObject">Object reference on the map</param>
+        /// <param name="height">height of hitbox</param>
+        /// <param name="width">width of hitbox</param>
         public DrawableObject(int height, int width)
         {
-            Rectangle = new Rectangle();
-            Rectangle.Height = height;
-            Rectangle.Width = width;
-
-            // Set default background
-            Rectangle.Fill = new SolidColorBrush(Color.FromRgb(255, 192, 203));
+            Rectangle = new Rectangle
+            {
+                Height = height,
+                Width = width,
+                // Set default background
+                Fill = new SolidColorBrush(Color.FromRgb(255, 192, 203))
+            };
         }
     }
 }

@@ -1,7 +1,5 @@
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms.VisualStyles;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GameEngine.Exceptions;
@@ -272,7 +270,7 @@ namespace GameEngine
                 int posX = i % TileColumns;
                 int posY = i / TileColumns;
                 if (Array.IndexOf(GroundTileIds, data) > -1) TileMap[posY, posX] = TileTypes.Ground;
-                else if (Array.IndexOf(ObstacleTileIds, data) > -1) TileMap[posX, posY] = TileTypes.Obstacle;
+                else if (Array.IndexOf(ObstacleTileIds, data) > -1) TileMap[posY, posX] = TileTypes.Obstacle;
             }
         }
     }

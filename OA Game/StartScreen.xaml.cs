@@ -1,5 +1,7 @@
-﻿using GameEngine;
+﻿using System;
+using GameEngine;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace OA_Game
@@ -7,7 +9,7 @@ namespace OA_Game
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class StartScreen : Window
+    public partial class StartScreen
     {
 
         public StartScreen()
@@ -21,53 +23,52 @@ namespace OA_Game
 
             EnableButton();
         }
-
+        /// <summary>
+        /// TODO Explain
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
 
         private void OpenLevel_Click(object sender, RoutedEventArgs e)
         {
-            int clicklevel = 0;
-
-            if (sender.Equals(Level1))
+            Button senderButton = (Button)sender;
+            OpenLevel(senderButton.Content switch
             {
-                clicklevel = 1;
-            }
-
-            else if (sender.Equals(Level2))
-            {
-                clicklevel = 2;
-            }
-
-            else if (sender.Equals(Level3))
-            {
-                clicklevel = 3;
-            }
-
-            OpenLeveL(clicklevel);
-
+                "Level 1" =>1,
+                "Level 2" =>2,
+                "Level 3" =>3,
+                _ => throw new ArgumentOutOfRangeException(nameof(sender),"You didn't click on a Button HOW??")
+            });
+            
         }
-
-        public void OpenLeveL(int clicklevel)
+        /// <summary>
+        /// TODO Explain
+        /// </summary>
+        /// <param name="clickLevel"></param>
+        private void OpenLevel(int clickLevel)
         {
-            GameScreen openscreen = new GameScreen(clicklevel);
-
-            openscreen.Owner = this; //the popup-window is a child of the current screen
-
-            openscreen.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-
-            openscreen.ResizeMode = ResizeMode.NoResize;
+            GameScreen gameScreen = new(clickLevel)
+            {
+                Owner = this, //the popup-window is a child of the current screen
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                ResizeMode = ResizeMode.NoResize
+            };
 
             Hide();
 
-            openscreen.ShowDialog(); //show the gamescreen; dialog is a popup-window
+            gameScreen.ShowDialog(); //show the game screen; dialog is a popup-window
 
             EnableButton();
 
             Show();
         }
-
-        public void EnableButton()
+        /// <summary>
+        /// TODO Explain
+        /// </summary>
+        private void EnableButton()
         {
-            Saving saving = new Saving(Preferences.GameDataPath);
+            Saving saving = new(Preferences.GameDataPath);
 
 
             if (saving.AlreadySaved(1)) // Level 2 will be available to play after Level 1 has been saved (after player has finished level 1)

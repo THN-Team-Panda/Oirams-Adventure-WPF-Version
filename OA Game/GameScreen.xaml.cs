@@ -1,40 +1,81 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using GameEngine;
+using GameEngine.GameObjects;
+using OA_Game.Enemies;
+using Vector = System.Windows.Vector;
 
 namespace OA_Game
 {
     /// <summary>
-    /// Interaktionslogik für GameScreen.xaml
+    /// Logic for GameScreen.xaml
     /// </summary>
     public partial class GameScreen : Window
     {
-        Player player;
-        Map level;
-        ViewPort vp;
-
+        private readonly Player player;
+        private readonly Map level;
+        private readonly ViewPort camera;
+        private readonly LoopDispatcher gameLoop = new(TimeSpan.FromMilliseconds(10));
         public GameScreen(int level)
         {
             InitializeComponent();
 
-            // Presettings for the view
+            // Presetting for the view
             viewPort.Height = Preferences.ViewHeight;
             viewPort.Width = Preferences.ViewWidth;
             viewPort.Focus();
 
 
-            // More Code comes here
+            //load Map
+            this.level = new Map($"Level{level}.tmx", Assets.GetPath("Level_Panda"), Preferences.MapGroundTileIds, Preferences.MapObstacleTileIds); //create map
+            Image tileMapImage = this.level.RenderTiles(); //render tiles and save image of tilemap in x
+            map.Children.Add(tileMapImage); // a x to the canvas
+            Canvas.SetLeft(tileMapImage, 0); // position x in 0,0
+            Canvas.SetTop(tileMapImage, 0);
+            Canvas.SetZIndex(tileMapImage, 1); //set x before bg in the z position
+
+            // init Player
+            player = new Player(32, 32, new ImageSource[] { new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")) });
+            map.Children.Add(player.Rectangle); // a x to the canvas
+            player.Position = new Vector(100, 100);
+
+            //Player.AddSequence("Idle",new PlayableSequence(new []{0,0}){Between = TimeSpan.FromMilliseconds(5)});
+            //Player.PlaySequenceAsync("Idle");
+            //init camera
+            camera = new ViewPort(viewPort, map, (Point)player.Position);
+
+            // Loopti Loop
+            gameLoop.Events += InputKeyboard;
+            gameLoop.Events += UpdateCamera;
+            gameLoop.Events += MovePlayer;
+            gameLoop.Events += SpawnObjects;
+            gameLoop.Events += GameOver;
+            gameLoop.Events += CheckCollisionWithMovingObjects;
+
+            gameLoop.Start();
+        }
+        /// <summary>
+        /// Move the Player and Physics Stuff
+        /// </summary>
+        private void MovePlayer()
+        {
+            player.Velocity = player.Velocity with { X = player.Velocity.X * .9 };
+            player.Velocity += Physics.Gravity;
+            TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(level, player);
+            if (collidedWithWhat.Contains(TileTypes.Obstacle))
+            {
+                Console.WriteLine("TOT");
+            }
+
+            if (collidedWithWhat[0] == TileTypes.Ground) player.CanJump = true;
+            //Console.WriteLine(whichSideTouched);
+
+            player.Position += player.Velocity;
         }
 
         /// <summary>
@@ -42,24 +83,48 @@ namespace OA_Game
         /// </summary>
         private void GameOver()
         {
-
+            if (player.Position.X > level.EndPoint.X)
+            {
+                Console.WriteLine("Im Ziel");
+            }
         }
         /// <summary>
         /// Check the user input to move the player or attack.
         /// </summary>
         private void InputKeyboard()
         {
+            if (Keyboard.IsKeyDown(Key.W) && player.CanJump)
+            {
+                player.CanJump = false;
+                player.Velocity = player.Velocity with { Y = -5 };
+            }
+            if (Keyboard.IsKeyDown(Key.A))
+            {
+                player.Velocity = player.Velocity with { X = -1.4 };
+            }
+            if (Keyboard.IsKeyDown(Key.D))
+            {
+                player.Velocity = player.Velocity with { X = 1.4 };
 
+            }
+        }
+
+        public void CheckCollisionWithMovingObjects()
+        {
+            foreach (DrawableObject obj in level.SpawnedObjects)
+            {
+                Console.WriteLine(Physics.CheckCollisionBetweenGameObjects(player, obj));
+            }
         }
         /// <summary>
         /// Update ViewPort to the current Position of Player.
         /// </summary>
         private void UpdateCamera()
         {
-            vp.SmartCamera((Point)player.Position);
+            camera.SmartCamera((Point)player.Position);
         }
         /// <summary>
-        /// Delet all collected items, dead Enemies or shooted notes.
+        /// Delete all collected items, dead Enemies or shot notes.
         /// </summary>
         private void CollectGarbage()
         {
@@ -68,17 +133,35 @@ namespace OA_Game
         /// <summary>
         /// Spawn Items if player is in range.
         /// </summary>
-        private void SpawnItem()
+        private void SpawnObjects()
         {
+            NotSpawnedObject? toSpawn = level.SpawnObjectNearby(player.Position, Preferences.ViewWidth);
+            if (toSpawn == null) return;
+            var newObject = toSpawn.ClassName switch
+            {
+                "Enemy" => toSpawn.Name switch
+                {
+                    "Skeleton" => new Skeleton(16, 16, new ImageSource[] { new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_1.png")) }),
+                    "FliegeVieh" => throw new NotImplementedException(),
+                    "KonkeyDong" => throw new NotImplementedException(),
+                    _ => throw new ArgumentException("Enemy Not Known")
 
-        }
-        /// <summary>
-        /// Spawn Enemies if player is in range.
-        /// </summary>
-        private void SpawnEnemies()
-        {
+                },
+                "Item" => toSpawn.Name switch
+                {
+                    "Hat" => throw new NotImplementedException(),
+                    "Note" => throw new NotImplementedException(),
+                    _ => throw new ArgumentException("Item Not Known")
 
+                },
+                _ => throw new ArgumentException("Class Not Known"),
+
+            };
+            newObject.Position = toSpawn.Position;
+            level.SpawnedObjects.Add(newObject);
+            map.Children.Add(newObject.Rectangle);
         }
+
         /// <summary>
         /// collect item if player is in range and has space in his inventory.
         /// </summary>

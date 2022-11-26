@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GameEngine
+﻿namespace GameEngine
 {
+    /// <summary>
+    /// TODO Explain
+    /// </summary>
     public class Saving
     {
         /// <summary>
         /// File name for the level save file
         /// </summary>
-        public const string SaveFileName = "level.panda";
+        private const string SaveFileName = "level.panda";
 
         /// <summary>
         /// a path, that is being given by the user when creating a Saving object; 
@@ -34,11 +30,10 @@ namespace GameEngine
             // Create path to save file
             this.path = $"{path}/{SaveFileName}";
 
-            if ((!File.Exists(this.path))) //Checking if scores.txt exists or not
-            {
-                FileStream file = File.Create(this.path);
-                file.Close(); //Closes file stream
-            }
+            if ((File.Exists(this.path))) return; //Checking if scores.txt exists or not
+
+            FileStream file = File.Create(this.path);
+            file.Close(); //Closes file stream
         }
 
         /// <summary>
@@ -48,19 +43,20 @@ namespace GameEngine
         /// <param name="level"></param>
         public void Save(int level)
         {
+            //TODO English
             //erst öffnen StreamReader dann StreamWriter
             //und Exceptions für versch. Fälle machen                    
 
-            StreamReader str = new StreamReader(path);
+            StreamReader str = new(path);
 
-            string[] alllines = new string[4];
+            string[] allLines = new string[4];
 
             while (!str.EndOfStream)
             {
 
-                for (int i = 0; i < alllines.Length; i++) //content of file is written into an Array
+                for (int i = 0; i < allLines.Length; i++) //content of file is written into an Array
                 {
-                    alllines[i] = str.ReadLine();
+                    allLines[i] = str.ReadLine();
                 }
 
             }
@@ -69,14 +65,14 @@ namespace GameEngine
             StreamWriter stw = new StreamWriter(path);
             //string[] coordinate = new string[4];
 
-            alllines[level] = "1";
+            allLines[level] = "1";
 
 
-            for (int i = 0; i < alllines.Length; i++)
+            for (int i = 0; i < allLines.Length; i++)
             {
-                stw.WriteLine(alllines[i]);
+                stw.WriteLine(allLines[i]);
 
-                Console.WriteLine(alllines[i]);
+                Console.WriteLine(allLines[i]);
             }
 
 
@@ -86,13 +82,14 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// this function checks on request wether a level has already been saved or not 
+        /// this function checks on request whether a level has already been saved or not 
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
         public bool AlreadySaved(int level)
         {
-            //nochmal überarbeiten
+            
+            //TODO nochmal überarbeiten
             StreamReader str = new StreamReader(path);
             bool issaved = false;
 
@@ -134,7 +131,6 @@ namespace GameEngine
 
             str.Close();
 
-            // Console.WriteLine(issaved); //for testing purposes
             return issaved;
         }
 

@@ -10,17 +10,17 @@ namespace OA_Game
         /// <summary>
         /// Size of all tiles in the game
         /// </summary>
-        public static readonly int TileSize = 16;
+        public const int TileSize = 16;
 
         /// <summary>
         /// Total height of the camera
         /// </summary>
-        public static readonly int ViewHeight = 30 * TileSize;
+        public const int ViewHeight = 30 * TileSize;
 
         /// <summary>
         /// Total width of the camera
         /// </summary>
-        public static readonly int ViewWidth = 40 * TileSize;
+        public const int ViewWidth = 40 * TileSize;
 
         /// <summary>
         /// Absolute path for placing the game data files such as saving files
