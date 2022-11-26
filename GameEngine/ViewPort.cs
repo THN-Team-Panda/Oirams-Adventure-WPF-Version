@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Threading.Tasks;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Shapes;
-using System.Transactions;
-using System.Diagnostics;
 
 namespace GameEngine
 {
+    /// <summary>
+    /// TODO Explain
+    /// </summary>
     public class ViewPort
     {
         /// <summary>
@@ -80,10 +75,7 @@ namespace GameEngine
         /// </summary>
         public double CurrentAngelVertical
         {
-            get
-            {
-                return Canvas.GetTop(map);
-            }
+            get => Canvas.GetTop(map);
             set
             {
                 double newValue = value;
@@ -104,10 +96,7 @@ namespace GameEngine
         /// </summary>
         public double CurrentAngelHorizontal
         {
-            get
-            {
-                return Canvas.GetLeft(map);
-            }
+            get => Canvas.GetLeft(map);
             set
             {
                 double newValue = value;
@@ -126,16 +115,14 @@ namespace GameEngine
         /// Method to get/set the verticalFocusAngel
         /// Note: Value between 0 and 1
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public double VerticalFocusAngel
         {
-            get
-            {
-                return verticalFocusAngel;
-            }
+            get => verticalFocusAngel;
             set
             {
-                if (value < 0 || value > 1)
-                    throw new ArgumentOutOfRangeException("Value must be between 0 and 1!");
+                if (value is < 0 or > 1)
+                    throw new ArgumentOutOfRangeException($"VerticalFocusAngel","Value must be between 0 and 1!");
 
                 verticalFocusAngel = value;
             }
@@ -147,14 +134,11 @@ namespace GameEngine
         /// </summary>
         public double HorizontalFocusAngel
         {
-            get
-            {
-                return horizontalFocusAngel;
-            }
+            get => horizontalFocusAngel;
             set
             {
-                if (value < 0 || value > 1)
-                    throw new ArgumentOutOfRangeException("Value must be between 0 and 1!");
+                if (value is < 0 or > 1)
+                    throw new ArgumentOutOfRangeException($"HorizontalFocusAngel","Value must be between 0 and 1!");
 
                 horizontalFocusAngel = value;
             }
@@ -166,14 +150,11 @@ namespace GameEngine
         /// </summary>
         public double HorizontalFreeMovementZone
         {
-            get
-            {
-                return horizontalFreeMovementZone;
-            }
+            get => horizontalFreeMovementZone;
             set
             {
-                if (value < 0 || value > 1)
-                    throw new ArgumentOutOfRangeException("Value must be between 0 and 1!");
+                if (value is < 0 or > 1)
+                    throw new ArgumentOutOfRangeException($"HorizontalFreeMovementZone", "Value must be between 0 and 1!");
 
                 horizontalFreeMovementZone = value;
             }
@@ -185,14 +166,11 @@ namespace GameEngine
         /// </summary>
         public double VerticalFreeMovementZoneTop
         {
-            get
-            {
-                return verticalFreeMovementZoneTop;
-            }
+            get => verticalFreeMovementZoneTop;
             set
             {
-                if (value < 0 || value > 1)
-                    throw new ArgumentOutOfRangeException("Value must be between 0 and 1!");
+                if (value is < 0 or > 1)
+                    throw new ArgumentOutOfRangeException($"VerticalFreeMovementZoneTop", "Value must be between 0 and 1!");
 
                 verticalFreeMovementZoneTop = value;
             }
@@ -204,14 +182,11 @@ namespace GameEngine
         /// </summary>
         public double VerticalFreeMovementZoneBottom
         {
-            get
-            {
-                return verticalFreeMovementZoneBottom;
-            }
+            get => verticalFreeMovementZoneBottom;
             set
             {
-                if (value < 0 || value > 1)
-                    throw new ArgumentOutOfRangeException("Value must be between 0 and 1!");
+                if (value is < 0 or > 1)
+                    throw new ArgumentOutOfRangeException($"VerticalFreeMovementZoneBottom","Value must be between 0 and 1!");
 
                 verticalFreeMovementZoneBottom = value;
             }
@@ -222,8 +197,8 @@ namespace GameEngine
         /// </summary>
         public double ViewWidth
         {
-            get { return view.Width; }
-            private set { view.Width = value; }
+            get => view.Width;
+            private set => view.Width = value;
         }
 
         /// <summary>
@@ -231,8 +206,8 @@ namespace GameEngine
         /// </summary>
         public double ViewHeight
         {
-            get { return view.Height; }
-            private set { view.Height = value; }
+            get => view.Height;
+            private set => view.Height = value;
         }
 
         /// <summary>
@@ -311,9 +286,9 @@ namespace GameEngine
         /// <summary>
         /// Calculate the best next point by using the last applyed points
         /// </summary>
-        /// <param name="applyedMovement">Current position</param>
+        /// <param name="appliedMovement">Current position</param>
         /// <returns>Calculated new Vector</returns>
-        private Vector CalculateAngel(Point applyedMovement)
+        private Vector CalculateAngel(Point appliedMovement)
         {
             double newX = 0, newY = 0;
 
@@ -321,18 +296,18 @@ namespace GameEngine
             // If the point hits the horizontal border, move the point
             double horizontalBorder = -1 * ViewWidth * HorizontalFreeMovementZone + CurrentAngelHorizontal;
 
-            if (-applyedMovement.X < horizontalBorder)
-                newX = applyedMovement.X + horizontalBorder;
+            if (-appliedMovement.X < horizontalBorder)
+                newX = appliedMovement.X + horizontalBorder;
 
             // Testing the vertical border
             // If the point hits the vertical borders, move the point
             double verticalBorderTop = -1 * ViewHeight * VerticalFreeMovementZoneTop + CurrentAngelVertical;
             double verticalBorderBottom = -1 * ViewHeight * VerticalFreeMovementZoneBottom + CurrentAngelVertical;
 
-            if (-applyedMovement.Y > verticalBorderTop)
-                newY = applyedMovement.Y + verticalBorderTop;
-            else if(-applyedMovement.Y < verticalBorderBottom)
-             newY = applyedMovement.Y + verticalBorderBottom;
+            if (-appliedMovement.Y > verticalBorderTop)
+                newY = appliedMovement.Y + verticalBorderTop;
+            else if(-appliedMovement.Y < verticalBorderBottom)
+             newY = appliedMovement.Y + verticalBorderBottom;
 
             // Return a changed vector
             return new Vector(newX, newY);

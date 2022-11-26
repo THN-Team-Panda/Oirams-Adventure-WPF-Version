@@ -1,7 +1,7 @@
 ﻿namespace OA_Game.MapCollections
 {
     /// <summary>
-    /// Ids of the ground tiles from the level deisng
+    /// Ids of the ground tiles from the level design
     /// </summary>
     public enum GroundTiles
     {
