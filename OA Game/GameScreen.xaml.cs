@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Numerics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,7 +21,6 @@ namespace OA_Game
         private readonly Map level;
         private readonly ViewPort camera;
         private readonly LoopDispatcher gameLoop = new(TimeSpan.FromMilliseconds(10));
-        private bool touchedGround;
         public GameScreen(int level)
         {
             InitializeComponent();
@@ -56,6 +55,7 @@ namespace OA_Game
             gameLoop.Events += MovePlayer;
             gameLoop.Events += SpawnObjects;
             gameLoop.Events += GameOver;
+            gameLoop.Events += CheckCollisionWithMovingObjects;
 
             gameLoop.Start();
         }
@@ -66,9 +66,13 @@ namespace OA_Game
         {
             player.Velocity = player.Velocity with { X = player.Velocity.X * .9 };
             player.Velocity += Physics.Gravity;
-            bool whichSideTouched = Physics.IsCollidingWithMap(level, player)[0];
-            if (whichSideTouched) touchedGround = true;
+            TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(level, player);
+            if (collidedWithWhat.Contains(TileTypes.Obstacle))
+            {
+                Console.WriteLine("TOT");
+            }
 
+            if (collidedWithWhat[0] == TileTypes.Ground) player.CanJump = true;
             //Console.WriteLine(whichSideTouched);
 
             player.Position += player.Velocity;
@@ -89,9 +93,9 @@ namespace OA_Game
         /// </summary>
         private void InputKeyboard()
         {
-            if (Keyboard.IsKeyDown(Key.W) && touchedGround)
+            if (Keyboard.IsKeyDown(Key.W) && player.CanJump)
             {
-                touchedGround = false;
+                player.CanJump = false;
                 player.Velocity = player.Velocity with { Y = -5 };
             }
             if (Keyboard.IsKeyDown(Key.A))
@@ -102,6 +106,14 @@ namespace OA_Game
             {
                 player.Velocity = player.Velocity with { X = 1.4 };
 
+            }
+        }
+
+        public void CheckCollisionWithMovingObjects()
+        {
+            foreach (DrawableObject obj in level.SpawnedObjects)
+            {
+                Console.WriteLine(Physics.CheckCollisionBetweenGameObjects(player, obj));
             }
         }
         /// <summary>

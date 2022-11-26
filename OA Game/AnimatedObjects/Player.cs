@@ -27,6 +27,10 @@ namespace OA_Game
         /// TODO Explain
         /// </summary>
         private const int MaxMunition = 10;
+        /// <summary>
+        /// Bool to Indicates if the Player can jump
+        /// </summary>
+        public bool CanJump { get; set; }
 
         public Player(int height, int width, ImageSource[] images, int initSprite = 0) : base(height, width, images, initSprite)
         {
@@ -45,7 +49,7 @@ namespace OA_Game
         /// </summary>
         public void GetDamage()
         {
-            if (HasHat) HasHat= false;
+            if (HasHat) HasHat = false;
             else die();
         }
 
@@ -66,12 +70,12 @@ namespace OA_Game
             switch (itemId)
             {
                 case 0: // Hat
-                    if(HasHat) return false;
+                    if (HasHat) return false;
                     HasHat = true;
                     break;
                 case 1: // Note
                     if (Munition >= MaxMunition) return false;
-                     Munition++;
+                    Munition++;
                     break;
             }
             return true;
@@ -83,8 +87,8 @@ namespace OA_Game
         public void Shoot()
         {
             if (Munition > 0) Munition--;
-                //TODO führe schuss aus
-            
+            //TODO führe schuss aus
+
         }
 
         /// <summary>

@@ -1,9 +1,8 @@
 ﻿using System.Windows;
 using GameEngine.GameObjects;
-
 namespace GameEngine
 {
-    public class Physics
+    public static class Physics
     {
         /// <summary>
         /// Vector to represent the Gravity
@@ -11,59 +10,88 @@ namespace GameEngine
         public static readonly Vector Gravity = new(0, 0.1);
 
         /// <summary>
-        /// checks collision between a game object and the map, and changes the velocity of game object if needed
+        /// checks collision between a game object and the map and return with what it collided
         /// </summary>
         /// <param name="map"></param>
         /// <param name="gameObject"></param>
         /// <returns>a array that indicates which sides had collided with the map | 0: bottom of the object | 1: left side of object | 2 : top side | 3 right side| if all fours are set then its in the void</returns>
-        public static bool[] IsCollidingWithMap(Map map, DrawableObject gameObject)
+        public static TileTypes[] IsCollidingWithMap(Map map, DrawableObject gameObject)
         {
-            Vector position = gameObject.Position + gameObject.Velocity + new Vector(0, -32);
-            bool[] sidesCollidedWith = new bool[4]; //number that indicates which side collided with the map
+            Vector position = gameObject.Position + gameObject.Velocity + new Vector(0, -map.TileSize * 2);
+            //number that indicates which side collided with the map
 
             if (position.X >= map.TileColumns * map.TileSize - map.TileSize || position.X < 0 || position.Y < 0 ||
                 position.Y > map.TileRows * map.TileSize - 3 * map.TileSize)
             {
-                return new[] { true, true, true, true };
+                return new[] { TileTypes.Void, TileTypes.Void, TileTypes.Void, TileTypes.Void };
             }
             //check if there is a collision with each sides
-            bool down = (map.TileMap[(int)Math.Ceiling((position.Y + gameObject.Height) / map.TileSize) + 1, (int)(position.X) / map.TileSize] != TileTypes.Void) ||
-                        (map.TileMap[(int)Math.Ceiling((position.Y + gameObject.Height) / map.TileSize) + 1, (int)Math.Floor((position.X + gameObject.Width * 0.9) / map.TileSize)] !=
-                            TileTypes.Void);
-            bool up = (map.TileMap[(int)Math.Ceiling((position.Y) / map.TileSize + 1), (int)(position.X) / map.TileSize] != TileTypes.Void) ||
-                      (map.TileMap[(int)Math.Ceiling((position.Y) / map.TileSize + 1), (int)Math.Floor((position.X + gameObject.Width * 0.9) / map.TileSize)] !=
-                                            TileTypes.Void);
-            bool right = (map.TileMap[(int)Math.Ceiling((position.Y + gameObject.Height * 0.9) / map.TileSize) + 1, (int)Math.Floor((position.X + gameObject.Width) / map.TileSize)] !=
-                         TileTypes.Void) ||
-                         (map.TileMap[(int)Math.Ceiling((position.Y) / map.TileSize + 1), (int)Math.Floor((position.X + gameObject.Width) / map.TileSize)] !=
-                                             TileTypes.Void);
-            bool left = (map.TileMap[(int)Math.Ceiling((position.Y + gameObject.Height * 0.9) / map.TileSize) + 1, (int)Math.Floor((position.X) / map.TileSize)] !=
-                          TileTypes.Void) ||
-                         (map.TileMap[(int)Math.Ceiling((position.Y) / map.TileSize + 1), (int)Math.Floor((position.X) / map.TileSize)] !=
-                          TileTypes.Void);
 
+            TileTypes down1 = map.TileMap[(int)Math.Ceiling((position.Y + gameObject.Height) / map.TileSize) + 1, (int)(position.X) / map.TileSize];
+            TileTypes down2 = map.TileMap[(int)Math.Ceiling((position.Y + gameObject.Height) / map.TileSize) + 1, (int)Math.Floor((position.X + gameObject.Width * 0.9) / map.TileSize)];
+            TileTypes down = FindTileInDirection(down1, down2);
+
+            TileTypes up1 = map.TileMap[(int)Math.Ceiling((position.Y) / map.TileSize + 1), (int)(position.X) / map.TileSize];
+            TileTypes up2 = map.TileMap[(int)Math.Ceiling((position.Y) / map.TileSize + 1), (int)Math.Floor((position.X + gameObject.Width * 0.9) / map.TileSize)];
+            TileTypes up = FindTileInDirection(up1, up2);
+
+            TileTypes right1 = map.TileMap[(int)Math.Ceiling((position.Y) / map.TileSize + 1), (int)Math.Floor((position.X + gameObject.Width) / map.TileSize)];
+            TileTypes right2 = map.TileMap[(int)Math.Ceiling((position.Y + gameObject.Height * 0.9) / map.TileSize) + 1, (int)Math.Floor((position.X + gameObject.Width) / map.TileSize)];
+            TileTypes right = FindTileInDirection(right1, right2);
+
+            TileTypes left1 = map.TileMap[(int)Math.Ceiling((position.Y) / map.TileSize + 1), (int)Math.Floor((position.X) / map.TileSize)];
+            TileTypes left2 = map.TileMap[(int)Math.Ceiling((position.Y + gameObject.Height * 0.9) / map.TileSize) + 1, (int)Math.Floor((position.X) / map.TileSize)];
+            TileTypes left = FindTileInDirection(left1, left2);
+
+            if (down == TileTypes.Ground && gameObject.Velocity.Y > 0)
+            {
+                gameObject.Velocity = gameObject.Velocity with { Y = 0 };
+            }
+            if (up == TileTypes.Ground && gameObject.Velocity.Y < 0)
+            {
+                gameObject.Velocity = gameObject.Velocity with { Y = 0 };
+            }
+            if (right == TileTypes.Ground && gameObject.Velocity.X > 0)
+            {
+                gameObject.Velocity = gameObject.Velocity with { X = 0 };
+            }
+            if (left == TileTypes.Ground && gameObject.Velocity.X < 0)
+            {
+                gameObject.Velocity = gameObject.Velocity with { X = 0 };
+            }
+            return new[] { down, left, up, right };
             //set velocity to 0 if moving in this direction
-            if (down && gameObject.Velocity.Y > 0)
+
+        }
+        /// <summary>
+        /// checks if two Gameobjects collide with each other
+        /// </summary>
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
+        /// <returns></returns>
+
+        public static bool CheckCollisionBetweenGameObjects(DrawableObject obj1, DrawableObject obj2)
+        {
+            return (obj1.Position.X + obj1.Width >= obj2.Position.X && obj1.Position.X < obj2.Position.X + obj2.Width) &&
+                   (obj1.Position.Y + obj1.Height >= obj2.Position.Y && obj1.Position.Y < obj2.Position.Y + obj2.Height);
+        }
+
+        /// <summary>
+        /// Combines two Tiles into one with a priority
+        /// </summary>
+        /// <param name="tile1"></param>
+        /// <param name="tile2"></param>
+        /// <returns></returns>
+        private static TileTypes FindTileInDirection(TileTypes tile1, TileTypes tile2)
+        {
+            return (tile1, tile2) switch
             {
-                gameObject.Velocity = gameObject.Velocity with { Y = 0 };
-                sidesCollidedWith[0] = true;
-            }
-            if (up && gameObject.Velocity.Y < 0)
-            {
-                gameObject.Velocity = gameObject.Velocity with { Y = 0 };
-                sidesCollidedWith[2] = true;
-            }
-            if (right && gameObject.Velocity.X > 0)
-            {
-                gameObject.Velocity = gameObject.Velocity with { X = 0 };
-                sidesCollidedWith[1] = true;
-            }
-            if (left && gameObject.Velocity.X < 0)
-            {
-                gameObject.Velocity = gameObject.Velocity with { X = 0 };
-                sidesCollidedWith[3] = true;
-            }
-            return sidesCollidedWith;
+                (TileTypes.Obstacle, _) => TileTypes.Obstacle,
+                (_, TileTypes.Obstacle) => TileTypes.Obstacle,
+                (TileTypes.Ground, _) => TileTypes.Ground,
+                (_, TileTypes.Ground) => TileTypes.Ground,
+                _ => TileTypes.Void,
+            };
         }
     }
 }
