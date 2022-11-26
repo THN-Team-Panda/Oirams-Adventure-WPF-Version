@@ -1,7 +1,7 @@
 ﻿namespace OA_Game.Items
 {
     /// <summary>
-    /// TODO Explain
+    /// Class for item Note. Is the munition to shoot for the player.
     /// </summary>
     public class Note : Items
     {
