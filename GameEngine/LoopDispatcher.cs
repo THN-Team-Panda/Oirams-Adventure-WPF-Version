@@ -11,12 +11,12 @@ namespace GameEngine
         /// <summary>
         /// Stop the current loop execution
         /// </summary>
-        private bool cancelToken = false;
+        private bool cancelToken ;
 
         /// <summary>
         /// Determ if the loop is already running
         /// </summary>
-        private bool isRunning = false;
+        private bool isRunning ;
 
         /// <summary>
         /// List of all methods to call in the loop.

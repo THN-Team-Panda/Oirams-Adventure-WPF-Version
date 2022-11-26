@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
-using System.Windows.Shapes;
+﻿using System.Windows.Media;
 
-namespace OA_Game.AnimatedObjects
+namespace OA_Game.Enemies
 {
+    /// <summary>
+    /// TODO Explain
+    /// </summary>
     public class FliegeVieh : Enemies
     {
         public FliegeVieh(int height, int width, ImageSource[] images, int initSprite = 0) : base(height, width, images, initSprite)

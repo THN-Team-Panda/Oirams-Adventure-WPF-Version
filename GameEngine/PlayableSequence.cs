@@ -1,7 +1,7 @@
 ﻿namespace GameEngine
 {
     /// <summary>
-    /// A informationset for a playable sequence
+    /// A information set for a playable sequence
     /// </summary>
     public struct PlayableSequence
     {
@@ -41,7 +41,7 @@
                 if (current + 1 == spriteOrder.Length)
                     EndOfSequence = true;
 
-                    currentSprite %= spriteOrder.Length;
+                currentSprite %= spriteOrder.Length;
 
                 // Return the current sprite
                 return spriteOrder[current];
