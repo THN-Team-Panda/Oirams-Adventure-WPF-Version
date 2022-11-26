@@ -19,15 +19,5 @@ namespace OA_Game.Items
         public Items(int height, int width) : base(height, width)
         {
         }
-
-        /// <summary>
-        /// DELETE
-        /// </summary>
-        /// <param name="item"></param>
-        public void GetCollected(Items item)
-        {
-            item.Collected = true;
-            item.Visible = false;  //DELTE CODE LINE
-        }
     }
 }
