@@ -19,6 +19,11 @@ namespace OA_Game
         public int Munition { get; set; } = 0;
 
         /// <summary>
+        /// Is a property for GameOver to check, if the level is over.
+        /// </summary>
+        public bool IsDead { get; set; }
+
+        /// <summary>
         /// Represent the extra live.
         /// </summary>
         public bool HasHat { get; set; }

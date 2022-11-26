@@ -88,6 +88,10 @@ namespace OA_Game
             {
                 Console.WriteLine("Im Ziel");
             }
+            if (player.IsDead == true)
+            {
+
+            }
         }
         /// <summary>
         /// Check the user input to move the player or attack.
@@ -115,6 +119,18 @@ namespace OA_Game
             foreach (DrawableObject obj in level.SpawnedObjects)
             {
                 Console.WriteLine(Physics.CheckCollisionBetweenGameObjects(player, obj));
+                if(Physics.CheckCollisionBetweenGameObjects(player, obj))
+                {
+                    if(player.HasHat == false)
+                    {
+                        player.IsDead = true;
+                    }
+                    else
+                    {
+                        player.HasHat = false;
+                    }
+                   
+                }
             }
         }
         /// <summary>
