@@ -24,7 +24,7 @@ namespace OA_Game
             EnableButton();
         }
         /// <summary>
-        /// TODO Explain
+        /// EventHandler for click button. If you click the button the methode OpenLevel is called and gets the level as int.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -43,7 +43,7 @@ namespace OA_Game
             
         }
         /// <summary>
-        /// TODO Explain
+        /// Call the constructer if Gamescreen to start the level and hide the Startscreen.
         /// </summary>
         /// <param name="clickLevel"></param>
         private void OpenLevel(int clickLevel)
@@ -64,7 +64,7 @@ namespace OA_Game
             Show();
         }
         /// <summary>
-        /// TODO Explain
+        /// If the prelevel was finished succesfully the next level is possible to play and the button gets enabled.
         /// </summary>
         private void EnableButton()
         {

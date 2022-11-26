@@ -131,7 +131,7 @@ namespace OA_Game
 
         }
         /// <summary>
-        /// Spawn Items if player is in range.
+        /// Spawn Items and Ememies if player is in range.
         /// </summary>
         private void SpawnObjects()
         {

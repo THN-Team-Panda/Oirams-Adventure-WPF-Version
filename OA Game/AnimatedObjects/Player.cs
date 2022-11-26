@@ -4,29 +4,30 @@ using GameEngine.GameObjects;
 namespace OA_Game
 {
     /// <summary>
-    /// Represent the main character O'iram
+    /// Represent the main character O'iram.
     /// </summary>
     public class Player : AnimatedObject
     {
         /// <summary>
-        /// TODO Explain
+        /// If the player gets damage he is for a short time invincible (can't get damage).
         /// </summary>
         public bool Invincible { get; }
 
         /// <summary>
-        /// TODO Explain
+        /// Is the amount of munition the player has to shoot.
         /// </summary>
         public int Munition { get; set; } = 0;
 
         /// <summary>
-        /// TODO Explain
+        /// Represent the extra live.
         /// </summary>
         public bool HasHat { get; set; }
 
         /// <summary>
-        /// TODO Explain
+        /// Max amount of munition the player can carry.
         /// </summary>
         private const int MaxMunition = 10;
+
         /// <summary>
         /// Bool to Indicates if the Player can jump
         /// </summary>
@@ -36,67 +37,5 @@ namespace OA_Game
         {
         }
 
-        /// <summary>
-        /// If player die this method will end the game.
-        /// </summary>
-        public void die()
-        {
-            //TODO
-        }
-
-        /// <summary>
-        /// checks if player can lose the hat if not he dies
-        /// </summary>
-        public void GetDamage()
-        {
-            if (HasHat) HasHat = false;
-            else die();
-        }
-
-        /// <summary>
-        /// TODO Explain
-        /// </summary>
-        public void Move()
-        {
-            //TODO use class Keyboard
-        }
-
-        /// <summary>
-        /// Check if its possible to collect game items
-        /// </summary>
-        /// <returns>return true if the item was successfully collected</returns>
-        public bool CollectItem(int itemId)
-        {
-            switch (itemId)
-            {
-                case 0: // Hat
-                    if (HasHat) return false;
-                    HasHat = true;
-                    break;
-                case 1: // Note
-                    if (Munition >= MaxMunition) return false;
-                    Munition++;
-                    break;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// TODO Explain
-        /// </summary>
-        public void Shoot()
-        {
-            if (Munition > 0) Munition--;
-            //TODO führe schuss aus
-
-        }
-
-        /// <summary>
-        /// TODO Explain
-        /// </summary>
-        public void Melee()
-        {
-            //TODO
-        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace OA_Game.Items
 {
     /// <summary>
-    /// TODO Explain
+    /// Class for item hat. Is the extra live for player.
     /// </summary>
     public class Hat : Items
     {
