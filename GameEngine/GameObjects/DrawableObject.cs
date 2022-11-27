@@ -80,5 +80,34 @@ namespace GameEngine.GameObjects
                 Fill = new SolidColorBrush(Color.FromRgb(255, 192, 203))
             };
         }
+
+        public DrawableObject(int height, int width, ImageSource image)
+        {
+            Rectangle = new Rectangle
+            {
+                Height = height,
+                Width = width,
+                Fill = new ImageBrush(image)
+        };
+
+
+        }
+
+        /// <summary>
+        /// Set a sprite as Image brush
+        /// NOTE: Default is the direction right
+        /// </summary>
+        /// <param name="image">image source</param>
+        /// <param name="directionLeft">direction</param>
+        public void SetSprite(ImageSource image, bool directionLeft = false)
+        {
+            // To create a clean instance, create a new image brush
+            Rectangle.Fill = new ImageBrush(image);
+
+            if (!directionLeft)
+                Rectangle.RenderTransform = null;
+            else
+                Rectangle.RenderTransform = new ScaleTransform(-1, 0);
+        }
     }
 }
