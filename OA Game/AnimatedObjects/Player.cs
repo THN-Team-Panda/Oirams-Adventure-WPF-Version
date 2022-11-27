@@ -33,7 +33,7 @@ namespace OA_Game
         /// </summary>
         public bool CanJump { get; set; }
 
-        public Player(int height, int width, ImageSource[] images, int initSprite = 0) : base(height, width, images, initSprite)
+        public Player(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
         }
 

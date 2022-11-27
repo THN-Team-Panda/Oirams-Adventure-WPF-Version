@@ -1,52 +1,22 @@
-﻿namespace GameEngine
+﻿using System.Collections;
+using System.Windows.Media;
+
+namespace GameEngine
 {
     /// <summary>
     /// A information set for a playable sequence
     /// </summary>
-    public struct PlayableSequence
+    public struct PlayableSequence : IEnumerable
     {
         /// <summary>
         /// The sprites to play in the correct order
         /// </summary>
-        private readonly int[] spriteOrder;
-
-        /// <summary>
-        /// Will be true if the sequence is fully played
-        /// </summary>
-        public bool EndOfSequence { get; private set; }
+        private readonly ImageSource[] sprites;
 
         /// <summary>
         /// Time between each sprite
         /// </summary>
-        public TimeSpan Between = TimeSpan.FromMilliseconds(0);
-
-        /// <summary>
-        /// Stores the current sprite to play
-        /// </summary>
-        private int currentSprite = 0;
-
-        /// <summary>
-        /// Gets the current sprite to play and increment the counter
-        /// </summary>
-        public int CurrentSpriteNumber
-        {
-            get
-            {
-                // Reset the end of sequence 
-                EndOfSequence = false;
-
-                int current = currentSprite;
-
-                // if the next sprite is the last, set end of sequence
-                if (current + 1 == spriteOrder.Length)
-                    EndOfSequence = true;
-
-                currentSprite %= spriteOrder.Length;
-
-                // Return the current sprite
-                return spriteOrder[current];
-            }
-        }
+        public TimeSpan Between = TimeSpan.FromMilliseconds(10);
 
         /// <summary>
         /// Instance a playable sequence
@@ -55,14 +25,22 @@
         /// </summary>
         /// <param name="spriteOrder">A list of sprite numbers; at least two</param>
         /// <exception cref="ArgumentException">If the sequence is to small</exception>
-        public PlayableSequence(int[] spriteOrder)
+        public PlayableSequence(ImageSource[] spriteOrder)
         {
             if (spriteOrder.Length < 2)
                 throw new ArgumentException("The sequence needs at least 2 playables.");
 
-            EndOfSequence = false;
+            sprites = spriteOrder;
+        }
 
-            this.spriteOrder = spriteOrder;
+        /// <summary>
+        /// Get all sprites as a image source list
+        /// </summary>
+        /// <returns>list of image source</returns>
+        public IEnumerator GetEnumerator()
+        {
+            for(int i = 0; i < sprites.Length; i++)
+                yield return sprites[i];
         }
     }
 }

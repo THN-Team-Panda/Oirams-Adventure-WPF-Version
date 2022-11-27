@@ -8,7 +8,7 @@ namespace OA_Game.Enemies
     /// </summary>
     public class Enemies : AnimatedObject
     {
-        public Enemies(int height, int width, ImageSource[] images, int initSprite = 0) : base(height, width, images, initSprite)
+        public Enemies(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
         }
     }

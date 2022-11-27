@@ -7,7 +7,7 @@ namespace OA_Game.Enemies
     /// </summary>
     public class KonkeyDong : Enemies
     {
-        public KonkeyDong(int height, int width, ImageSource[] images, int initSprite = 0) : base(height, width, images, initSprite)
+        public KonkeyDong(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
         }
     }
