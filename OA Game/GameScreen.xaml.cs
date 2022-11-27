@@ -82,12 +82,16 @@ namespace OA_Game
             BitmapImage player3 = new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player3.png"));
             #endregion BitmapImage
             
-            ImageSource[] spriteArray = new ImageSource[] {playerStanding,player1,player2,player3,playerJumping,
-                                                playerCapStanding,playerCapJumping,playerCap1,playerCap2,playerCap3,
-                                                playerAttack1,playerAttack2,playerAttack3,playerAttack4,playerAttack5,
-                                                playerAttackCap1,playerAttackCap2,playerAttackCap3,playerAttackCap4,playerAttackCap5,
-                                                playerDamage1,playerDamage2,playerDamage3,playerDamage4,playerDamage5,playerDamage6,playerDamage7,
-                                                playerDying1,playerDying2,playerDying3,playerDying4,playerDying5,playerDying6,playerDying7};
+            ImageSource[] playerStandingAry = new ImageSource[] { playerStanding };
+            ImageSource[] playerCapStandingAry = new ImageSource[] { playerCapStanding };
+            ImageSource[] playerMoveAry = new ImageSource[] { player1, player2, player3 };
+            ImageSource[] playerCapMoveAry = new ImageSource[] { playerCap1, playerCap2, playerCap3 };
+            ImageSource[] playerJumpAry = new ImageSource[] { playerJumping };
+            ImageSource[] playerCapJumpAry = new ImageSource[] { playerCapJumping };
+            ImageSource[] playerAttackAry = new ImageSource[] { playerAttack1, playerAttack2, playerAttack3, playerAttack4, playerAttack5 };
+            ImageSource[] playerCapAttackAry = new ImageSource[] { playerAttackCap1, playerAttackCap2, playerAttackCap3, playerAttackCap4, playerAttackCap5 };
+            ImageSource[] playerDamageAry = new ImageSource[] { playerDamage1, playerDamage2, playerDamage3, playerDamage4, playerDamage5, playerDamage6, playerDamage7 };
+            ImageSource[] playerDyingAry = new ImageSource[] { playerDying1,playerDying2,playerDying3,playerDying4,playerDying5,playerDying6,playerDying7 };
 
             // init Player
             player = new Player(32, 32, new ImageSource[] { new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")) });
