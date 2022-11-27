@@ -40,7 +40,7 @@ namespace OA_Game
             Canvas.SetZIndex(tileMapImage, 1); //set x before bg in the z position
 
             // init Player
-            player = new Player(32, 32, new ImageSource[] { new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")) });
+            player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")));
             map.Children.Add(player.Rectangle); // a x to the canvas
             player.Position = new Vector(100, 100);
 
@@ -142,7 +142,7 @@ namespace OA_Game
             {
                 "Enemy" => toSpawn.Name switch
                 {
-                    "Skeleton" => new Skeleton(16, 16, new ImageSource[] { new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_1.png")) }),
+                    "Skeleton" => new Skeleton(16, 16, new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_1.png"))),
                     "FliegeVieh" => throw new NotImplementedException(),
                     "KonkeyDong" => throw new NotImplementedException(),
                     _ => throw new ArgumentException("Enemy Not Known")

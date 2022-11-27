@@ -14,59 +14,24 @@ namespace GameEngine.GameObjects
         protected Dictionary<string, PlayableSequence> AnimationCollection = new();
 
         /// <summary>
-        /// List of selectable sprites
+        /// Default sprite
         /// </summary>
-        protected ImageSource[] Sprites;
+        protected ImageSource defaultSprite;
 
         /// <summary>
-        /// Helper method for the sprite array length
+        /// When true you are unable to start a new async sequence 
         /// </summary>
-        public int SpriteCount => Sprites.Length;
+        private bool playToken = false;
 
         /// <summary>
-        /// Get the current active sprite number
+        /// Instance the animated gameobject
         /// </summary>
-        public int CurrentSprite
+        /// <param name="height">height of the drawable object</param>
+        /// <param name="width">width of the drawable object</param>
+        /// <param name="defaultImage">the animated object needs a default sprite</param>
+        public AnimatedObject(int height, int width, ImageSource defaultImage) : base(height, width, defaultImage)
         {
-            get; private set;
-        }
-
-        /// <summary>
-        /// Construct an animated drawable game object
-        /// </summary>
-        /// <param name="width">width of Object</param>
-        /// <param name="height">height of Object</param>
-
-        /// <param name="images">list of sprite sources</param>
-        /// <param name="initSprite">init sprite number (default: 0).</param>
-        /// <exception cref="ArgumentOutOfRangeException">initSprite out of range</exception>
-        /// 
-        public AnimatedObject(int height, int width, ImageSource[] images, int initSprite = 0) : base(height, width)
-        {
-            if(initSprite >= images.Length)
-                throw new ArgumentOutOfRangeException(nameof(initSprite),"Initial number out of range!");
-
-            // Copy Image Source array into the image brush
-            Sprites = images;
-
-            // Set the initSprite
-            SetSprite(initSprite);  
-        }
-
-        /// <summary>
-        /// Change the visible sprite of the object
-        /// </summary>
-        /// <param name="number">Sprite to select</param>
-        /// <exception cref="ArgumentOutOfRangeException">number out of range</exception>
-        public void SetSprite(int number)
-        {
-            if (number >= Sprites.Length || number < 0)
-                throw new ArgumentOutOfRangeException(nameof(number),"Number out of range!");
-
-            CurrentSprite = number;
-
-            // To create a clean instance, create a new image brush
-            Rectangle.Fill = new ImageBrush(Sprites[CurrentSprite]);
+            this.defaultSprite = defaultImage;
         }
 
         /// <summary>
@@ -93,40 +58,58 @@ namespace GameEngine.GameObjects
         /// Play a sequence one time
         /// </summary>
         /// <param name="name">Identifier of the sequence</param>
+        /// <param name="directionLeft"></param>
+        /// <param name="lastIsDefault"></param>
         /// <exception cref="UnknownAnimationSequenceException">If the sequence name is unkown</exception>
-        public void PlaySequence(string name)
+        public void PlaySequence(string name, bool directionLeft = false, bool lastIsDefault = false)
         {
             if (!AnimationCollection.ContainsKey(name))
                 throw new UnknownAnimationSequenceException();
 
             PlayableSequence sequence = AnimationCollection[name];
 
-            while(!sequence.EndOfSequence)
+            foreach (ImageSource image in sequence)
             {
-                SetSprite(sequence.CurrentSpriteNumber);
+                SetSprite(image, directionLeft);
 
                 Thread.Sleep(sequence.Between);
             }
+
+            if (lastIsDefault)
+                SetSprite(defaultSprite, directionLeft);
+
         }
 
         /// <summary>
         /// Play a sequence one time async in the background
         /// </summary>
         /// <param name="name">Identifier of the sequence</param>
+        /// <param name="directionLeft"></param>
+        /// <param name="lastIsDefault"></param>
         /// <exception cref="UnknownAnimationSequenceException">If the sequence name is unkown</exception>
-        public async void PlaySequenceAsync(string name)
+        public async void PlaySequenceAsync(string name, bool directionLeft = false, bool lastIsDefault = false)
         {
+            if (playToken)
+                return;
+
+            playToken = true;
+
             if (!AnimationCollection.ContainsKey(name))
                 throw new UnknownAnimationSequenceException();
 
             PlayableSequence sequence = AnimationCollection[name];
 
-            while (!sequence.EndOfSequence)
+            foreach (ImageSource image in sequence)
             {
-                SetSprite(sequence.CurrentSpriteNumber);
+                SetSprite(image, directionLeft);
 
                 await Task.Delay(sequence.Between);
             }
+
+            if (lastIsDefault)
+                SetSprite(defaultSprite, directionLeft);
+
+            playToken = false;
         }
     }
 }

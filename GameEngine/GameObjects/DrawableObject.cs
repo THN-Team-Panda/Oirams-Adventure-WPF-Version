@@ -8,7 +8,7 @@ namespace GameEngine.GameObjects
     /// <summary>
     /// Drawable object represents a visible element
     /// </summary>
-    public class DrawableObject 
+    public class DrawableObject
     {
         public bool ObjectIsTrash = false;
 
@@ -31,8 +31,8 @@ namespace GameEngine.GameObjects
             set
             {
                 position = value;
-                Canvas.SetTop(Rectangle,position.Y);
-                Canvas.SetLeft(Rectangle,position.X);
+                Canvas.SetTop(Rectangle, position.Y);
+                Canvas.SetLeft(Rectangle, position.X);
             }
         }
 
@@ -79,6 +79,40 @@ namespace GameEngine.GameObjects
                 // Set default background
                 Fill = new SolidColorBrush(Color.FromRgb(255, 192, 203))
             };
+        }
+
+        public DrawableObject(int height, int width, ImageSource image)
+        {
+            Rectangle = new Rectangle
+            {
+                Height = height,
+                Width = width,
+                Fill = new ImageBrush(image)
+            };
+
+
+        }
+
+        /// <summary>
+        /// Set a sprite as Image brush
+        /// NOTE: Default is the direction right
+        /// </summary>
+        /// <param name="image">image source</param>
+        /// <param name="directionLeft">direction</param>
+        public void SetSprite(ImageSource image, bool directionLeft = false)
+        {
+            // To create a clean instance, create a new image brush
+            ImageBrush brush = new ImageBrush(image);
+
+            if (directionLeft)
+            {
+                TransformGroup transformGroup = new TransformGroup();
+                transformGroup.Children.Add(new ScaleTransform(-1, 1, 0.5, 0));
+                transformGroup.Children. Add(new SkewTransform(-1, 0, 0.5, 0));
+                brush.RelativeTransform = transformGroup;
+            }
+
+            Rectangle.Fill = brush;
         }
     }
 }
