@@ -19,6 +19,11 @@ namespace GameEngine.GameObjects
         protected ImageSource defaultSprite;
 
         /// <summary>
+        /// When true you are unable to start a new async sequence 
+        /// </summary>
+        private bool playToken = false;
+
+        /// <summary>
         /// Instance the animated gameobject
         /// </summary>
         /// <param name="height">height of the drawable object</param>
@@ -84,6 +89,11 @@ namespace GameEngine.GameObjects
         /// <exception cref="UnknownAnimationSequenceException">If the sequence name is unkown</exception>
         public async void PlaySequenceAsync(string name, bool directionLeft = false, bool lastIsDefault = false)
         {
+            if (playToken)
+                return;
+
+            playToken = true;
+
             if (!AnimationCollection.ContainsKey(name))
                 throw new UnknownAnimationSequenceException();
 
@@ -98,6 +108,8 @@ namespace GameEngine.GameObjects
 
             if (lastIsDefault)
                 SetSprite(defaultSprite, directionLeft);
+
+            playToken = false;
         }
     }
 }
