@@ -88,7 +88,7 @@ namespace OA_Game
             {
                 Console.WriteLine("Im Ziel");
             }
-            if (player.IsDead == true)
+            if (player.ObjectIsTrash == true)
             {
 
             }

@@ -18,7 +18,6 @@ namespace OA_Game
         /// </summary>
         public int Munition { get; set; } = 0;
 
-
         /// <summary>
         /// Represent the extra live.
         /// </summary>
