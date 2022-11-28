@@ -123,7 +123,7 @@ namespace OA_Game
                 {
                     if(player.HasHat == false)
                     {
-                        player.IsDead = true;
+                        player.ObjectIsTrash = true;
                     }
                     else
                     {
