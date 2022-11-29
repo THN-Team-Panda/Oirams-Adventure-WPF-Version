@@ -18,6 +18,10 @@ namespace OA_Game.Items
             {
                 new BitmapImage(Assets.GetUri(""))
             });
+
+            animation.Between = TimeSpan.FromMilliseconds(150);
+
+            this.AddSequence("Animation", animation);
             
         }
         
