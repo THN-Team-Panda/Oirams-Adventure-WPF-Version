@@ -39,61 +39,8 @@ namespace OA_Game
             Canvas.SetTop(tileMapImage, 0);
             Canvas.SetZIndex(tileMapImage, 1); //set x before bg in the z position
 
-            //Load Images
-            #region BitmapImage:
-            //Player Attack Cap
-            BitmapImage playerAttackCap1 = new BitmapImage(Assets.GetUri("Images/Player/Attack/Cap/Player_Attack_Cap_1.png"));
-            BitmapImage playerAttackCap2 = new BitmapImage(Assets.GetUri("Images/Player/Attack/Cap/Player_Attack_Cap_2.png"));
-            BitmapImage playerAttackCap3 = new BitmapImage(Assets.GetUri("Images/Player/Attack/Cap/Player_Attack_Cap_3.png"));
-            BitmapImage playerAttackCap4 = new BitmapImage(Assets.GetUri("Images/Player/Attack/Cap/Player_Attack_Cap_4.png"));
-            BitmapImage playerAttackCap5 = new BitmapImage(Assets.GetUri("Images/Player/Attack/Cap/Player_Attack_Cap_5.png"));
-            //Player Attack Normal
-            BitmapImage playerAttack1 = new BitmapImage(Assets.GetUri("Images/Player/Attack/Normal/Player_Attack_Normal_1.png"));
-            BitmapImage playerAttack2 = new BitmapImage(Assets.GetUri("Images/Player/Attack/Normal/Player_Attack_Normal_2.png"));
-            BitmapImage playerAttack3 = new BitmapImage(Assets.GetUri("Images/Player/Attack/Normal/Player_Attack_Normal_3.png"));
-            BitmapImage playerAttack4 = new BitmapImage(Assets.GetUri("Images/Player/Attack/Normal/Player_Attack_Normal_4.png"));
-            BitmapImage playerAttack5 = new BitmapImage(Assets.GetUri("Images/Player/Attack/Normal/Player_Attack_Normal_5.png"));
-            //Player Damage
-            BitmapImage playerDamage1 = new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_1.png"));
-            BitmapImage playerDamage2 = new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_2.png"));
-            BitmapImage playerDamage3 = new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_3.png"));
-            BitmapImage playerDamage4 = new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_4.png"));
-            BitmapImage playerDamage5 = new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_5.png"));
-            BitmapImage playerDamage6 = new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_6.png"));
-            BitmapImage playerDamage7 = new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_7.png"));
-            //PLayer Dying Normal
-            BitmapImage playerDying1 = new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_1.png"));
-            BitmapImage playerDying2 = new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_2.png"));
-            BitmapImage playerDying3 = new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_3.png"));
-            BitmapImage playerDying4 = new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_4.png"));
-            BitmapImage playerDying5 = new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_5.png"));
-            BitmapImage playerDying6 = new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_6.png"));
-            BitmapImage playerDying7 = new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_7.png"));
-            //Player Movement Cap
-            BitmapImage playerCapJumping = new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Jumping.png"));
-            BitmapImage playerCapStanding = new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Standing.png"));
-            BitmapImage playerCap1 = new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap1.png"));
-            BitmapImage playerCap2 = new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap2.png"));
-            BitmapImage playerCap3 = new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap3.png"));
-            //PLayer Movement Normal
-            BitmapImage playerJumping = new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Jumping.png"));
             BitmapImage playerStanding = new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png"));
-            BitmapImage player1 = new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player1.png"));
-            BitmapImage player2 = new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player2.png"));
-            BitmapImage player3 = new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player3.png"));
-            #endregion BitmapImage
-            //Init IamgeSourceArys for Playablesequence 
-            ImageSource[] playerStandingAry = new ImageSource[] { playerStanding };
-            ImageSource[] playerCapStandingAry = new ImageSource[] { playerCapStanding };
-            ImageSource[] playerMoveAry = new ImageSource[] { player1, player2, player3 };
-            ImageSource[] playerCapMoveAry = new ImageSource[] { playerCap1, playerCap2, playerCap3 };
-            ImageSource[] playerJumpAry = new ImageSource[] { playerJumping };
-            ImageSource[] playerCapJumpAry = new ImageSource[] { playerCapJumping };
-            ImageSource[] playerAttackAry = new ImageSource[] { playerAttack1, playerAttack2, playerAttack3, playerAttack4, playerAttack5 };
-            ImageSource[] playerCapAttackAry = new ImageSource[] { playerAttackCap1, playerAttackCap2, playerAttackCap3, playerAttackCap4, playerAttackCap5 };
-            ImageSource[] playerDamageAry = new ImageSource[] { playerDamage1, playerDamage2, playerDamage3, playerDamage4, playerDamage5, playerDamage6, playerDamage7 };
-            ImageSource[] playerDyingAry = new ImageSource[] { playerDying1, playerDying2, playerDying3, playerDying4, playerDying5, playerDying6, playerDying7 };
-
+            BitmapImage playerCapStanding = new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Standing.png"));
 
             // init Player
             player = new Player(32, 32, playerStanding);
