@@ -16,7 +16,12 @@ namespace OA_Game.Items
         {
             PlayableSequence animation = new PlayableSequence(new ImageSource[]
             {
-                new BitmapImage(Assets.GetUri(""))
+                new BitmapImage(Assets.GetUri("Images/Note/Note_1.png")),
+                new BitmapImage(Assets.GetUri("Images/Note/Note_2.png")),
+                new BitmapImage(Assets.GetUri("Images/Note/Note_3.png")),
+                new BitmapImage(Assets.GetUri("Images/Note/Note_4.png")),
+                new BitmapImage(Assets.GetUri("Images/Note/Note_5.png")),
+                new BitmapImage(Assets.GetUri("Images/Note/Note_5.png"))
             });
 
             animation.Between = TimeSpan.FromMilliseconds(150);
