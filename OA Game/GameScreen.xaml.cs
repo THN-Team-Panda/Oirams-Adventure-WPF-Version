@@ -123,6 +123,18 @@ namespace OA_Game
                 {
                     if(player.HasHat == false)
                     {
+                        PlayableSequence playerDie = new PlayableSequence(new ImageSource[] {
+                            new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_1.png")),
+                            new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_2.png")),
+                            new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_3.png")),
+                            new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_4.png")),
+                            new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_5.png")),
+                            new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_6.png")),
+                            new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_7.png"))
+
+                        });
+                        player.AddSequence("dying", playerDie);
+                        player.PlaySequence("dying");
                         player.ObjectIsTrash = true;
                     }
                     else
