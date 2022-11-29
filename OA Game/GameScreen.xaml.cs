@@ -124,7 +124,7 @@ namespace OA_Game
                     if(player.HasHat == false)
                     {
                         
-                        player.AddSequence("dying", playerDie);
+                        
                         player.PlaySequence("dying");
                         player.ObjectIsTrash = true;
                     }
