@@ -59,7 +59,6 @@ namespace OA_Game
             gameLoop.Events += SpawnObjects;
             gameLoop.Events += GameOver;
             gameLoop.Events += CheckCollisionWithMovingObjects;
-
             gameLoop.Start();
         }
         /// <summary>
