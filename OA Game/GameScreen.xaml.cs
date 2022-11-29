@@ -82,6 +82,18 @@ namespace OA_Game
         }
 
         /// <summary>
+        /// Helper methode to play the sprite and set the player looking direction
+        /// </summary>
+        /// <param name="sequnece"></param>
+        private void PlaySprite(string sequnece)
+        {
+            if (player.Velocity.X > 0.01)
+                player.PlaySequenceAsync(sequnece, false, true);
+            else if (player.Velocity.X < -0.01)
+                player.PlaySequenceAsync(sequnece, true, true);
+        }
+
+        /// <summary>
         /// Check if Player is dead or in finish.
         /// </summary>
         private void GameOver()
