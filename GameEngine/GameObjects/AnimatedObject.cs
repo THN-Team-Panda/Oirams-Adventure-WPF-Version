@@ -16,7 +16,7 @@ namespace GameEngine.GameObjects
         /// <summary>
         /// Default sprite
         /// </summary>
-        protected ImageSource defaultSprite;
+        public ImageSource defaultSprite;
 
         /// <summary>
         /// When true you are unable to start a new async sequence 

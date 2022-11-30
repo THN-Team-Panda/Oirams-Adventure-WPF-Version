@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,11 +40,8 @@ namespace OA_Game
             Canvas.SetTop(tileMapImage, 0);
             Canvas.SetZIndex(tileMapImage, 1); //set x before bg in the z position
 
-            BitmapImage playerCapStanding = new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png"));
-            BitmapImage playerStanding = new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Standing.png"));
-
             // init Player
-            player = new Player(32, 32, playerStanding);
+            player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Standing.png")));
             map.Children.Add(player.Rectangle); // a x to the canvas
             player.Position = new Vector(100, 100);
 
@@ -80,7 +78,7 @@ namespace OA_Game
 
             player.Position += player.Velocity;
 
-            if (player.HasHat)
+            if (player.HasHat) // Sprites WITH cap (wrong image nameing)
             {
                 if (!player.CanJump)
                 {
@@ -89,7 +87,7 @@ namespace OA_Game
                 }
                 PlaySprite("move");
             }
-            else
+            else // Sprites WITHOUT cap (wrong image nameing)
             {
                 if (!player.CanJump)
                 {
@@ -139,8 +137,31 @@ namespace OA_Game
             if (Keyboard.IsKeyDown(Key.D))
             {
                 player.Velocity = player.Velocity with { X = 1.4 };
-
             }
+            /* For testing sprites 
+            if (Keyboard.IsKeyDown(Key.H))
+            {
+                player.HasHat = !player.HasHat;
+                Debug.WriteLine("Player has Hat: " + player.HasHat);
+            }
+            if (Keyboard.IsKeyDown(Key.Space))
+            {
+                if (player.HasHat)
+                    player.PlaySequenceAsync("attack", player.lookingLeft, true);
+                else
+                    player.PlaySequenceAsync("attackCap", player.lookingLeft, true);
+            }
+            if (Keyboard.IsKeyDown(Key.Escape))
+            {
+                if (player.HasHat)
+                {
+                    player.PlaySequenceAsync("damage", player.lookingLeft, true);
+                    player.HasHat = false;
+                }
+                else
+                    player.PlaySequenceAsync("dying", player.lookingLeft, false);
+            }
+            */
         }
 
         public void CheckCollisionWithMovingObjects()

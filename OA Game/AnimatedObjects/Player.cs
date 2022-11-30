@@ -22,9 +22,29 @@ namespace OA_Game
         public int Munition { get; set; } = 0;
 
         /// <summary>
-        /// Represent the extra live.
+        /// Represent the extra Live.
         /// </summary>
-        public bool HasHat { get; set; }
+        private bool hat = false;
+
+        /// <summary>
+        /// Set the default image of player
+        /// </summary>
+        public bool HasHat 
+        {
+            get { return hat; }
+            set
+            {
+                if (value)
+                {
+                    this.defaultSprite = new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png"));
+                }
+                else
+                {
+                    this.defaultSprite = new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Standing.png"));
+                }
+                hat = value;
+            }
+        }
 
         /// <summary>
         /// Max amount of munition the player can carry.
@@ -38,9 +58,10 @@ namespace OA_Game
 
         public Player(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
+            this.HasHat = false;
 
-            PlayableSequence playerMove = new PlayableSequence(new ImageSource[] 
-            { 
+            PlayableSequence playerMove = new PlayableSequence(new ImageSource[]
+            {
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player1.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player2.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player3.png"))
@@ -48,8 +69,8 @@ namespace OA_Game
             playerMove.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("move", playerMove);
 
-            PlayableSequence playerMoveCap = new PlayableSequence(new ImageSource[] 
-            { 
+            PlayableSequence playerMoveCap = new PlayableSequence(new ImageSource[]
+            {
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap1.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap2.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap3.png"))
@@ -57,7 +78,7 @@ namespace OA_Game
             playerMoveCap.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("moveCap", playerMoveCap);
 
-            PlayableSequence playerJump = new PlayableSequence(new ImageSource[] 
+            PlayableSequence playerJump = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Jumping.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Jumping.png")),
@@ -67,7 +88,7 @@ namespace OA_Game
             playerJump.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("jump", playerJump);
 
-            PlayableSequence playerCapJump = new PlayableSequence(new ImageSource[] 
+            PlayableSequence playerCapJump = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Jumping.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Jumping.png")),
@@ -77,18 +98,18 @@ namespace OA_Game
             playerCapJump.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("jumpCap", playerCapJump);
 
-            PlayableSequence playerAttack = new PlayableSequence(new ImageSource[] 
-            { 
+            PlayableSequence playerAttack = new PlayableSequence(new ImageSource[]
+            {
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Normal/Player_Attack_Normal_1.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Normal/Player_Attack_Normal_2.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Normal/Player_Attack_Normal_3.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Normal/Player_Attack_Normal_4.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Normal/Player_Attack_Normal_5.png"))
             });
-            playerAttack.Between = TimeSpan.FromMilliseconds(150);
+            playerAttack.Between = TimeSpan.FromMilliseconds(40);
             this.AddSequence("attack", playerAttack);
 
-            PlayableSequence playerCapAttack = new PlayableSequence(new ImageSource[] 
+            PlayableSequence playerCapAttack = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Cap/Player_Attack_Cap_1.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Cap/Player_Attack_Cap_2.png")),
@@ -96,20 +117,20 @@ namespace OA_Game
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Cap/Player_Attack_Cap_4.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Cap/Player_Attack_Cap_5.png"))
             });
-            playerMove.Between = TimeSpan.FromMilliseconds(150);
+            playerCapAttack.Between = TimeSpan.FromMilliseconds(40);
             this.AddSequence("attackCap", playerCapAttack);
 
-            PlayableSequence playerDamage = new PlayableSequence(new ImageSource[] 
-            { 
-                new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_1.png")),                                                                                    
-                new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_2.png")),                                                                                    
-                new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_3.png")),                                                                                    
-                new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_4.png")),                                                                                     
-                new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_5.png")),                                                                     
+            PlayableSequence playerDamage = new PlayableSequence(new ImageSource[]
+            {
+                new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_1.png")),
+                new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_2.png")),
+                new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_3.png")),
+                new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_4.png")),
+                new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_5.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_6.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_7.png"))
             });
-            playerDamage.Between = TimeSpan.FromMilliseconds(150);
+            playerDamage.Between = TimeSpan.FromMilliseconds(50);
             this.AddSequence("damage", playerDamage);
 
             PlayableSequence playerDying = new PlayableSequence(new ImageSource[]
@@ -122,7 +143,7 @@ namespace OA_Game
                 new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_6.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_7.png"))
             });
-            playerDying.Between = TimeSpan.FromMilliseconds(150);
+            playerDying.Between = TimeSpan.FromMilliseconds(50);
             this.AddSequence("dying", playerDying);
 
         }
