@@ -22,6 +22,7 @@ namespace OA_Game
         private readonly Map level;
         private readonly ViewPort camera;
         private readonly LoopDispatcher gameLoop = new(TimeSpan.FromMilliseconds(10));
+        public int level_id;
         public GameScreen(int level)
         {
             InitializeComponent();
@@ -115,9 +116,29 @@ namespace OA_Game
         /// </summary>
         private void GameOver()
         {
-            if (player.Position.X > level.EndPoint.X)
+            //checks if Player is dead
+            if (player.ObjectIsTrash)
             {
-                Console.WriteLine("Im Ziel");
+                Close();
+            }
+
+            //if Player reaches goal
+            else if (player.Position.X > level.EndPoint.X)
+            {
+                Saving save = new Saving(Preferences.GameDataPath);
+                save.Save(level_id);
+
+                Close();
+            }
+
+            //if Player falls out of map
+            else if (player.Position.Y <= level.MapHeight)
+            {
+                Close();
+            }
+            if (player.ObjectIsTrash == true)
+            {
+
             }
         }
         /// <summary>
@@ -169,6 +190,21 @@ namespace OA_Game
             foreach (DrawableObject obj in level.SpawnedObjects)
             {
                 Console.WriteLine(Physics.CheckCollisionBetweenGameObjects(player, obj));
+                if(Physics.CheckCollisionBetweenGameObjects(player, obj))
+                {
+                    if(player.HasHat == false)
+                    {
+                        
+                        
+                        player.PlaySequence("dying");
+                        player.ObjectIsTrash = true;
+                    }
+                    else
+                    {
+                        player.HasHat = false;
+                    }
+                   
+                }
             }
         }
         /// <summary>
