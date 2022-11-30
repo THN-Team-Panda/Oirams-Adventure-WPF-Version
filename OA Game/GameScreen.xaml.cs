@@ -83,39 +83,27 @@ namespace OA_Game
             {
                 if (!player.CanJump)
                 {
-                    PlaySprite("jump");
-                    player.PlaySequenceAsync("jump", player.lookingLeft, true);
+                    player.PlayPlayerSprite("jump"); // skip if velocity is 0
+                    player.PlaySequenceAsync("jump", player.DirectionLeft, true);
                 }
-                PlaySprite("move");
+                player.PlayPlayerSprite("move");
             }
             else // Sprites WITHOUT cap (wrong image nameing)
             {
                 if (!player.CanJump)
                 {
-                    PlaySprite("jumpCap");
-                    player.PlaySequenceAsync("jumpCap", player.lookingLeft, true);
+                    player.PlayPlayerSprite("jumpCap");  // skip if velocity is 0
+                    player.PlaySequenceAsync("jumpCap", player.DirectionLeft, true);
                 }
-                PlaySprite("moveCap");
+                player.PlayPlayerSprite("moveCap");
             }
         }
-
-        /// <summary>
-        /// Helper methode to play the sprite and set the player looking direction
-        /// </summary>
-        /// <param name="sequnece"></param>
-        private void PlaySprite(string sequnece)
-        {
-            if (player.Velocity.X > 0.01)
-                player.PlaySequenceAsync(sequnece, false, true);
-            else if (player.Velocity.X < -0.01)
-                player.PlaySequenceAsync(sequnece, true, true);
-        }
-
         /// <summary>
         /// Check if Player is dead or in finish.
         /// </summary>
         private void GameOver()
         {
+/*
             //checks if Player is dead
             if (player.ObjectIsTrash)
             {
@@ -140,6 +128,7 @@ namespace OA_Game
             {
 
             }
+*/
         }
         /// <summary>
         /// Check the user input to move the player or attack.
@@ -159,30 +148,6 @@ namespace OA_Game
             {
                 player.Velocity = player.Velocity with { X = 1.4 };
             }
-            /* For testing sprites 
-            if (Keyboard.IsKeyDown(Key.H))
-            {
-                player.HasHat = !player.HasHat;
-                Debug.WriteLine("Player has Hat: " + player.HasHat);
-            }
-            if (Keyboard.IsKeyDown(Key.Space))
-            {
-                if (player.HasHat)
-                    player.PlaySequenceAsync("attack", player.lookingLeft, true);
-                else
-                    player.PlaySequenceAsync("attackCap", player.lookingLeft, true);
-            }
-            if (Keyboard.IsKeyDown(Key.Escape))
-            {
-                if (player.HasHat)
-                {
-                    player.PlaySequenceAsync("damage", player.lookingLeft, true);
-                    player.HasHat = false;
-                }
-                else
-                    player.PlaySequenceAsync("dying", player.lookingLeft, false);
-            }
-            */
         }
 
         public void CheckCollisionWithMovingObjects()

@@ -9,7 +9,7 @@ namespace OA_Game
     /// <summary>
     /// Represent the main character O'iram.
     /// </summary>
-    public class Player : AnimatedObject
+    public class Player : AnimatedObject, IDirectable
     {
         /// <summary>
         /// If the player gets damage he is for a short time invincible (can't get damage).
@@ -55,10 +55,12 @@ namespace OA_Game
         /// Bool to Indicates if the Player can jump
         /// </summary>
         public bool CanJump { get; set; }
+        public bool DirectionLeft { get; set; }
 
         public Player(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
             this.HasHat = false;
+            DirectionLeft = false;
 
             PlayableSequence playerMove = new PlayableSequence(new ImageSource[]
             {
@@ -146,6 +148,24 @@ namespace OA_Game
             playerDying.Between = TimeSpan.FromMilliseconds(50);
             this.AddSequence("dying", playerDying);
 
+        }
+
+         /// <summary>
+        /// Helper methode to play the sprite and set the player looking direction
+        /// </summary>
+        /// <param name="sequnece"></param>
+        public void PlayPlayerSprite(string sequnece)
+        {
+            if (this.Velocity.X > 0.01)
+            {
+                this.DirectionLeft = false;
+                this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
+            }
+            else if (this.Velocity.X < -0.01)
+            {
+                this.DirectionLeft = true;
+                this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
+            }
         }
 
     }

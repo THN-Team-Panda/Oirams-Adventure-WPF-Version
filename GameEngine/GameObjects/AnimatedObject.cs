@@ -16,17 +16,12 @@ namespace GameEngine.GameObjects
         /// <summary>
         /// Default sprite
         /// </summary>
-        public ImageSource defaultSprite;
+        protected ImageSource defaultSprite;
 
         /// <summary>
         /// When true you are unable to start a new async sequence 
         /// </summary>
         private bool playToken = false;
-
-        /// <summary>
-        /// The current image direction of the object in game 
-        /// </summary>
-        public bool lookingLeft = false;
 
         /// <summary>
         /// Instance the animated gameobject
@@ -71,8 +66,6 @@ namespace GameEngine.GameObjects
             if (!AnimationCollection.ContainsKey(name))
                 throw new UnknownAnimationSequenceException();
 
-            lookingLeft = directionLeft;
-
             PlayableSequence sequence = AnimationCollection[name];
 
             foreach (ImageSource image in sequence)
@@ -100,7 +93,6 @@ namespace GameEngine.GameObjects
                 return;
 
             playToken = true;
-            lookingLeft = directionLeft;
 
             if (!AnimationCollection.ContainsKey(name))
                 throw new UnknownAnimationSequenceException();
