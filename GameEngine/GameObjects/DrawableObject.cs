@@ -10,6 +10,9 @@ namespace GameEngine.GameObjects
     /// </summary>
     public class DrawableObject
     {
+        /// <summary>
+        /// Determs if the garbage collector can remove this object
+        /// </summary>
         public bool ObjectIsTrash = false;
 
         /// <summary>
