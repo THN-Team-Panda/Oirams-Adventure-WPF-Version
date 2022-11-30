@@ -24,6 +24,11 @@ namespace GameEngine.GameObjects
         private bool playToken = false;
 
         /// <summary>
+        /// The current image direction of the object in game 
+        /// </summary>
+        public bool lookingLeft = false;
+
+        /// <summary>
         /// Instance the animated gameobject
         /// </summary>
         /// <param name="height">height of the drawable object</param>
@@ -66,6 +71,8 @@ namespace GameEngine.GameObjects
             if (!AnimationCollection.ContainsKey(name))
                 throw new UnknownAnimationSequenceException();
 
+            lookingLeft = directionLeft;
+
             PlayableSequence sequence = AnimationCollection[name];
 
             foreach (ImageSource image in sequence)
@@ -93,6 +100,7 @@ namespace GameEngine.GameObjects
                 return;
 
             playToken = true;
+            lookingLeft = directionLeft;
 
             if (!AnimationCollection.ContainsKey(name))
                 throw new UnknownAnimationSequenceException();

@@ -39,8 +39,8 @@ namespace OA_Game
             Canvas.SetTop(tileMapImage, 0);
             Canvas.SetZIndex(tileMapImage, 1); //set x before bg in the z position
 
-            BitmapImage playerStanding = new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png"));
-            BitmapImage playerCapStanding = new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Standing.png"));
+            BitmapImage playerCapStanding = new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png"));
+            BitmapImage playerStanding = new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Standing.png"));
 
             // init Player
             player = new Player(32, 32, playerStanding);
@@ -79,6 +79,25 @@ namespace OA_Game
             //Console.WriteLine(whichSideTouched);
 
             player.Position += player.Velocity;
+
+            if (player.HasHat)
+            {
+                if (!player.CanJump)
+                {
+                    PlaySprite("jump");
+                    player.PlaySequenceAsync("jump", player.lookingLeft, true);
+                }
+                PlaySprite("move");
+            }
+            else
+            {
+                if (!player.CanJump)
+                {
+                    PlaySprite("jumpCap");
+                    player.PlaySequenceAsync("jumpCap", player.lookingLeft, true);
+                }
+                PlaySprite("moveCap");
+            }
         }
 
         /// <summary>
