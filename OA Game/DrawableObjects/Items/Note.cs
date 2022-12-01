@@ -1,12 +1,35 @@
-﻿namespace OA_Game.Items
+﻿using GameEngine;
+using GameEngine.GameObjects;
+using System;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
+
+namespace OA_Game.Items
 {
     /// <summary>
     /// Class for item Note. Is the munition to shoot for the player.
     /// </summary>
     public class Note : Items
     {
-        public Note(int height, int width) : base(height, width)
+        public Note(int height, int width, ImageSource deafultSprite) : base(height, width)
         {
+            PlayableSequence animation = new PlayableSequence(new ImageSource[]
+            {
+                new BitmapImage(Assets.GetUri("Images/Note/Note_1.png")),
+                new BitmapImage(Assets.GetUri("Images/Note/Note_2.png")),
+                new BitmapImage(Assets.GetUri("Images/Note/Note_3.png")),
+                new BitmapImage(Assets.GetUri("Images/Note/Note_4.png")),
+                new BitmapImage(Assets.GetUri("Images/Note/Note_5.png")),
+                new BitmapImage(Assets.GetUri("Images/Note/Note_5.png"))
+            });
+
+            animation.Between = TimeSpan.FromMilliseconds(150);
+
+            this.AddSequence("Animation", animation);
+            
         }
+        
+
     }
 }
