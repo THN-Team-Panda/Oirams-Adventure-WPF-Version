@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:OA_Game"
              StartupUri="StartScreen.xaml">
     <Application.Resources>
-        <FontFamily x:Key="Silkscreen">Assets/Fonts/Silkscreen/Silkscreen, Silkscreen Bold</FontFamily>
+        <FontFamily x:Key="Silkscreen">Assets/Font/Silkscreen/#Silkscreen</FontFamily>
     </Application.Resources>
 </Application>
