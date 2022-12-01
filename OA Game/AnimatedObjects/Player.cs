@@ -3,6 +3,8 @@ using GameEngine.GameObjects;
 using GameEngine;
 using System;
 using System.Windows.Media.Imaging;
+using System.Security.Cryptography.X509Certificates;
+using OA_Game.Enemies;
 
 namespace OA_Game
 {
@@ -190,7 +192,7 @@ namespace OA_Game
                     this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
                 }
             }
-            else if(this.Velocity.X > 0.01) // walking right
+            else if (this.Velocity.X > 0.01) // walking right
             {
                 this.DirectionLeft = false;
                 this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
@@ -200,6 +202,57 @@ namespace OA_Game
                 this.DirectionLeft = true;
                 this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
             }
+        }
+
+        /// <summary>
+        /// checks if item is collectable and adds ammo if not full
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool Collect(Items.Items obj)
+        {
+            if (obj is Items.Hat)
+            {
+                if (hat)
+                {
+                    hat = true;
+                    return true;
+                }
+            }
+
+            if (obj is Items.Note)
+            {
+                if (Munition < MaxMunition)
+                {
+                    Munition += 1;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns true if player dies, else player only gets damage and returns false
+        /// </summary>
+        /// <param name="enemie"></param>
+        /// <returns></returns>
+        public bool GetDamage(Enemies.Enemies enemie)
+        {
+            if (enemie is KonkeyDong)
+            {
+                hat = false;
+                return true;
+            }
+
+            if (enemie is FliegeVieh || enemie is Skeleton)
+            {
+                if (hat)
+                {
+                    hat = false;
+                }
+                else return true;
+            }
+            return false;
         }
 
     }
