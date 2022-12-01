@@ -83,19 +83,17 @@ namespace OA_Game
             {
                 if (!player.CanJump)
                 {
-                    player.PlayPlayerSprite("jump"); // skip if velocity is 0
-                    player.PlaySequenceAsync("jump", player.DirectionLeft, true);
+                    player.PlayPlayerSpriteMovement("jump");
                 }
-                player.PlayPlayerSprite("move");
+                player.PlayPlayerSpriteMovement("move");
             }
             else // Sprites WITHOUT cap (wrong image nameing)
             {
                 if (!player.CanJump)
                 {
-                    player.PlayPlayerSprite("jumpCap");  // skip if velocity is 0
-                    player.PlaySequenceAsync("jumpCap", player.DirectionLeft, true);
+                    player.PlayPlayerSpriteMovement("jumpCap");  
                 }
-                player.PlayPlayerSprite("moveCap");
+                player.PlayPlayerSpriteMovement("moveCap");
             }
         }
         /// <summary>
