@@ -83,17 +83,17 @@ namespace OA_Game
             {
                 if (!player.CanJump)
                 {
-                    player.PlayPlayerSprite("jump");
+                    player.PlayPlayerSpriteMovement("jump");
                 }
-                player.PlayPlayerSprite("move");
+                player.PlayPlayerSpriteMovement("move");
             }
             else // Sprites WITHOUT cap (wrong image nameing)
             {
                 if (!player.CanJump)
                 {
-                    player.PlayPlayerSprite("jumpCap");  
+                    player.PlayPlayerSpriteMovement("jumpCap");  
                 }
-                player.PlayPlayerSprite("moveCap");
+                player.PlayPlayerSpriteMovement("moveCap");
             }
         }
         /// <summary>

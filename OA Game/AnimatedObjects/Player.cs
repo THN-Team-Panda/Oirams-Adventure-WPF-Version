@@ -154,48 +154,48 @@ namespace OA_Game
         /// Helper methode to play the sprite and set the player looking direction
         /// </summary>
         /// <param name="sequnece"></param>
-        public void PlayPlayerSprite(string sequnece)
+        public void PlayPlayerSpriteMovement(string sequnece)
         {
-            if (this.Velocity.Y > 0.01)
+            if (this.Velocity.Y > 0.01)  // jumping up
             {
-                if (this.Velocity.X > 0.01)
+                if (this.Velocity.X > 0.01) // looking right 
                 {
                     this.DirectionLeft = false;
                     this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
                 }
-                else if (this.Velocity.X < -0.01)
+                else if (this.Velocity.X < -0.01) // looking left
                 {
                     this.DirectionLeft = true;
                     this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
                 }
-                else
+                else // without x movement
                 {
                     this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
                 }
             }
-            else if (this.Velocity.Y < -0.01)
+            else if (this.Velocity.Y < -0.01) // falling down
             {
-                if (this.Velocity.X > 0.01)
+                if (this.Velocity.X > 0.01) // looking right
                 {
                     this.DirectionLeft = false;
                     this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
                 }
-                else if (this.Velocity.X < -0.01)
+                else if (this.Velocity.X < -0.01) // looking left
                 {
                     this.DirectionLeft = true;
                     this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
                 }
-                else
+                else // without x movement
                 {
                     this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
                 }
             }
-            else if(this.Velocity.X > 0.01)
+            else if(this.Velocity.X > 0.01) // walking right
             {
                 this.DirectionLeft = false;
                 this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
             }
-            else if (this.Velocity.X < -0.01)
+            else if (this.Velocity.X < -0.01) // walking left
             {
                 this.DirectionLeft = true;
                 this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
