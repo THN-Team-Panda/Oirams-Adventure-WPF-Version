@@ -29,7 +29,7 @@ namespace OA_Game
         /// <summary>
         /// Set the default image of player
         /// </summary>
-        public bool HasHat 
+        public bool HasHat
         {
             get { return hat; }
             set
@@ -150,13 +150,47 @@ namespace OA_Game
 
         }
 
-         /// <summary>
+        /// <summary>
         /// Helper methode to play the sprite and set the player looking direction
         /// </summary>
         /// <param name="sequnece"></param>
         public void PlayPlayerSprite(string sequnece)
         {
-            if (this.Velocity.X > 0.01)
+            if (this.Velocity.Y > 0.01)
+            {
+                if (this.Velocity.X > 0.01)
+                {
+                    this.DirectionLeft = false;
+                    this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
+                }
+                else if (this.Velocity.X < -0.01)
+                {
+                    this.DirectionLeft = true;
+                    this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
+                }
+                else
+                {
+                    this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
+                }
+            }
+            else if (this.Velocity.Y < -0.01)
+            {
+                if (this.Velocity.X > 0.01)
+                {
+                    this.DirectionLeft = false;
+                    this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
+                }
+                else if (this.Velocity.X < -0.01)
+                {
+                    this.DirectionLeft = true;
+                    this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
+                }
+                else
+                {
+                    this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
+                }
+            }
+            else if(this.Velocity.X > 0.01)
             {
                 this.DirectionLeft = false;
                 this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);

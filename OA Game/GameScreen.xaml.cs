@@ -83,8 +83,7 @@ namespace OA_Game
             {
                 if (!player.CanJump)
                 {
-                    player.PlayPlayerSprite("jump"); // skip if velocity is 0
-                    player.PlaySequenceAsync("jump", player.DirectionLeft, true);
+                    player.PlayPlayerSprite("jump");
                 }
                 player.PlayPlayerSprite("move");
             }
@@ -92,8 +91,7 @@ namespace OA_Game
             {
                 if (!player.CanJump)
                 {
-                    player.PlayPlayerSprite("jumpCap");  // skip if velocity is 0
-                    player.PlaySequenceAsync("jumpCap", player.DirectionLeft, true);
+                    player.PlayPlayerSprite("jumpCap");  
                 }
                 player.PlayPlayerSprite("moveCap");
             }
