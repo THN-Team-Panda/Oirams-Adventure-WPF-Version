@@ -18,4 +18,9 @@
     </None>
   </ItemGroup>
 
+	<ItemGroup>
+		<Resource Include="Assets\Font\Silkscreen\Silkscreen-Bold.ttf"/>
+		<Resource Include="Assets\Font\Silkscreen\Silkscreen-Regular.ttf"/>
+	</ItemGroup>
+
 </Project>
