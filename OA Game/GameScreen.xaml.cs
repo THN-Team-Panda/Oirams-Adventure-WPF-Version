@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,7 +42,7 @@ namespace OA_Game
             Canvas.SetZIndex(tileMapImage, 1); //set x before bg in the z position
 
             // init Player
-            player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")));
+            player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Standing.png")));
             map.Children.Add(player.Rectangle); // a x to the canvas
             player.Position = new Vector(100, 100);
 
@@ -57,7 +58,6 @@ namespace OA_Game
             gameLoop.Events += SpawnObjects;
             gameLoop.Events += GameOver;
             gameLoop.Events += CheckCollisionWithMovingObjects;
-
             gameLoop.Start();
         }
         /// <summary>
@@ -78,13 +78,32 @@ namespace OA_Game
             //Console.WriteLine(whichSideTouched);
 
             player.Position += player.Velocity;
-        }
 
+            if (player.HasHat) // Sprites WITH cap (wrong image nameing)
+            {
+                if (!player.CanJump)
+                {
+                    player.PlayPlayerSprite("jump"); // skip if velocity is 0
+                    player.PlaySequenceAsync("jump", player.DirectionLeft, true);
+                }
+                player.PlayPlayerSprite("move");
+            }
+            else // Sprites WITHOUT cap (wrong image nameing)
+            {
+                if (!player.CanJump)
+                {
+                    player.PlayPlayerSprite("jumpCap");  // skip if velocity is 0
+                    player.PlaySequenceAsync("jumpCap", player.DirectionLeft, true);
+                }
+                player.PlayPlayerSprite("moveCap");
+            }
+        }
         /// <summary>
         /// Check if Player is dead or in finish.
         /// </summary>
         private void GameOver()
         {
+/*
             //checks if Player is dead
             if (player.ObjectIsTrash)
             {
@@ -109,6 +128,7 @@ namespace OA_Game
             {
 
             }
+*/
         }
         /// <summary>
         /// Check the user input to move the player or attack.
@@ -127,7 +147,6 @@ namespace OA_Game
             if (Keyboard.IsKeyDown(Key.D))
             {
                 player.Velocity = player.Velocity with { X = 1.4 };
-
             }
         }
 
