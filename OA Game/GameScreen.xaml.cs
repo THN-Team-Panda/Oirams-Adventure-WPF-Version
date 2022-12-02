@@ -240,9 +240,9 @@ namespace OA_Game
                 if (Physics.CheckCollisionBetweenGameObjects(player, obj))
                 {
 
-                    if (obj is Items.Items)
+                    if (obj is Items.Item)
                     {
-                        if (player.Collect((Items.Items)obj))
+                        if (player.Collect((Items.Item)obj))
                         {
                             obj.ObjectIsTrash = true;
                         }
