@@ -234,13 +234,22 @@ namespace OA_Game
         /// <returns></returns>
         public bool GetDamage(Enemies.Enemies enemie = null)
         {
-            if (enemie.damage == 2)
+            if (enemie is null)
+            {
+                if (HasHat)
+                {
+                    HasHat = false;
+                }
+                else return true;
+            }
+
+            else if (enemie.damage >= 2)
             {
                 HasHat = false;
                 return true;
             }
 
-            if (enemie.damage == 1)
+            else if (enemie.damage == 1)
             {
                 if (HasHat)
                 {
@@ -249,14 +258,7 @@ namespace OA_Game
                 else return true;
             }
 
-            else if(enemie is null)
-            {
-                if (HasHat)
-                {
-                    HasHat = false;
-                }
-                else return true;
-            }
+            
             return false;
         }
 
