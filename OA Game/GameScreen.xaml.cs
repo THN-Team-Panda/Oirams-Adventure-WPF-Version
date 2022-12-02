@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -42,6 +42,9 @@ namespace OA_Game
             Canvas.SetLeft(tileMapImage, 0); // position x in 0,0
             Canvas.SetTop(tileMapImage, 0);
             Canvas.SetZIndex(tileMapImage, 1); //set x before bg in the z position
+
+            this.map.Width = level.Width;
+            this.map.Height = level.Height;
 
             // init Player
             player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Standing.png")));
