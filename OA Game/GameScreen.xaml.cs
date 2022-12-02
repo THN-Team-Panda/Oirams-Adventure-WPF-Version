@@ -38,14 +38,18 @@ namespace OA_Game
             //load Map
             this.level = new Map($"Level{level}.tmx", Assets.GetPath("Level_Panda"), Preferences.MapGroundTileIds, Preferences.MapObstacleTileIds); //create map
             Image tileMapImage = this.level.RenderTiles(); //render tiles and save image of tilemap in x
+            map.Children.Add(new Image() {  // Add Background
+                Source = this.level.BackgroundImage,
+                Height=this.level.MapHeight,
+                Width=this.level.MapWidth,
+                Stretch=Stretch.Fill,
+            });
+            
+
             map.Children.Add(tileMapImage); // a x to the canvas
             Canvas.SetLeft(tileMapImage, 0); // position x in 0,0
             Canvas.SetTop(tileMapImage, 0);
             Canvas.SetZIndex(tileMapImage, 1); //set x before bg in the z position
-
-            this.map.Width = level.Width;
-            this.map.Height = level.Height;
-
             // init Player
             player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Standing.png")));
             map.Children.Add(player.Rectangle); // a x to the canvas
