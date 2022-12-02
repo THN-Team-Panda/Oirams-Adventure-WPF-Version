@@ -1,5 +1,5 @@
 using System;
-using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,9 +9,6 @@ using System.Windows.Media.Imaging;
 using GameEngine;
 using GameEngine.GameObjects;
 using OA_Game.Enemies;
-using Vector = System.Windows.Vector;
-using OA_Game.Items;
-using System.Security.Cryptography.X509Certificates;
 
 namespace OA_Game
 {
@@ -20,48 +17,94 @@ namespace OA_Game
     /// </summary>
     public partial class GameScreen : Window
     {
+        /// <summary>
+        /// Inherit the Player Object
+        /// </summary>
         private readonly Player player;
-        private readonly Map level;
+
+        /// <summary>
+        /// Inherit the Map Object
+        /// </summary>
+        private readonly Map map;
+
+        /// <summary>
+        /// Inherit the ViewPort Object
+        /// </summary>
         private readonly ViewPort camera;
+
+        /// <summary>
+        /// Inherit the LoopDispatcher Object
+        /// </summary>
         private readonly LoopDispatcher gameLoop = new(TimeSpan.FromMilliseconds(10));
-        public int level_id;
-        public GameScreen(int level)
+
+        /// <summary>
+        /// Level id if the current Level
+        /// </summary>
+        public int levelId;
+
+        /// <summary>
+        /// The GameScreen is the main game window.
+        /// The Constructor loads all nessesary objects!
+        /// </summary>
+        /// <param name="levelId"></param>
+        public GameScreen(int levelId)
         {
+            this.levelId = levelId;
             InitializeComponent();
 
-            // Presetting for the view
-            viewPort.Height = Preferences.ViewHeight;
-            viewPort.Width = Preferences.ViewWidth;
-            viewPort.Focus();
+            /**
+             * Init the map
+             * Note: Map means the map obj, not the canvas map
+             */
+            map = new Map($"Level{levelId}.tmx", Assets.GetPath("Level_Panda"), Preferences.MapGroundTileIds, Preferences.MapObstacleTileIds);
 
-            //load Map
-            this.level = new Map($"Level{level}.tmx", Assets.GetPath("Level_Panda"), Preferences.MapGroundTileIds, Preferences.MapObstacleTileIds); //create map
-            Image tileMapImage = this.level.RenderTiles(); //render tiles and save image of tilemap in x
-            map.Children.Add(new Image() {  // Add Background
-                Source = this.level.BackgroundImage,
-                Height=this.level.MapHeight,
-                Width=this.level.MapWidth,
-                Stretch=Stretch.Fill,
-            });
-            
+            //render tiles and save image of tilemap in x
+            Image tileMapImage = map.RenderTiles(); 
 
-            map.Children.Add(tileMapImage); // a x to the canvas
-            Canvas.SetLeft(tileMapImage, 0); // position x in 0,0
+            mapCanvas.Children.Add(tileMapImage);
+
+            Canvas.SetLeft(tileMapImage, 0); 
             Canvas.SetTop(tileMapImage, 0);
-            Canvas.SetZIndex(tileMapImage, 1); //set x before bg in the z position
+            Panel.SetZIndex(tileMapImage, 1);
 
-            // init Player
+            // Apply the map width/height to the canvas
+            mapCanvas.Width = map.MapWidth;
+            mapCanvas.Height = map.MapHeight;
+
+            // Set the background image
+            mapCanvas.Children.Add(new Image()
+            {
+                Source = map.BackgroundImage,
+                Height = map.MapHeight,
+                Width = map.MapWidth,
+                Stretch = Stretch.Fill,
+            });
+
+
+            /**
+             * Init the Player
+             */
             player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")));
-            map.Children.Add(player.Rectangle); // a x to the canvas
+            mapCanvas.Children.Add(player.Rectangle); // a x to the canvas
             player.Position = new Vector(100, 100);
 
-            this.map.Width = this.level.MapWidth;
-            this.map.Height = this.level.MapHeight;
 
-            //init camera
-            camera = new ViewPort(viewPort, map, (Point)player.Position);
+            /**
+             * Init the Camera
+             */
+            viewPort.Focus();
 
-            // Loopti Loop
+            // Set the height/width from the preferences
+            viewPort.Height = Preferences.ViewHeight;
+            viewPort.Width = Preferences.ViewWidth;
+
+            // Init the camera at player start position
+            camera = new ViewPort(viewPort, mapCanvas, (Point)player.Position);
+
+
+            /**
+             * Init the Game Loop Dispatcher
+             */
             gameLoop.Events += InputKeyboard;
             gameLoop.Events += UpdateCamera;
             gameLoop.Events += MovePlayer;
@@ -70,6 +113,7 @@ namespace OA_Game
             gameLoop.Events += CheckCollisionWithMovingObjects;
             gameLoop.Start();
         }
+
         /// <summary>
         /// Move the Player and Physics Stuff 
         /// check if the player gets damage from touching a obstacle
@@ -78,7 +122,7 @@ namespace OA_Game
         {
             player.Velocity = player.Velocity with { X = player.Velocity.X * .9 };
             player.Velocity += Physics.Gravity;
-            TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(level, player);
+            TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, player);
             if (collidedWithWhat.Contains(TileTypes.Obstacle))
             {
                 if (player.GetDamage())
@@ -144,10 +188,11 @@ namespace OA_Game
             }
 
             //if Player reaches goal
-            else if (player.Position.X > level.EndPoint.X)
+            else if (player.Position.X > map.EndPoint.X)
             {
                 Saving save = new Saving(Preferences.GameDataPath);
-                save.Save(level_id);
+
+                save.Save(levelId);
 
                 gameLoop.Stop();
 
@@ -155,7 +200,7 @@ namespace OA_Game
             }
 
             ////if Player falls out of map
-            else if (player.Position.Y >= level.MapHeight)
+            else if (player.Position.Y >= map.MapHeight)
             {
                 gameLoop.Stop();
 
@@ -163,6 +208,7 @@ namespace OA_Game
             }
 
         }
+
         /// <summary>
         /// Check the user input to move the player or attack.
         /// </summary>
@@ -189,14 +235,14 @@ namespace OA_Game
         /// </summary>
         public void CheckCollisionWithMovingObjects()
         {
-            foreach (DrawableObject obj in level.SpawnedObjects)
+            foreach (DrawableObject obj in map.SpawnedObjects)
             {
                 if (Physics.CheckCollisionBetweenGameObjects(player, obj))
                 {
 
                     if (obj is Items.Items)
                     {
-                        if (player.Collect((OA_Game.Items.Items)obj))
+                        if (player.Collect((Items.Items)obj))
                         {
                             obj.ObjectIsTrash = true;
                         }
@@ -204,7 +250,7 @@ namespace OA_Game
 
                     if (obj is Enemies.Enemie)
                     {
-                        if (player.GetDamage((Enemies.Enemie)obj))
+                        if (player.GetDamage((Enemie)obj))
                         {
                             if (player.DirectionLeft)
                             {
@@ -217,7 +263,7 @@ namespace OA_Game
                             player.ObjectIsTrash = true;
                         }
 
-                        else if (player.GetDamage((Enemies.Enemie)obj) == false)
+                        else if (player.GetDamage((Enemie)obj) == false)
                         {
                             if (player.DirectionLeft)
                             {
@@ -232,6 +278,7 @@ namespace OA_Game
                 }
             }
         }
+
         /// <summary>
         /// Update ViewPort to the current Position of Player.
         /// </summary>
@@ -239,6 +286,7 @@ namespace OA_Game
         {
             camera.SmartCamera((Point)player.Position);
         }
+
         /// <summary>
         /// Delete all collected items, dead Enemies or shot notes.
         /// </summary>
@@ -246,12 +294,13 @@ namespace OA_Game
         {
 
         }
+
         /// <summary>
         /// Spawn Items and Ememies if player is in range.
         /// </summary>
         private void SpawnObjects()
         {
-            NotSpawnedObject? toSpawn = level.SpawnObjectNearby(player.Position, Preferences.ViewWidth);
+            NotSpawnedObject? toSpawn = map.SpawnObjectNearby(player.Position, Preferences.ViewWidth);
             if (toSpawn == null) return;
             var newObject = toSpawn.ClassName switch
             {
@@ -274,9 +323,8 @@ namespace OA_Game
 
             };
             newObject.Position = toSpawn.Position;
-            level.SpawnedObjects.Add(newObject);
-            map.Children.Add(newObject.Rectangle);
+            map.SpawnedObjects.Add(newObject);
+            mapCanvas.Children.Add(newObject.Rectangle);
         }
-
     }
 }
