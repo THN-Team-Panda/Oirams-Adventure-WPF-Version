@@ -10,6 +10,8 @@ using GameEngine;
 using GameEngine.GameObjects;
 using OA_Game.Enemies;
 using Vector = System.Windows.Vector;
+using OA_Game.Items;
+using System.Security.Cryptography.X509Certificates;
 
 namespace OA_Game
 {
@@ -97,11 +99,11 @@ namespace OA_Game
             }
         }
         /// <summary>
-        /// Check if Player is dead or in finish.
+        /// Check if Player is dead or in finish or out of map
         /// </summary>
         private void GameOver()
         {
-/*
+
             //checks if Player is dead
             if (player.ObjectIsTrash)
             {
@@ -116,17 +118,13 @@ namespace OA_Game
 
                 Close();
             }
-
-            //if Player falls out of map
-            else if (player.Position.Y <= level.MapHeight)
+        
+            ////if Player falls out of map
+            else if (player.Position.Y >= level.MapHeight)
             {
                 Close();
             }
-            if (player.ObjectIsTrash == true)
-            {
 
-            }
-*/
         }
         /// <summary>
         /// Check the user input to move the player or attack.
@@ -147,26 +145,54 @@ namespace OA_Game
                 player.Velocity = player.Velocity with { X = 1.4 };
             }
         }
-
+        /// <summary>
+        /// Checks collision with items and enemies
+        /// gets damage if collision with enemie
+        /// and the animation is started
+        /// </summary>
         public void CheckCollisionWithMovingObjects()
         {
             foreach (DrawableObject obj in level.SpawnedObjects)
             {
-                Console.WriteLine(Physics.CheckCollisionBetweenGameObjects(player, obj));
                 if(Physics.CheckCollisionBetweenGameObjects(player, obj))
                 {
-                    if(player.HasHat == false)
-                    {
-                        
-                        
-                        player.PlaySequence("dying");
-                        player.ObjectIsTrash = true;
+
+                    if(obj is Items.Items)
+                    {                       
+                        if(player.Collect((OA_Game.Items.Items)obj))
+                        {
+                            obj.ObjectIsTrash = true;
+                        }                  
                     }
-                    else
+
+                    if(obj is Enemies.Enemies)
                     {
-                        player.HasHat = false;
-                    }
-                   
+                        Console.WriteLine(player.GetDamage((Enemies.Enemies)obj));
+                        if(player.GetDamage((Enemies.Enemies)obj))
+                        {
+                            if(player.DirectionLeft)
+                            {
+                                player.PlaySequence("dying", true, false);
+                            }
+                            else if(!player.DirectionLeft)
+                            {
+                                player.PlaySequence("dying", false, false);
+                            }
+                            player.ObjectIsTrash = true;
+                        }
+
+                        else if(player.GetDamage((Enemies.Enemies)obj) == false)
+                        {
+                            if (player.DirectionLeft)
+                            {
+                                player.PlaySequence("damage", true, true);
+                            }
+                            else if (!player.DirectionLeft)
+                            {
+                                player.PlaySequence("damage", false, true);
+                            }
+                        }
+                    }             
                 }
             }
         }
@@ -195,7 +221,7 @@ namespace OA_Game
             {
                 "Enemy" => toSpawn.Name switch
                 {
-                    "Skeleton" => new Skeleton(16, 16, new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_1.png"))),
+                    "Skeleton" => new Skeleton(32, 32, new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_1.png"))),
                     "FliegeVieh" => throw new NotImplementedException(),
                     "KonkeyDong" => throw new NotImplementedException(),
                     _ => throw new ArgumentException("Enemy Not Known")
@@ -216,12 +242,5 @@ namespace OA_Game
             map.Children.Add(newObject.Rectangle);
         }
 
-        /// <summary>
-        /// collect item if player is in range and has space in his inventory.
-        /// </summary>
-        private void CollectItem()
-        {
-
-        }
     }
 }
