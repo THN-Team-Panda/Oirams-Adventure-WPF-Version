@@ -8,7 +8,7 @@ namespace OA_Game.Items
     /// <summary>
     /// Class for item Note. Is the munition to shoot for the player.
     /// </summary>
-    public class Note : Items
+    public class Note : Item
     {
         public Note(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
