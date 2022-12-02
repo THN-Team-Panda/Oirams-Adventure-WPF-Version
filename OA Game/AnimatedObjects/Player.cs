@@ -4,6 +4,7 @@ using GameEngine;
 using System;
 using System.Windows.Media.Imaging;
 using OA_Game.Enemies;
+using System.Threading.Tasks;
 
 namespace OA_Game
 {
@@ -13,19 +14,50 @@ namespace OA_Game
     public class Player : AnimatedObject, IDirectable
     {
         /// <summary>
+        /// Represent the extra Live.
+        /// </summary>
+        private bool hat = false;
+
+        /// <summary>
+        /// Max amount of munition the player can carry.
+        /// </summary>
+        private const int MaxMunition = 10;
+
+        /// <summary>
+        /// TimeSpan Object how long the player invincible state should least
+        /// </summary>
+        public readonly TimeSpan InvincibleTime = TimeSpan.FromMilliseconds(2000);
+
+        /// <summary>
+        /// Private invincibleState
+        /// Note: Do not change this value
+        /// </summary>
+        private bool invincibleState = false;
+
+        /// <summary>
         /// If the player gets damage he is for a short time invincible (can't get damage).
         /// </summary>
-        public bool Invincible { get; }
+        public bool Invincible
+        {
+            get
+            {
+                return invincibleState;
+            }
+
+            set
+            {
+                if (!value)
+                    return;
+
+                invincibleState = true;
+                ResetInvincible();
+            }
+        }
 
         /// <summary>
         /// Is the amount of munition the player has to shoot.
         /// </summary>
         public int Munition { get; set; } = 0;
-
-        /// <summary>
-        /// Represent the extra Live.
-        /// </summary>
-        private bool hat = false;
 
         /// <summary>
         /// Set the default image of player
@@ -37,25 +69,26 @@ namespace OA_Game
             {
                 if (value)
                 {
-                    this.defaultSprite = new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png"));
+                    this.defaultSprite = new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Standing.png"));
                 }
                 else
                 {
-                    this.defaultSprite = new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Standing.png"));
+                    this.defaultSprite = new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png"));
                 }
                 hat = value;
             }
         }
 
-        /// <summary>
-        /// Max amount of munition the player can carry.
-        /// </summary>
-        private const int MaxMunition = 10;
+
 
         /// <summary>
         /// Bool to Indicates if the Player can jump
         /// </summary>
         public bool CanJump { get; set; }
+
+        /// <summary>
+        /// Default should be false, means direction: right
+        /// </summary>
         public bool DirectionLeft { get; set; }
 
         public Player(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
@@ -210,13 +243,10 @@ namespace OA_Game
         /// <returns></returns>
         public bool Collect(Items.Items obj)
         {
-            if (obj is Items.Hat)
+            if (obj is Items.Hat && HasHat == false)
             {
-                if (hat)
-                {
-                    hat = true;
-                    return true;
-                }
+                HasHat = true;
+                return true;
             }
 
             if (obj is Items.Note)
@@ -232,27 +262,47 @@ namespace OA_Game
 
         /// <summary>
         /// Returns true if player dies, else player only gets damage and returns false
+        /// Note: If the player gets damage and doesn't die, set the invincible state
         /// </summary>
         /// <param name="enemie"></param>
         /// <returns></returns>
-        public bool GetDamage(Enemies.Enemies enemie)
+        public bool GetDamage(Enemie? enemie = null)
         {
-            if (enemie is KonkeyDong)
+            if (Invincible)
+                return false;
+            
+            // Player got one damage
+            if (enemie is null || enemie.Damage == 1)
             {
-                hat = false;
-                return true;
-            }
-
-            if (enemie is FliegeVieh || enemie is Skeleton)
-            {
-                if (hat)
+                if (HasHat)
                 {
-                    hat = false;
+                    HasHat = false;
                 }
                 else return true;
             }
+
+            // Player got two damage and is dead
+            else if (enemie.Damage >= 2)
+            {
+                HasHat = false;
+                return true;
+            }
+
+            Invincible = true;
             return false;
         }
 
+        /// <summary>
+        /// Helper method to reset the invincible state
+        /// </summary>
+        private async void ResetInvincible()
+        {
+            if (!Invincible)
+                return;
+
+            await Task.Delay(InvincibleTime);
+
+            invincibleState = false;
+        }
     }
 }

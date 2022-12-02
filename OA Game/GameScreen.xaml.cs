@@ -51,7 +51,7 @@ namespace OA_Game
             Canvas.SetZIndex(tileMapImage, 1); //set x before bg in the z position
 
             // init Player
-            player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Standing.png")));
+            player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")));
             map.Children.Add(player.Rectangle); // a x to the canvas
             player.Position = new Vector(100, 100);
 
@@ -71,7 +71,8 @@ namespace OA_Game
             gameLoop.Start();
         }
         /// <summary>
-        /// Move the Player and Physics Stuff
+        /// Move the Player and Physics Stuff 
+        /// check if the player gets damage from touching a obstacle
         /// </summary>
         private void MovePlayer()
         {
@@ -80,30 +81,52 @@ namespace OA_Game
             TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(level, player);
             if (collidedWithWhat.Contains(TileTypes.Obstacle))
             {
-                Console.WriteLine("TOT");
+                if (player.GetDamage())
+                {
+                    if (player.DirectionLeft)
+                    {
+                        player.PlaySequence("dying", true, false);
+                    }
+                    else if (!player.DirectionLeft)
+                    {
+                        player.PlaySequence("dying", false, false);
+                    }
+
+                    player.ObjectIsTrash = true;
+                }
+                else if (!player.GetDamage())
+                {
+                    if (player.DirectionLeft)
+                    {
+                        player.PlaySequenceAsync("damage", true, true);
+                    }
+                    else if (!player.DirectionLeft)
+                    {
+                        player.PlaySequenceAsync("damage", false, true);
+                    }
+                }
             }
 
             if (collidedWithWhat[0] == TileTypes.Ground) player.CanJump = true;
             else player.CanJump = false;
-            //Console.WriteLine(whichSideTouched);
 
             player.Position += player.Velocity;
 
-            if (player.HasHat) // Sprites WITH cap (wrong image nameing)
+            if (player.HasHat)
+            {
+                if (!player.CanJump)
+                {
+                    player.PlayPlayerSpriteMovement("jumpCap");
+                }
+                player.PlayPlayerSpriteMovement("moveCap");
+            }
+            else
             {
                 if (!player.CanJump)
                 {
                     player.PlayPlayerSpriteMovement("jump");
                 }
                 player.PlayPlayerSpriteMovement("move");
-            }
-            else // Sprites WITHOUT cap (wrong image nameing)
-            {
-                if (!player.CanJump)
-                {
-                    player.PlayPlayerSpriteMovement("jumpCap");  
-                }
-                player.PlayPlayerSpriteMovement("moveCap");
             }
         }
         /// <summary>
@@ -115,6 +138,8 @@ namespace OA_Game
             //checks if Player is dead
             if (player.ObjectIsTrash)
             {
+                gameLoop.Stop();
+
                 Close();
             }
 
@@ -124,12 +149,16 @@ namespace OA_Game
                 Saving save = new Saving(Preferences.GameDataPath);
                 save.Save(level_id);
 
+                gameLoop.Stop();
+
                 Close();
             }
-        
+
             ////if Player falls out of map
             else if (player.Position.Y >= level.MapHeight)
             {
+                gameLoop.Stop();
+
                 Close();
             }
 
@@ -162,45 +191,44 @@ namespace OA_Game
         {
             foreach (DrawableObject obj in level.SpawnedObjects)
             {
-                if(Physics.CheckCollisionBetweenGameObjects(player, obj))
+                if (Physics.CheckCollisionBetweenGameObjects(player, obj))
                 {
 
-                    if(obj is Items.Items)
-                    {                       
-                        if(player.Collect((OA_Game.Items.Items)obj))
+                    if (obj is Items.Items)
+                    {
+                        if (player.Collect((OA_Game.Items.Items)obj))
                         {
                             obj.ObjectIsTrash = true;
-                        }                  
+                        }
                     }
 
-                    if(obj is Enemies.Enemies)
+                    if (obj is Enemies.Enemie)
                     {
-                        Console.WriteLine(player.GetDamage((Enemies.Enemies)obj));
-                        if(player.GetDamage((Enemies.Enemies)obj))
+                        if (player.GetDamage((Enemies.Enemie)obj))
                         {
-                            if(player.DirectionLeft)
+                            if (player.DirectionLeft)
                             {
                                 player.PlaySequence("dying", true, false);
                             }
-                            else if(!player.DirectionLeft)
+                            else if (!player.DirectionLeft)
                             {
                                 player.PlaySequence("dying", false, false);
                             }
                             player.ObjectIsTrash = true;
                         }
 
-                        else if(player.GetDamage((Enemies.Enemies)obj) == false)
+                        else if (player.GetDamage((Enemies.Enemie)obj) == false)
                         {
                             if (player.DirectionLeft)
                             {
-                                player.PlaySequence("damage", true, true);
+                                player.PlaySequenceAsync("damage", true, true);
                             }
                             else if (!player.DirectionLeft)
                             {
-                                player.PlaySequence("damage", false, true);
+                                player.PlaySequenceAsync("damage", false, true);
                             }
                         }
-                    }             
+                    }
                 }
             }
         }
