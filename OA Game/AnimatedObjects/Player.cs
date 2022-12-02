@@ -234,6 +234,10 @@ namespace OA_Game
         /// <returns></returns>
         public bool GetDamage(Enemies.Enemies enemie = null)
         {
+            if(Invincible)
+            {
+                return false;
+            }
             if (enemie is null)
             {
                 if (HasHat)
@@ -258,7 +262,7 @@ namespace OA_Game
                 else return true;
             }
 
-            
+
             return false;
         }
 
