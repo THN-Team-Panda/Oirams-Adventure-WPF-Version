@@ -8,6 +8,9 @@ namespace OA_Game.Enemies
     /// </summary>
     public class Enemies : AnimatedObject
     {
+        /// <summary>
+        /// property to check the damage output
+        /// </summary>
         public int damage;
         public Enemies(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {

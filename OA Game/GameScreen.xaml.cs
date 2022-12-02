@@ -63,7 +63,8 @@ namespace OA_Game
             gameLoop.Start();
         }
         /// <summary>
-        /// Move the Player and Physics Stuff
+        /// Move the Player and Physics Stuff 
+        /// check if the player gets damage from touching a obstacle
         /// </summary>
         private void MovePlayer()
         {
