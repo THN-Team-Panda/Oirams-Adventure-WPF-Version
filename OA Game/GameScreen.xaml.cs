@@ -72,7 +72,30 @@ namespace OA_Game
             TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(level, player);
             if (collidedWithWhat.Contains(TileTypes.Obstacle))
             {
-                Console.WriteLine("TOT");
+                if(player.GetDamage())
+                {
+                    if (player.DirectionLeft)
+                    {
+                        player.PlaySequence("dying", true, false);
+                    }
+                    else if (!player.DirectionLeft)
+                    {
+                        player.PlaySequence("dying", false, false);
+                    }                   
+                }
+                else if (player.GetDamage() == false)
+                {
+                    if (player.DirectionLeft)
+                    {
+                        player.PlaySequence("damage", true, true);
+                    }
+                    else if (!player.DirectionLeft)
+                    {
+                        player.PlaySequence("damage", false, true);
+                    }
+                }
+
+
             }
 
             if (collidedWithWhat[0] == TileTypes.Ground) player.CanJump = true;
@@ -191,6 +214,8 @@ namespace OA_Game
                             {
                                 player.PlaySequence("damage", false, true);
                             }
+                            player.Invincible = true;
+
                         }
                     }             
                 }

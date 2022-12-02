@@ -15,7 +15,7 @@ namespace OA_Game
         /// <summary>
         /// If the player gets damage he is for a short time invincible (can't get damage).
         /// </summary>
-        public bool Invincible { get; }
+        public bool Invincible { get; set; }
 
         /// <summary>
         /// Is the amount of munition the player has to shoot.
@@ -210,13 +210,10 @@ namespace OA_Game
         /// <returns></returns>
         public bool Collect(Items.Items obj)
         {
-            if (obj is Items.Hat)
+            if (obj is Items.Hat && HasHat == false)
             {
-                if (hat)
-                {
-                    hat = true;
-                    return true;
-                }
+                HasHat = true;
+                return true;
             }
 
             if (obj is Items.Note)
@@ -235,19 +232,28 @@ namespace OA_Game
         /// </summary>
         /// <param name="enemie"></param>
         /// <returns></returns>
-        public bool GetDamage(Enemies.Enemies enemie)
+        public bool GetDamage(Enemies.Enemies enemie = null)
         {
-            if (enemie is KonkeyDong)
+            if (enemie.damage == 2)
             {
-                hat = false;
+                HasHat = false;
                 return true;
             }
 
-            if (enemie is FliegeVieh || enemie is Skeleton)
+            if (enemie.damage == 1)
             {
-                if (hat)
+                if (HasHat)
                 {
-                    hat = false;
+                    HasHat = false;
+                }
+                else return true;
+            }
+
+            else if(enemie is null)
+            {
+                if (HasHat)
+                {
+                    HasHat = false;
                 }
                 else return true;
             }

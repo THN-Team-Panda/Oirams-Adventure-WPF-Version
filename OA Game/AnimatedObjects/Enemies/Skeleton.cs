@@ -7,6 +7,7 @@ namespace OA_Game.Enemies
     /// </summary>
     public class Skeleton : Enemies
     {
+        private int damage = 1;
         public Skeleton(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
         }
