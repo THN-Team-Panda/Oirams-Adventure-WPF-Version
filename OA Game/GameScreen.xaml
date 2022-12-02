@@ -8,7 +8,7 @@
         Title="GameScreen" SizeToContent="WidthAndHeight" MinWidth="200" MinHeight="150" ResizeMode="NoResize">
     <Grid>
         <Canvas Name="viewPort" Focusable="True">
-            <Canvas Name="map">
+            <Canvas Name="mapCanvas">
 
             </Canvas>
         </Canvas> 
