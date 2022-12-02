@@ -34,7 +34,6 @@ namespace OA_Game
             viewPort.Width = Preferences.ViewWidth;
             viewPort.Focus();
 
-
             //load Map
             this.level = new Map($"Level{level}.tmx", Assets.GetPath("Level_Panda"), Preferences.MapGroundTileIds, Preferences.MapObstacleTileIds); //create map
             Image tileMapImage = this.level.RenderTiles(); //render tiles and save image of tilemap in x
@@ -50,13 +49,15 @@ namespace OA_Game
             Canvas.SetLeft(tileMapImage, 0); // position x in 0,0
             Canvas.SetTop(tileMapImage, 0);
             Canvas.SetZIndex(tileMapImage, 1); //set x before bg in the z position
+
             // init Player
             player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Standing.png")));
             map.Children.Add(player.Rectangle); // a x to the canvas
             player.Position = new Vector(100, 100);
 
-            //Player.AddSequence("Idle",new PlayableSequence(new []{0,0}){Between = TimeSpan.FromMilliseconds(5)});
-            //Player.PlaySequenceAsync("Idle");
+            this.map.Width = this.level.MapWidth;
+            this.map.Height = this.level.MapHeight;
+
             //init camera
             camera = new ViewPort(viewPort, map, (Point)player.Position);
 
