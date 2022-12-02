@@ -241,7 +241,7 @@ namespace OA_Game
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public bool Collect(Items.Items obj)
+        public bool Collect(Items.Item obj)
         {
             if (obj is Items.Hat && HasHat == false)
             {

@@ -8,9 +8,9 @@ namespace OA_Game.Items
     /// <summary>
     /// Class for item hat. Is the extra live for player.
     /// </summary>
-    public class Hat : Items
+    public class Hat : Item
     {
-        public Hat(int height, int width,ImageSource defaultSprite) : base(height, width, defaultSprite)
+        public Hat(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
             PlayableSequence Hat_Animation = new PlayableSequence(new ImageSource[]
             {
