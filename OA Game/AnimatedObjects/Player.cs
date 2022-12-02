@@ -1,9 +1,8 @@
-﻿using System.Windows.Media;
+using System.Windows.Media;
 using GameEngine.GameObjects;
 using GameEngine;
 using System;
 using System.Windows.Media.Imaging;
-using System.Security.Cryptography.X509Certificates;
 using OA_Game.Enemies;
 
 namespace OA_Game
