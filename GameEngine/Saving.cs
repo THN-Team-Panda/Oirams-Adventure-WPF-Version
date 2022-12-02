@@ -71,8 +71,6 @@
             for (int i = 0; i < allLines.Length; i++)
             {
                 stw.WriteLine(allLines[i]);
-
-                Console.WriteLine(allLines[i]);
             }
 
 

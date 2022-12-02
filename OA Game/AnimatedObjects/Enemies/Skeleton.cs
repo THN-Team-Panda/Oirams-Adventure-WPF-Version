@@ -5,9 +5,13 @@ namespace OA_Game.Enemies
     /// <summary>
     /// Skeleton is an enemy that walk around and try to hit the player if the player comes close to it.
     /// </summary>
-    public class Skeleton : Enemies
+    public class Skeleton : Enemie
     {
-        private int damage = 1;
+        /// <summary>
+        /// property to check the damage output
+        /// </summary>
+        public override int Damage { get; } = 1;
+
         public Skeleton(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
         }
