@@ -8,11 +8,6 @@ namespace OA_Game.Items
     /// </summary>
     public class Item : AnimatedObject
     {
-        /// <summary>
-        /// Shows if item is collected. If the item is collected it's going to be deleted.
-        /// </summary>
-        public bool Collected { get; set; }
-
         public Item(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
         }
