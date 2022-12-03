@@ -111,6 +111,7 @@ namespace OA_Game
             gameLoop.Events += SpawnObjects;
             gameLoop.Events += GameOver;
             gameLoop.Events += CheckCollisionWithMovingObjects;
+            gameLoop.Events += Move_Enemies;
             gameLoop.Start();
         }
 
@@ -209,6 +210,14 @@ namespace OA_Game
 
         }
 
+        private void Move_Enemies()
+        {
+            foreach(Skeleton obj in map.SpawnedObjects)
+            {
+                obj.Move(map);
+            }
+            
+        }
         /// <summary>
         /// Check the user input to move the player or attack.
         /// </summary>
