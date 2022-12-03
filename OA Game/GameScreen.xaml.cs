@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using GameEngine;
 using GameEngine.GameObjects;
 using OA_Game.Enemies;
+using OA_Game.Items;
 
 namespace OA_Game
 {
@@ -111,6 +112,7 @@ namespace OA_Game
             gameLoop.Events += SpawnObjects;
             gameLoop.Events += GameOver;
             gameLoop.Events += CheckCollisionWithMovingObjects;
+            gameLoop.Events += CollectGarbage;
             gameLoop.Start();
         }
 
@@ -292,7 +294,16 @@ namespace OA_Game
         /// </summary>
         private void CollectGarbage()
         {
-
+            for (int i = map.SpawnedObjects.Count-1; i >=0; i--)
+            {
+                if(map.SpawnedObjects[i].ObjectIsTrash == true)
+                {
+                    mapCanvas.Children.Remove(map.SpawnedObjects[i].Rectangle);
+                    map.SpawnedObjects.Remove(map.SpawnedObjects[i]); 
+                }
+                
+            }          
+            
         }
 
         /// <summary>
