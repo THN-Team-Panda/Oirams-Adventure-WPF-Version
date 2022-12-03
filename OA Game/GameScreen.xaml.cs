@@ -275,7 +275,6 @@ namespace OA_Game
                             {
                                 player.PlaySequenceAsync("damage", false, true);
                             }
-                            obj.ObjectIsTrash = true;
                         }
                     }
                 }
