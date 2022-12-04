@@ -15,7 +15,7 @@ namespace OA_Game.Enemies
 
         public override bool DirectionLeft { get; set; }
 
-        public override void Move(Enemie obj, Map map)
+        public override void Move(Map map)
         {
             throw new System.NotImplementedException();
         }
