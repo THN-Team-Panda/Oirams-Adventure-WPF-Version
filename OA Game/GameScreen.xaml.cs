@@ -277,11 +277,13 @@ namespace OA_Game
                             if (player.DirectionLeft)
                             {
                                 player.PlaySequenceAsync("damage", true, true);
+                                
                             }
                             else if (!player.DirectionLeft)
                             {
                                 player.PlaySequenceAsync("damage", false, true);
                             }
+                            
                         }
                     }
                 }

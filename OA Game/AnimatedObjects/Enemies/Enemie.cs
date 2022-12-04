@@ -18,6 +18,10 @@ namespace OA_Game.Enemies
 
         public abstract void Move(Map map);
 
+        public abstract void Attack();
+
+        public bool Is_Attacking = false;
+
         public Enemie(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
         }

@@ -14,6 +14,10 @@ namespace OA_Game.Enemies
         public override int Damage { get; } = 1;
 
         public override bool DirectionLeft { get; set; }
+        public override void Attack()
+        {
+            this.PlaySequenceAsync("attack_skeleton", false, true);
+        }
 
         public override void Move(Map map)
         {

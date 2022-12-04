@@ -93,7 +93,7 @@ namespace OA_Game
 
         public Player(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
-            this.HasHat = false;
+            this.HasHat = true;
             DirectionLeft = false;
 
             PlayableSequence playerMove = new PlayableSequence(new ImageSource[]
@@ -272,19 +272,34 @@ namespace OA_Game
                 return false;
             
             // Player got one damage
-            if (enemie is null || enemie.Damage == 1)
+            
+            if (enemie is null)
             {
+                
                 if (HasHat)
                 {
                     HasHat = false;
                 }
+
+                else return true;
+            }
+            else if (enemie.Damage == 1)
+            {
+                enemie.Is_Attacking = true;
+                enemie.Attack();
+                
+                if (HasHat)
+                {
+                    HasHat = false;
+                }
+                
                 else return true;
             }
 
             // Player got two damage and is dead
             else if (enemie.Damage >= 2)
             {
-                HasHat = false;
+                HasHat = false;                
                 return true;
             }
 

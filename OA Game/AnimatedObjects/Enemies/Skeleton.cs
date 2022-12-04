@@ -22,7 +22,8 @@ namespace OA_Game.Enemies
         public override void Move(Map map)
         {
 
-            
+            if(Is_Attacking)
+                return;
             if (DirectionLeft)
             {
                 Velocity = Velocity with { X = -1.4 };
@@ -48,6 +49,12 @@ namespace OA_Game.Enemies
 
         }
 
+        public override void Attack()
+        {
+            PlaySequenceAsync("attack_skeleton", false, true);
+        }
+
+
         public Skeleton(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
             DirectionLeft=true;
@@ -60,6 +67,20 @@ namespace OA_Game.Enemies
             });
             skeletonMove.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("move_skeleton", skeletonMove);
+
+            PlayableSequence skeletonAttack = new PlayableSequence(new ImageSource[]
+            {
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_1.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_2.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_3.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_4.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_5.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_6.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_7.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_8.png"))
+            });
+            skeletonAttack.Between = TimeSpan.FromMilliseconds(150);
+            this.AddSequence("attack_skeleton", skeletonAttack);
         }
     }
 }
