@@ -159,6 +159,11 @@ namespace OA_Game
 
             player.Position += player.Velocity;
 
+            // Bugfix: https://git.informatik.fh-nuernberg.de/team-panda/oa-game/-/issues/102
+            // Make sure that the player is unable to leave the viewPort Area
+            if (player.Position.X < -camera.CurrentAngelHorizontal)
+               player.Position = new Vector(-camera.CurrentAngelHorizontal, player.Position.Y);
+
             if (player.HasHat)
             {
                 if (!player.CanJump)
