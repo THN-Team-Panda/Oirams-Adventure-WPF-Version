@@ -10,9 +10,9 @@
 
         <Image Name="Backscreen" Stretch ="Fill"  VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-        <Button Name ="Level1" Content="Level 1"  HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top" Height="50" Width="400" Background="#FF00CBFA" Click="OpenLevel_Click" />
-        <Button Name ="Level2" Content="Level 2"  HorizontalAlignment="Center" Margin="0,220,0,0" VerticalAlignment="Top" Height="50" Width="400" Background="#FF00CBFA" Click ="OpenLevel_Click" IsEnabled="false" />
-        <Button Name ="Level3" Content="Level 3"  HorizontalAlignment="Center" Margin="0,290,0,0" VerticalAlignment="Top" Height="50" Width="400" Background="#FF00CBFA" Click="OpenLevel_Click" IsEnabled="false"/>
+        <Button Name ="Level1" Content="Level 1"  FontFamily ="{StaticResource Silkscreen}" HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top" Height="50" Width="400" Background="#FF00CBFA" Click="OpenLevel_Click" />
+        <Button Name ="Level2" Content="Level 2"  FontFamily ="{StaticResource Silkscreen}" HorizontalAlignment="Center" Margin="0,220,0,0" VerticalAlignment="Top" Height="50" Width="400" Background="#FF00CBFA" Click ="OpenLevel_Click" IsEnabled="false" />
+        <Button Name ="Level3" Content="Level 3"  FontFamily ="{StaticResource Silkscreen}" HorizontalAlignment="Center" Margin="0,290,0,0" VerticalAlignment="Top" Height="50" Width="400" Background="#FF00CBFA" Click="OpenLevel_Click" IsEnabled="false"/>
 
 
     </Grid>
