@@ -1,5 +1,5 @@
 using System;
-using System.IO;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,6 +44,11 @@ namespace OA_Game
         public int levelId;
 
         /// <summary>
+        /// Stop the time in game
+        /// </summary>
+        public Stopwatch stopwatch = new Stopwatch(); 
+
+        /// <summary>
         /// The GameScreen is the main game window.
         /// The Constructor loads all nessesary objects!
         /// </summary>
@@ -60,11 +65,11 @@ namespace OA_Game
             map = new Map($"Level{levelId}.tmx", Assets.GetPath("Level_Panda"), Preferences.MapGroundTileIds, Preferences.MapObstacleTileIds);
 
             //render tiles and save image of tilemap in x
-            Image tileMapImage = map.RenderTiles(); 
+            Image tileMapImage = map.RenderTiles();
 
             mapCanvas.Children.Add(tileMapImage);
 
-            Canvas.SetLeft(tileMapImage, 0); 
+            Canvas.SetLeft(tileMapImage, 0);
             Canvas.SetTop(tileMapImage, 0);
             Panel.SetZIndex(tileMapImage, 1);
 
@@ -102,6 +107,18 @@ namespace OA_Game
             // Init the camera at player start position
             camera = new ViewPort(viewPort, mapCanvas, (Point)player.Position);
 
+            /**
+             * Init StatusBar Icons
+             */
+            StatusBarClockIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Clock/Clock_1.png")));
+            StatusBarHatIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Cap/Cap_1.png")));
+            StatusBarAmmoIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Note/Note_big.png")));
+
+
+            /**
+             * Start the stopwatch
+             */
+            stopwatch.Start();
 
             /**
              * Init the Game Loop Dispatcher
@@ -114,6 +131,7 @@ namespace OA_Game
             gameLoop.Events += CheckCollisionWithMovingObjects;
             gameLoop.Events += Move_Enemies;
             gameLoop.Events += CollectGarbage;
+            gameLoop.Events += UpdateStatusBar;
             gameLoop.Start();
         }
 
@@ -162,7 +180,7 @@ namespace OA_Game
             // Bugfix: https://git.informatik.fh-nuernberg.de/team-panda/oa-game/-/issues/102
             // Make sure that the player is unable to leave the viewPort Area
             if (player.Position.X < -camera.CurrentAngelHorizontal)
-               player.Position = new Vector(-camera.CurrentAngelHorizontal, player.Position.Y);
+                player.Position = new Vector(-camera.CurrentAngelHorizontal, player.Position.Y);
 
             if (player.HasHat)
             {
@@ -219,13 +237,13 @@ namespace OA_Game
 
         private void Move_Enemies()
         {
-            for(int i = 0; i < map.SpawnedObjects.Count; i++)
+            for (int i = 0; i < map.SpawnedObjects.Count; i++)
             {
-                if(map.SpawnedObjects[i] is Skeleton)
+                if (map.SpawnedObjects[i] is Skeleton)
                 {
                     ((Skeleton)map.SpawnedObjects[i]).Move(map);
                 }
-            } 
+            }
         }
         /// <summary>
         /// Check the user input to move the player or attack.
@@ -286,13 +304,13 @@ namespace OA_Game
                             if (player.DirectionLeft)
                             {
                                 player.PlaySequenceAsync("damage", true, true);
-                                
+
                             }
                             else if (!player.DirectionLeft)
                             {
                                 player.PlaySequenceAsync("damage", false, true);
                             }
-                            
+
                         }
                     }
                 }
@@ -312,16 +330,16 @@ namespace OA_Game
         /// </summary>
         private void CollectGarbage()
         {
-            for (int i = map.SpawnedObjects.Count-1; i >=0; i--)
+            for (int i = map.SpawnedObjects.Count - 1; i >= 0; i--)
             {
-                if(map.SpawnedObjects[i].ObjectIsTrash == true)
+                if (map.SpawnedObjects[i].ObjectIsTrash == true)
                 {
                     mapCanvas.Children.Remove(map.SpawnedObjects[i].Rectangle);
-                    map.SpawnedObjects.Remove(map.SpawnedObjects[i]); 
+                    map.SpawnedObjects.Remove(map.SpawnedObjects[i]);
                 }
-                
-            }          
-            
+
+            }
+
         }
 
         /// <summary>
@@ -354,6 +372,16 @@ namespace OA_Game
             newObject.Position = toSpawn.Position;
             map.SpawnedObjects.Add(newObject);
             mapCanvas.Children.Add(newObject.Rectangle);
+        }
+
+        /// <summary>
+        /// Apply the latest status bar stats
+        /// </summary>
+        private void UpdateStatusBar()
+        {
+            StatusBarHatLabel.Content = $"{(player.HasHat ? "1" : "0")}/1";
+            StatusBarAmmoLabel.Content = $"{player.Munition}/{Player.MaxMunition}";
+            StatusBarClockLabel.Content = $"{stopwatch.Elapsed.Minutes:00}:{stopwatch.Elapsed.Seconds:00}";
         }
     }
 }
