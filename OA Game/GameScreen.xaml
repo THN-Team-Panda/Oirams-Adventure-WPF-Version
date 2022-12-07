@@ -6,11 +6,48 @@
         xmlns:local="clr-namespace:OA_Game"
         mc:Ignorable="d"
         Title="GameScreen" SizeToContent="WidthAndHeight" MinWidth="200" MinHeight="150" ResizeMode="NoResize">
+    <Window.Resources>
+        <!-- Style Template for all Status Labels -->
+        <Style x:Key="StatusLabel" TargetType="Label">
+            <Setter Property="FontFamily" Value="{StaticResource Silkscreen}"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="24"/>
+        </Style>
+        <!-- Style Template for all Icons -->
+        <Style x:Key="StatusIcon" TargetType="Rectangle">
+            <Setter Property="Height" Value="24" />
+            <Setter Property="Width" Value="24" />
+        </Style>
+    </Window.Resources>
     <Grid>
-        <Canvas Name="viewPort" Focusable="True">
+        <!-- Status Bar Item -->
+        <StatusBar Panel.ZIndex="2" VerticalAlignment="Top" Height="Auto" Background="Transparent">
+            <!-- Left Hand Side Align Items -->
+            <StatusBarItem HorizontalAlignment="Left" Margin="8,0,0,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- Cap Status -->
+                    <Rectangle Name="StatusBarHatIcon" Style="{StaticResource StatusIcon}"/>
+                    <Label Name="StatusBarHatLabel" Style="{StaticResource StatusLabel}" Content="Loading"/>
+                    <Separator Width="4" Height="0"/>
+                    <!-- Ammo Status -->
+                    <Rectangle Name="StatusBarAmmoIcon" Style="{StaticResource StatusIcon}"/>
+                    <Label Name="StatusBarAmmoLabel" Style="{StaticResource StatusLabel}" Content="Loading"/>
+                </StackPanel>
+            </StatusBarItem>
+            <!-- Right Hand Side Align Items -->
+            <StatusBarItem HorizontalAlignment="Right" Margin="0,0,8,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- Clock Status -->
+                    <Rectangle Name="StatusBarClockIcon" Style="{StaticResource StatusIcon}"/>
+                    <Label Name="StatusBarClockLabel" Style="{StaticResource StatusLabel}" Content="Loading"/>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+        <!-- Map Item -->
+        <Canvas Panel.ZIndex="1" Name="viewPort" Focusable="True">
             <Canvas Name="mapCanvas">
 
             </Canvas>
-        </Canvas> 
+        </Canvas>
     </Grid>
 </Window>
