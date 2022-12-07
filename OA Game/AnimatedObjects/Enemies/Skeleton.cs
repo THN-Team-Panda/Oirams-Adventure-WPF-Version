@@ -81,6 +81,27 @@ namespace OA_Game.Enemies
             });
             skeletonAttack.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("attack_skeleton", skeletonAttack);
+
+            PlayableSequence skeletonDying = new PlayableSequence(new ImageSource[]
+            {
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_1.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_2.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_3.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_4.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_5.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_6.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_7.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_8.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_9.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_10.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_11.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_12.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_13.png")),
+                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_14.png"))
+
+            });
+            skeletonDying.Between = TimeSpan.FromMilliseconds(150);
+            this.AddSequence("dying_skeleton", skeletonDying);
         }
     }
 }
