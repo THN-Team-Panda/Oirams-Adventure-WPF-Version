@@ -148,5 +148,49 @@ namespace GameEngine.GameObjects
             if (session == runningToken)
                 runningToken = -1;
         }
+
+        /// <summary>
+        /// Play a sequence endless in the background
+        /// </summary>
+        /// <param name="name">Identifier of the sequence</param>
+        /// <param name="directionLeft">Sets the sprite rotation</param>
+        /// <exception cref="UnknownAnimationSequenceException">If the sequence name is unkown</exception>
+        public async void EndlessLoopSequenceAsync(string name, bool directionLeft = false)
+        {
+            if (!AnimationCollection.ContainsKey(name))
+                throw new UnknownAnimationSequenceException();
+
+            if (runningToken != -1)
+                return;
+
+            long session = DateTime.Now.Ticks;
+
+            // Make this session the current active session
+            runningToken = session;
+
+            PlayableSequence sequence = AnimationCollection[name];
+
+            while (true)
+            {
+                foreach (ImageSource image in sequence)
+                {
+                    // Return is case that this is no longer the running session
+                    if (session != runningToken)
+                        return;
+
+                    SetSprite(image, directionLeft);
+
+                    await Task.Delay(sequence.Between);
+                }
+
+                if (session != runningToken)
+                    return;
+            }
+        }
+
+        /// <summary>
+        /// Stop the current sequence from playing
+        /// </summary>
+        public void StopCurrentSequence() => runningToken = -1;
     }
 }
