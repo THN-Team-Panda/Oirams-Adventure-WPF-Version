@@ -21,7 +21,7 @@ namespace OA_Game
         /// <summary>
         /// Max amount of munition the player can carry.
         /// </summary>
-        private const int MaxMunition = 10;
+        public const int MaxMunition = 10;
 
         /// <summary>
         /// TimeSpan Object how long the player invincible state should least
