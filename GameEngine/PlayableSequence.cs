@@ -6,7 +6,7 @@ namespace GameEngine
     /// <summary>
     /// A information set for a playable sequence
     /// </summary>
-    public struct PlayableSequence : IEnumerable
+    public class PlayableSequence : IEnumerable
     {
         /// <summary>
         /// The sprites to play in the correct order
@@ -17,6 +17,17 @@ namespace GameEngine
         /// Time between each sprite
         /// </summary>
         public TimeSpan Between = TimeSpan.FromMilliseconds(10);
+
+        /// <summary>
+        /// Event collection
+        /// </summary>
+        public event SequenceEndEvent ?SequenceFinished;
+
+        /// <summary>
+        /// Event template
+        /// </summary>
+        /// <param name="sender">Event sender objekt</param>
+        public delegate void SequenceEndEvent(object sender);
 
         /// <summary>
         /// Instance a playable sequence
@@ -42,5 +53,11 @@ namespace GameEngine
             for(int i = 0; i < sprites.Length; i++)
                 yield return sprites[i];
         }
+
+        /// <summary>
+        /// Calls all events. Helper function to make the events accessable from the outside.
+        /// </summary>
+        /// <param name="sender">Sender objekt</param>
+        public void CallEvents(object sender) => SequenceFinished?.Invoke(sender);
     }
 }
