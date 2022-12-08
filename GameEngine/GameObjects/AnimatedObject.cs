@@ -79,6 +79,13 @@ namespace GameEngine.GameObjects
 
             PlayableSequence sequence = AnimationCollection[name];
 
+            // If set, play the sound element
+            if (sequence.SoundObject != null)
+            {
+                sequence.SoundObject.Position = TimeSpan.Zero;
+                sequence.SoundObject.Play();
+            }
+
             foreach (ImageSource image in sequence)
             {
                 // Return is case that this is no longer the running session
@@ -128,6 +135,13 @@ namespace GameEngine.GameObjects
             runningToken = session;
 
             PlayableSequence sequence = AnimationCollection[name];
+
+            // If set, play the sound element
+            if (sequence.SoundObject != null)
+            {
+                sequence.SoundObject.Position = TimeSpan.Zero;
+                sequence.SoundObject.Play();
+            }
 
             foreach (ImageSource image in sequence)
             {
@@ -179,6 +193,13 @@ namespace GameEngine.GameObjects
 
             while (true)
             {
+                // If set, play the sound element
+                if (sequence.SoundObject != null)
+                {
+                    sequence.SoundObject.Position = TimeSpan.Zero;
+                    sequence.SoundObject.Play();
+                }
+
                 foreach (ImageSource image in sequence)
                 {
                     // Return is case that this is no longer the running session

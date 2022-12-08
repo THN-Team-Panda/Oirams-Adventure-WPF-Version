@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 using System.Windows.Media;
 
 namespace GameEngine
@@ -19,9 +20,14 @@ namespace GameEngine
         public TimeSpan Between = TimeSpan.FromMilliseconds(10);
 
         /// <summary>
+        /// Sound Object
+        /// </summary>
+        public readonly MediaPlayer? SoundObject;
+
+        /// <summary>
         /// Event collection
         /// </summary>
-        public event SequenceEndEvent ?SequenceFinished;
+        public event SequenceEndEvent? SequenceFinished;
 
         /// <summary>
         /// Event template
@@ -45,12 +51,29 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// Instance a playable sequence
+        /// Note: Must be played by an animated object
+        /// Note: The sprites are sorted and the array starts with zero
+        /// </summary>
+        /// <param name="spriteOrder">A list of sprite numbers; at least two</param>
+        /// <param name="soundFile">Uri to the sound file</param>
+        /// <exception cref="ArgumentException">If the sequence is to small</exception>
+        public PlayableSequence(ImageSource[] spriteOrder, Uri soundFile) : this(spriteOrder)
+        {
+            SoundObject = new MediaPlayer();
+            SoundObject.Open(soundFile);
+
+            if (SoundObject.NaturalDuration > Between * spriteOrder.Length)
+                Debug.WriteLine("Sound Media is longer than the animation sequence.");
+        }
+
+        /// <summary>
         /// Get all sprites as a image source list
         /// </summary>
         /// <returns>list of image source</returns>
         public IEnumerator GetEnumerator()
         {
-            for(int i = 0; i < sprites.Length; i++)
+            for (int i = 0; i < sprites.Length; i++)
                 yield return sprites[i];
         }
 
