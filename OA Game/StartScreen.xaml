@@ -21,17 +21,17 @@
         </Button>
 
 
-        <Button Name ="Level2" Content="Level 2"  FontFamily ="{StaticResource Silkscreen}" Foreground="white" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,220,0,0" VerticalAlignment="Top" Height="50" Width="400" Click ="OpenLevel_Click" IsEnabled="false">
+        <Button Name ="Level2" Content="Level 2"  FontFamily ="{StaticResource Silkscreen}" Foreground="white" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,220,0,0" VerticalAlignment="Top" Height="50" Width="400" Click ="OpenLevel_Click" IsEnabled="true">
 
             <Button.Background>
-                <ImageBrush ImageSource ="C:\Users\eddi6\source\repos\oa-game\OA Game\Assets\Images\ButtonBackGround.jpg"  ></ImageBrush>
+                <ImageBrush ImageSource ="C:\Users\eddi6\source\repos\oa-game\OA Game\Assets\Images\ButtonBackGround2.jpg"  ></ImageBrush>
             </Button.Background>
             
         </Button>
 
-        <Button Name ="Level3" Content="Level 3"  FontFamily ="{StaticResource Silkscreen}" Foreground="white" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,290,0,0" VerticalAlignment="Top" Height="50" Width="400" Click="OpenLevel_Click" IsEnabled="false">
+        <Button Name ="Level3" Content="Level 3"  FontFamily ="{StaticResource Silkscreen}" Foreground="white" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,290,0,0" VerticalAlignment="Top" Height="50" Width="400" Click="OpenLevel_Click" IsEnabled="true">
             <Button.Background>
-                <ImageBrush ImageSource ="C:\Users\eddi6\source\repos\oa-game\OA Game\Assets\Images\ButtonBackGround.jpg"  ></ImageBrush>
+                <ImageBrush ImageSource ="C:\Users\eddi6\source\repos\oa-game\OA Game\Assets\Images\ButtonBackGround3.jpg"  ></ImageBrush>
             </Button.Background>
         </Button>
 
