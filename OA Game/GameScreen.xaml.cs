@@ -129,7 +129,7 @@ namespace OA_Game
             gameLoop.Events += SpawnObjects;
             gameLoop.Events += GameOver;
             gameLoop.Events += CheckCollisionWithMovingObjects;
-            gameLoop.Events += Move_Enemies;
+            gameLoop.Events += MoveEnemies;
             gameLoop.Events += CollectGarbage;
             gameLoop.Events += UpdateStatusBar;
             gameLoop.Start();
@@ -235,16 +235,20 @@ namespace OA_Game
 
         }
 
-        private void Move_Enemies()
+        /// <summary>
+        /// Move all enemies
+        /// </summary>
+        private void MoveEnemies()
         {
-            for (int i = 0; i < map.SpawnedObjects.Count; i++)
+            foreach (AnimatedObject obj in map.SpawnedObjects)
             {
-                if (map.SpawnedObjects[i] is Skeleton)
-                {
-                    ((Skeleton)map.SpawnedObjects[i]).Move(map);
-                }
+                if(obj is Enemie enemie)
+                    enemie.Move(map);
             }
+
         }
+
+
         /// <summary>
         /// Check the user input to move the player or attack.
         /// </summary>
