@@ -6,13 +6,34 @@
         xmlns:local="clr-namespace:OA_Game"
         mc:Ignorable="d"
         Title="Welcome!" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+
+   
     <Grid Name="LevelView">
 
         <Image Name="Backscreen" Stretch ="Fill"  VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-        <Button Name ="Level1" Content="Level 1"  HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top" Height="50" Width="400" Background="#FF00CBFA" Click="OpenLevel_Click" />
-        <Button Name ="Level2" Content="Level 2"  HorizontalAlignment="Center" Margin="0,220,0,0" VerticalAlignment="Top" Height="50" Width="400" Background="#FF00CBFA" Click ="OpenLevel_Click" IsEnabled="false" />
-        <Button Name ="Level3" Content="Level 3"  HorizontalAlignment="Center" Margin="0,290,0,0" VerticalAlignment="Top" Height="50" Width="400" Background="#FF00CBFA" Click="OpenLevel_Click" IsEnabled="false"/>
+        <Button Name ="Level1" Content="Level 1"  FontFamily ="{StaticResource Silkscreen}"  Foreground="white" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top" Height="50" Width="400" Click="OpenLevel_Click" >
+
+            <Button.Background>
+                <ImageBrush ImageSource ="C:\Users\eddi6\source\repos\oa-game\OA Game\Assets\Images\ButtonBackGround.jpg"  ></ImageBrush>
+            </Button.Background>
+
+        </Button>
+
+
+        <Button Name ="Level2" Content="Level 2"  FontFamily ="{StaticResource Silkscreen}" Foreground="white" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,220,0,0" VerticalAlignment="Top" Height="50" Width="400" Click ="OpenLevel_Click" IsEnabled="true">
+
+            <Button.Background>
+                <ImageBrush ImageSource ="C:\Users\eddi6\source\repos\oa-game\OA Game\Assets\Images\ButtonBackGround2.jpg"  ></ImageBrush>
+            </Button.Background>
+            
+        </Button>
+
+        <Button Name ="Level3" Content="Level 3"  FontFamily ="{StaticResource Silkscreen}" Foreground="white" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,290,0,0" VerticalAlignment="Top" Height="50" Width="400" Click="OpenLevel_Click" IsEnabled="true">
+            <Button.Background>
+                <ImageBrush ImageSource ="C:\Users\eddi6\source\repos\oa-game\OA Game\Assets\Images\ButtonBackGround3.jpg"  ></ImageBrush>
+            </Button.Background>
+        </Button>
 
 
     </Grid>

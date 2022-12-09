@@ -19,7 +19,7 @@ namespace OA_Game
             LevelView.Height = Preferences.ViewHeight;
             LevelView.Width = Preferences.ViewWidth;
 
-            Backscreen.Source = new BitmapImage(Assets.GetUri("Images/StartScreen/Background.jpg"));
+            Backscreen.Source = new BitmapImage(Assets.GetUri("Images\\Environment\\back.png"));
 
             EnableButton();
         }
@@ -81,7 +81,6 @@ namespace OA_Game
                 Level3.IsEnabled = true;
             }
         }
-
 
     }
 }
