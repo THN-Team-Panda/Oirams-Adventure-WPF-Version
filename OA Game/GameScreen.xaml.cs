@@ -10,6 +10,7 @@ using GameEngine;
 using GameEngine.GameObjects;
 using OA_Game.Enemies;
 using OA_Game.Items;
+using OA_Game.Bullets;
 
 namespace OA_Game
 {
@@ -126,7 +127,8 @@ namespace OA_Game
             gameLoop.Events += InputKeyboard;
             gameLoop.Events += UpdateCamera;
             gameLoop.Events += MovePlayer;
-            gameLoop.Events += SpawnObjects;
+            gameLoop.Events += SpawnObjectsFromMap;
+            gameLoop.Events += SpawnObjectsFromObjects;
             gameLoop.Events += GameOver;
             gameLoop.Events += CheckCollisionWithMovingObjects;
             gameLoop.Events += MoveEnemies;
@@ -140,7 +142,7 @@ namespace OA_Game
         /// check if the player gets damage from touching a obstacle
         /// </summary>
         private void MovePlayer()
-        { 
+        {
             player.Move(map);
 
             // Bugfix: https://git.informatik.fh-nuernberg.de/team-panda/oa-game/-/issues/102
@@ -227,7 +229,7 @@ namespace OA_Game
                 {
                     if (obj is Item item)
                         player.Collect(item);
-                    
+
 
                     if (obj is Enemy enemy)
                         ((IInteractable)enemy).Attack(player);
@@ -258,7 +260,7 @@ namespace OA_Game
         /// <summary>
         /// Spawn Items and Ememies if player is in range.
         /// </summary>
-        private void SpawnObjects()
+        private void SpawnObjectsFromMap()
         {
             NotSpawnedObject? toSpawn = map.SpawnObjectNearby(player.Position, Preferences.ViewWidth);
             if (toSpawn == null) return;
@@ -285,6 +287,39 @@ namespace OA_Game
             newObject.Position = toSpawn.Position;
             map.SpawnedObjects.Add(newObject);
             mapCanvas.Children.Add(newObject.Rectangle);
+        }
+
+        /// <summary>
+        /// Spawn objects from a Spawn list
+        /// </summary>
+        private void SpawnObjectsFromObjects()
+        {
+            foreach (AnimatedObject obj in map.SpawnedObjects)
+                if (obj is ICanSpawnObjects element)
+                    if (element.SpawnList.Count > 0)
+                    {
+                        NotSpawnedObject toSpawn = element.SpawnList[0];
+
+                        AnimatedObject newObject = toSpawn.ClassName switch
+                        {
+                            "Bullet" => toSpawn.Name switch
+                            {
+                                "Tone" => new Tone(16, 16, new BitmapImage(Assets.GetUri("Images/Note/Note_1.png"))),
+                                "Egg" => throw new NotImplementedException(),
+                                _ => throw new ArgumentException("Item Not Known")
+                            },
+                            _ => throw new ArgumentException("Class Not Known"),
+                        };
+
+                        newObject.Position = toSpawn.Position;
+
+                        if(element is IInteractable directable)
+                            ((IInteractable)newObject).DirectionLeft = directable.DirectionLeft;
+
+                        map.SpawnedObjects.Add(newObject);
+                        mapCanvas.Children.Add(newObject.Rectangle);
+                        element.SpawnList.RemoveAt(0);
+                    }
         }
 
         /// <summary>
