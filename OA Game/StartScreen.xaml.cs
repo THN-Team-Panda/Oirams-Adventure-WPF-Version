@@ -3,6 +3,7 @@ using GameEngine;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 namespace OA_Game
 {
@@ -21,6 +22,12 @@ namespace OA_Game
 
             Backscreen.Source = new BitmapImage(Assets.GetUri("Images\\Environment\\back.png"));
 
+            Level1.Background = new ImageBrush(new BitmapImage(Assets.GetUri("Images\\ButtonBackGround.jpg")));
+
+            Level2.Background = new ImageBrush(new BitmapImage(Assets.GetUri("Images\\ButtonBackGround2.jpg")));
+
+            Level3.Background = new ImageBrush(new BitmapImage(Assets.GetUri("Images\\ButtonBackGround3.jpg")));
+
             EnableButton();
         }
         /// <summary>
@@ -31,7 +38,8 @@ namespace OA_Game
         /// <exception cref="ArgumentOutOfRangeException"></exception>
 
         private void OpenLevel_Click(object sender, RoutedEventArgs e)
-        {
+        {            
+
             Button senderButton = (Button)sender;
             OpenLevel(senderButton.Content switch
             {
