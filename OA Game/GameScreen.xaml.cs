@@ -12,6 +12,7 @@ using OA_Game.Enemies;
 using OA_Game.Items;
 
 using OA_Game.Bullets;
+using System.Collections.Generic;
 
 namespace OA_Game
 {
@@ -226,15 +227,15 @@ namespace OA_Game
                 player.Velocity = player.Velocity with { X = 1.4 };
             }
             if (Keyboard.IsKeyDown(Key.Space))
-            {  
-                if (player.CanShoot && player.Munition > 0)
-                {
-                    Tone shot = new Tone(16, 16, new BitmapImage(Assets.GetUri("Images/Note/Note_1.png")));
-                    shot.Position = player.Position;
-                    shot.DirectionLeft = player.DirectionLeft;
-                    mapCanvas.Children.Add(shot.Rectangle);
-                    map.SpawnedObjects.Add(shot);
-                }
+            {
+                //if (player.CanShoot && player.Munition > 0)
+                //{
+                //    Tone shot = new Tone(16, 16, new BitmapImage(Assets.GetUri("Images/Note/Note_1.png")));
+                //    shot.Position = player.Position;
+                //    shot.DirectionLeft = player.DirectionLeft;
+                //    mapCanvas.Children.Add(shot.Rectangle);
+                //    map.SpawnedObjects.Add(shot);
+                //}
                 player.Shoot();
             }
         }
@@ -317,12 +318,18 @@ namespace OA_Game
         /// </summary>
         private void SpawnObjectsFromObjects()
         {
+            List<AnimatedObject> list = new List<AnimatedObject>();
+            list.Add(player);
             foreach (AnimatedObject obj in map.SpawnedObjects)
+            {
+                if (obj is FliegeVieh)
+                    list.Add((FliegeVieh)obj);
+            }
+            foreach (AnimatedObject obj in list)
                 if (obj is ICanSpawnObjects element)
                     if (element.SpawnList.Count > 0)
                     {
                         NotSpawnedObject toSpawn = element.SpawnList[0];
-
                         AnimatedObject newObject = toSpawn.ClassName switch
                         {
                             "Bullet" => toSpawn.Name switch
@@ -337,7 +344,7 @@ namespace OA_Game
                         newObject.Position = toSpawn.Position;
 
                         if (element is IInteractable directable)
-                            ((IInteractable)newObject).DirectionLeft = directable.DirectionLeft;
+                            ((IInteractable)newObject).DirectionLeft = !directable.DirectionLeft;
 
                         map.SpawnedObjects.Add(newObject);
                         mapCanvas.Children.Add(newObject.Rectangle);

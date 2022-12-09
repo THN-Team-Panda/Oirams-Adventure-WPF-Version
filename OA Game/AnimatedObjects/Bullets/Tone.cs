@@ -37,8 +37,6 @@ namespace OA_Game.Bullets
             toneCollide.SequenceFinished += (object sender) => { ObjectIsTrash = true; };
             toneCollide.Between = TimeSpan.FromMilliseconds(50);
             AddSequence("collide_tone", toneCollide);
-
-            EndlessLoopSequenceAsync("animation_tone", true);
         }
 
         public bool DirectionLeft { get; set; }
@@ -65,12 +63,13 @@ namespace OA_Game.Bullets
             if (IsDying)
                 return;
 
-            if (DirectionLeft)
+            if (!DirectionLeft) 
                 Velocity = Velocity with { X = -3 };
+               
             else
                 Velocity = Velocity with { X = 3 };
-
-            this.PlaySequenceAsync("animation_tone", DirectionLeft, true);
+                
+            this.PlaySequenceAsync("animation_tone", DirectionLeft, true, false);
             TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, this);
             if (collidedWithWhat[1] == TileTypes.Ground || collidedWithWhat[3] == TileTypes.Ground)  // fliegt von rechts gegen wand || fliegt von links gegen Wand 
             {

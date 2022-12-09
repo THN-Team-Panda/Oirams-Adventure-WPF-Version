@@ -360,7 +360,7 @@ namespace OA_Game
                 return;
 
             CanShoot = false;
-            //SpawnList.Add(new NotSpawnedObject("Tone","Bullet",this.Position));
+            SpawnList.Add(new NotSpawnedObject("Tone","Bullet",this.Position));
             Munition--;
             return;
         }
