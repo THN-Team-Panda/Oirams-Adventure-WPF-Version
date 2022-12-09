@@ -4,14 +4,16 @@ using GameEngine;
 using System;
 using System.Windows.Media.Imaging;
 using OA_Game.Enemies;
+using OA_Game.Items;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace OA_Game
 {
     /// <summary>
     /// Represent the main character O'iram.
     /// </summary>
-    public class Player : AnimatedObject, IDirectable
+    public class Player : AnimatedObject, IInteractable
     {
         /// <summary>
         /// Represent the extra Live.
@@ -59,6 +61,8 @@ namespace OA_Game
         /// </summary>
         public int Munition { get; set; } = 0;
 
+        public bool IsDying { get; set; } = false;
+
         /// <summary>
         /// Set the default image of player
         /// </summary>
@@ -79,8 +83,6 @@ namespace OA_Game
             }
         }
 
-
-
         /// <summary>
         /// Bool to Indicates if the Player can jump
         /// </summary>
@@ -93,7 +95,7 @@ namespace OA_Game
 
         public Player(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
-            this.HasHat = true;
+            HasHat = true;
             DirectionLeft = false;
 
             PlayableSequence playerMove = new PlayableSequence(new ImageSource[]
@@ -179,6 +181,8 @@ namespace OA_Game
                 new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_6.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_7.png"))
             });
+
+            playerDying.SequenceFinished += (object sender) => { ObjectIsTrash = true; };
             playerDying.Between = TimeSpan.FromMilliseconds(50);
             this.AddSequence("dying", playerDying);
 
@@ -188,7 +192,7 @@ namespace OA_Game
         /// Helper methode to play the sprite and set the player looking direction
         /// </summary>
         /// <param name="sequnece"></param>
-        public void PlayPlayerSpriteMovement(string sequnece)
+        private void PlayPlayerSpriteMovement(string sequnece)
         {
             if (this.Velocity.Y > 0.01)  // jumping up
             {
@@ -241,70 +245,93 @@ namespace OA_Game
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public bool Collect(Items.Item obj)
+        public void Collect(Item obj)
         {
-            if (obj is Items.Hat && HasHat == false)
+            if (obj.IsCollected)
+                return;
+
+            if (obj is Hat && HasHat == false)
             {
                 HasHat = true;
-                return true;
+                obj.Collect();
             }
 
-            if (obj is Items.Note)
+            if (obj is Note && Munition < MaxMunition)
             {
-                if (Munition < MaxMunition)
-                {
-                    Munition += 1;
-                    return true;
-                }
+                Munition += 1;
+                obj.Collect();
             }
-            return false;
         }
 
-        /// <summary>
-        /// Returns true if player dies, else player only gets damage and returns false
-        /// Note: If the player gets damage and doesn't die, set the invincible state
-        /// </summary>
-        /// <param name="enemie"></param>
-        /// <returns></returns>
-        public bool GetDamage(Enemie? enemie = null)
+        public void Move(Map map)
+        {
+            if (IsDying)
+                return;
+
+            Velocity = Velocity with { X = Velocity.X * .9 };
+            Velocity += Physics.Gravity;
+            TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, this);
+
+            if (collidedWithWhat.Contains(TileTypes.Obstacle))
+                GetDamage(1);
+
+            // Check if player can jump
+            if (collidedWithWhat[0] == TileTypes.Ground) CanJump = true;
+            else CanJump = false;
+
+            // Apply velocity
+            Position += Velocity;
+
+            if (HasHat)
+            {
+                if (!CanJump)
+                {
+                    PlayPlayerSpriteMovement("jumpCap");
+                }
+                PlayPlayerSpriteMovement("moveCap");
+            }
+            else
+            {
+                if (!CanJump)
+                {
+                    PlayPlayerSpriteMovement("jump");
+                }
+                PlayPlayerSpriteMovement("move");
+            }
+        }
+
+        public void Attack(AnimatedObject obj)
+        {
+        }
+
+        public void Die()
+        {
+            IsDying = true;
+            PlaySequenceAsync("dying", DirectionLeft, true, true);
+        }
+
+        public void GetDamage(int damage)
         {
             if (Invincible)
-                return false;
-            
-            // Player got one damage
-            
-            if (enemie is null)
-            {
-                
-                if (HasHat)
-                {
-                    HasHat = false;
-                }
+                return;
 
-                else return true;
-            }
-            else if (enemie.Damage == 1)
+            if (damage == 1 && !HasHat)
             {
-                enemie.Is_Attacking = true;
-                enemie.Attack();
-                
-                if (HasHat)
-                {
-                    HasHat = false;
-                }
-                
-                else return true;
+                Die();
+            }
+            else if (damage == 1 && HasHat)
+            {
+                HasHat = false;
+
+                PlaySequenceAsync("damage", DirectionLeft, true, true);
             }
 
-            // Player got two damage and is dead
-            else if (enemie.Damage >= 2)
+            else if (damage >= 2)
             {
-                HasHat = false;                
-                return true;
+                Die();
             }
 
             Invincible = true;
-            return false;
         }
 
         /// <summary>

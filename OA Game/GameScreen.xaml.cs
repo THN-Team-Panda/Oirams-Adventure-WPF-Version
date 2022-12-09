@@ -46,7 +46,7 @@ namespace OA_Game
         /// <summary>
         /// Stop the time in game
         /// </summary>
-        public Stopwatch stopwatch = new Stopwatch(); 
+        public Stopwatch stopwatch = new Stopwatch();
 
         /// <summary>
         /// The GameScreen is the main game window.
@@ -140,71 +140,19 @@ namespace OA_Game
         /// check if the player gets damage from touching a obstacle
         /// </summary>
         private void MovePlayer()
-        {
-            player.Velocity = player.Velocity with { X = player.Velocity.X * .9 };
-            player.Velocity += Physics.Gravity;
-            TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, player);
-            if (collidedWithWhat.Contains(TileTypes.Obstacle))
-            {
-                if (player.GetDamage())
-                {
-                    if (player.DirectionLeft)
-                    {
-                        player.PlaySequence("dying", true, false);
-                    }
-                    else if (!player.DirectionLeft)
-                    {
-                        player.PlaySequence("dying", false, false);
-                    }
-
-                    player.ObjectIsTrash = true;
-                }
-                else if (!player.GetDamage())
-                {
-                    if (player.DirectionLeft)
-                    {
-                        player.PlaySequenceAsync("damage", true, true);
-                    }
-                    else if (!player.DirectionLeft)
-                    {
-                        player.PlaySequenceAsync("damage", false, true);
-                    }
-                }
-            }
-
-            if (collidedWithWhat[0] == TileTypes.Ground) player.CanJump = true;
-            else player.CanJump = false;
-
-            player.Position += player.Velocity;
+        { 
+            player.Move(map);
 
             // Bugfix: https://git.informatik.fh-nuernberg.de/team-panda/oa-game/-/issues/102
             // Make sure that the player is unable to leave the viewPort Area
             if (player.Position.X < -camera.CurrentAngelHorizontal)
                 player.Position = new Vector(-camera.CurrentAngelHorizontal, player.Position.Y);
-
-            if (player.HasHat)
-            {
-                if (!player.CanJump)
-                {
-                    player.PlayPlayerSpriteMovement("jumpCap");
-                }
-                player.PlayPlayerSpriteMovement("moveCap");
-            }
-            else
-            {
-                if (!player.CanJump)
-                {
-                    player.PlayPlayerSpriteMovement("jump");
-                }
-                player.PlayPlayerSpriteMovement("move");
-            }
         }
         /// <summary>
         /// Check if Player is dead or in finish or out of map
         /// </summary>
         private void GameOver()
         {
-
             //checks if Player is dead
             if (player.ObjectIsTrash)
             {
@@ -225,14 +173,13 @@ namespace OA_Game
                 Close();
             }
 
-            ////if Player falls out of map
+            // if Player falls out of map
             else if (player.Position.Y >= map.MapHeight)
             {
                 gameLoop.Stop();
 
                 Close();
             }
-
         }
 
         /// <summary>
@@ -242,10 +189,9 @@ namespace OA_Game
         {
             foreach (AnimatedObject obj in map.SpawnedObjects)
             {
-                if(obj is Enemie enemie)
-                    enemie.Move(map);
+                if (obj is Enemy enemie)
+                    ((IInteractable)enemie).Move(map);
             }
-
         }
 
 
@@ -279,44 +225,12 @@ namespace OA_Game
             {
                 if (Physics.CheckCollisionBetweenGameObjects(player, obj))
                 {
+                    if (obj is Item item)
+                        player.Collect(item);
+                    
 
-                    if (obj is Items.Item)
-                    {
-                        if (player.Collect((Items.Item)obj))
-                        {
-                            obj.ObjectIsTrash = true;
-                        }
-                    }
-
-                    if (obj is Enemies.Enemie)
-                    {
-                        if (player.GetDamage((Enemie)obj))
-                        {
-                            if (player.DirectionLeft)
-                            {
-                                player.PlaySequence("dying", true, false);
-                            }
-                            else if (!player.DirectionLeft)
-                            {
-                                player.PlaySequence("dying", false, false);
-                            }
-                            player.ObjectIsTrash = true;
-                        }
-
-                        else if (player.GetDamage((Enemie)obj) == false)
-                        {
-                            if (player.DirectionLeft)
-                            {
-                                player.PlaySequenceAsync("damage", true, true);
-
-                            }
-                            else if (!player.DirectionLeft)
-                            {
-                                player.PlaySequenceAsync("damage", false, true);
-                            }
-
-                        }
-                    }
+                    if (obj is Enemy enemy)
+                        ((IInteractable)enemy).Attack(player);
                 }
             }
         }
@@ -324,10 +238,7 @@ namespace OA_Game
         /// <summary>
         /// Update ViewPort to the current Position of Player.
         /// </summary>
-        private void UpdateCamera()
-        {
-            camera.SmartCamera((Point)player.Position);
-        }
+        private void UpdateCamera() => camera.SmartCamera((Point)player.Position);
 
         /// <summary>
         /// Delete all collected items, dead Enemies or shot notes.
@@ -341,9 +252,7 @@ namespace OA_Game
                     mapCanvas.Children.Remove(map.SpawnedObjects[i].Rectangle);
                     map.SpawnedObjects.Remove(map.SpawnedObjects[i]);
                 }
-
             }
-
         }
 
         /// <summary>

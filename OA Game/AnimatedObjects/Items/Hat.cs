@@ -10,30 +10,49 @@ namespace OA_Game.Items
     /// </summary>
     public class Hat : Item
     {
+        public override bool IsCollected { get; set; } = false;
+
+
         public Hat(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
-            PlayableSequence Hat_Animation = new PlayableSequence(new ImageSource[]
+            PlayableSequence hatAnimation = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/Cap/Cap_1.png")),
                 new BitmapImage(Assets.GetUri("Images/Cap/Cap_2.png")),
                 new BitmapImage(Assets.GetUri("Images/Cap/Cap_3.png")),
                 new BitmapImage(Assets.GetUri("Images/Cap/Cap_4.png")),
-                new BitmapImage(Assets.GetUri("Images/Cap/Cap_5.png")),
-                new BitmapImage(Assets.GetUri("Images/Cap/Cap_6.png")),
-                new BitmapImage(Assets.GetUri("Images/Cap/Cap_7.png"))
+                new BitmapImage(Assets.GetUri("Images/Cap/Cap_3.png")),
+                new BitmapImage(Assets.GetUri("Images/Cap/Cap_2.png"))
             });
-            Hat_Animation.Between = TimeSpan.FromMilliseconds(150);
-            this.AddSequence("animation_hat", Hat_Animation);
+            hatAnimation.Between = TimeSpan.FromMilliseconds(150);
+            AddSequence("animation_hat", hatAnimation);
 
-            PlayableSequence Hat_Collect = new PlayableSequence(new ImageSource[]
+            PlayableSequence hatCollect = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/Cap/Cap_1.png")),
                 new BitmapImage(Assets.GetUri("Images/Cap/Cap_2.png")),
                 new BitmapImage(Assets.GetUri("Images/Cap/Cap_3.png")),
-                new BitmapImage(Assets.GetUri("Images/Cap/Cap_4.png"))
+                new BitmapImage(Assets.GetUri("Images/Cap/Cap_4.png")),
+                new BitmapImage(Assets.GetUri("Images/Cap/Cap_3.png")),
+                new BitmapImage(Assets.GetUri("Images/Cap/Cap_2.png")),
+                new BitmapImage(Assets.GetUri("Images/Cap/Cap_5.png")),
+                new BitmapImage(Assets.GetUri("Images/Cap/Cap_6.png")),
+                new BitmapImage(Assets.GetUri("Images/Cap/Cap_7.png")),
+                new BitmapImage(Assets.GetUri("Images/Cap/Cap_6.png")),
+                new BitmapImage(Assets.GetUri("Images/Cap/Cap_5.png"))
             });
-            Hat_Collect.Between = TimeSpan.FromMilliseconds(150);
-            this.AddSequence("collect_hat", Hat_Collect);
+            hatCollect.SequenceFinished += (object sender) => { ObjectIsTrash = true; };
+            hatCollect.Between = TimeSpan.FromMilliseconds(150);
+            AddSequence("collect_hat", hatCollect);
+
+            EndlessLoopSequenceAsync("animation_hat", true);
         }
+
+        public override void Collect()
+        {
+            IsCollected = true;
+            PlaySequenceAsync("collect_hat", true, false, true);
+        }
+
     }
 }
