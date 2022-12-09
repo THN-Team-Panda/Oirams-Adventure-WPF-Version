@@ -74,6 +74,9 @@ namespace OA_Game.Enemies
 
         public void Attack(AnimatedObject obj)
         {
+            if (IsDying)
+                return;
+
             if (obj is Player player)
                 player.GetDamage(Damage);
 
@@ -110,6 +113,9 @@ namespace OA_Game.Enemies
 
         public void GetDamage(int damage)
         {
+            if (IsDying)
+                return;
+
             if (damage > 0)
                 Die();
         }
