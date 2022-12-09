@@ -7,24 +7,27 @@
         mc:Ignorable="d"
         Title="Welcome!" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
 
-   
+    <Window.Resources>
+        <Style x:Key="MenuButtons" TargetType="Button">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="{StaticResource Silkscreen}"/>
+            <Setter Property="Foreground" Value="WhiteSmoke"/>
+            <Setter Property="Width" Value="400"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+    </Window.Resources>
+    <Window.Background>
+        <ImageBrush/>
+    </Window.Background>
     <Grid Name="LevelView">
 
         <Image Name="Backscreen" Stretch ="Fill"  VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-        <Button Name ="Level1" Content="Level 1"  FontFamily ="{StaticResource Silkscreen}"  Foreground="white" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top" Height="50" Width="400" Click="OpenLevel_Click" >
-
-        </Button>
-
-
-        <Button Name ="Level2" Content="Level 2"  FontFamily ="{StaticResource Silkscreen}" Foreground="white" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,220,0,0" VerticalAlignment="Top" Height="50" Width="400" Click ="OpenLevel_Click" IsEnabled="false">
- 
-        </Button>
-
-        <Button Name ="Level3" Content="Level 3"  FontFamily ="{StaticResource Silkscreen}" Foreground="white" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,290,0,0" VerticalAlignment="Top" Height="50" Width="400" Click="OpenLevel_Click" IsEnabled="false">
-
-        </Button>
-
+        <Button Name ="Level1" Content="Level 1"  Style="{StaticResource MenuButtons}" Margin="0,150,0,0" Click="OpenLevel_Click"/>
+        <Button Name ="Level2" Content="Level 2"  Style="{StaticResource MenuButtons}" Margin="0,220,0,0" Click ="OpenLevel_Click"/>
+        <Button Name ="Level3" Content="Level 3"  Style="{StaticResource MenuButtons}" Margin="0,290,0,0" Click="OpenLevel_Click"/>
 
     </Grid>
 </Window>

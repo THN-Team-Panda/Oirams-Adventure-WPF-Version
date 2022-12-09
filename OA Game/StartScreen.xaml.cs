@@ -20,13 +20,11 @@ namespace OA_Game
             LevelView.Height = Preferences.ViewHeight;
             LevelView.Width = Preferences.ViewWidth;
 
-            Backscreen.Source = new BitmapImage(Assets.GetUri("Images\\Environment\\back.png"));
+            Backscreen.Source = new BitmapImage(Assets.GetUri("Images/Environment/back.png"));
 
-            Level1.Background = new ImageBrush(new BitmapImage(Assets.GetUri("Images\\ButtonBackGround.jpg")));
-
-            Level2.Background = new ImageBrush(new BitmapImage(Assets.GetUri("Images\\ButtonBackGround2.jpg")));
-
-            Level3.Background = new ImageBrush(new BitmapImage(Assets.GetUri("Images\\ButtonBackGround3.jpg")));
+            Level1.Background = new ImageBrush(new BitmapImage(Assets.GetUri("Images/StartScreen/Buttons/button_background_1.jpg")));
+            Level2.Background = new ImageBrush(new BitmapImage(Assets.GetUri("Images/StartScreen/Buttons/button_background_2.jpg")));
+            Level3.Background = new ImageBrush(new BitmapImage(Assets.GetUri("Images/StartScreen/Buttons/button_background_3.jpg")));
 
             EnableButton();
         }
@@ -76,6 +74,10 @@ namespace OA_Game
         /// </summary>
         private void EnableButton()
         {
+            Level1.IsEnabled = true;
+            Level2.IsEnabled = false;
+            Level3.IsEnabled = false;
+
             Saving saving = new(Preferences.GameDataPath);
 
 
