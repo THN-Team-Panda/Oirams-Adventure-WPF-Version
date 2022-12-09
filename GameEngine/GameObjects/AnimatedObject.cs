@@ -79,6 +79,13 @@ namespace GameEngine.GameObjects
 
             PlayableSequence sequence = AnimationCollection[name];
 
+            // If set, play the sound element
+            if (sequence.SoundObject != null)
+            {
+                sequence.SoundObject.Position = TimeSpan.Zero;
+                sequence.SoundObject.Play();
+            }
+
             foreach (ImageSource image in sequence)
             {
                 // Return is case that this is no longer the running session
@@ -100,6 +107,9 @@ namespace GameEngine.GameObjects
             // If this is the active session reset the token
             if (session == runningToken)
                 runningToken = -1;
+
+            // Call all events defined in the sequence
+            sequence.CallEvents(this);
         }
 
         /// <summary>
@@ -126,6 +136,13 @@ namespace GameEngine.GameObjects
 
             PlayableSequence sequence = AnimationCollection[name];
 
+            // If set, play the sound element
+            if (sequence.SoundObject != null)
+            {
+                sequence.SoundObject.Position = TimeSpan.Zero;
+                sequence.SoundObject.Play();
+            }
+
             foreach (ImageSource image in sequence)
             {
                 // Return is case that this is no longer the running session
@@ -147,10 +164,14 @@ namespace GameEngine.GameObjects
             // If this is the active session reset the token
             if (session == runningToken)
                 runningToken = -1;
+
+            // Call all events defined in the sequence
+            sequence.CallEvents(this);
         }
 
         /// <summary>
         /// Play a sequence endless in the background
+        /// Note: This Method throws no sequence events
         /// </summary>
         /// <param name="name">Identifier of the sequence</param>
         /// <param name="directionLeft">Sets the sprite rotation</param>
@@ -172,6 +193,13 @@ namespace GameEngine.GameObjects
 
             while (true)
             {
+                // If set, play the sound element
+                if (sequence.SoundObject != null)
+                {
+                    sequence.SoundObject.Position = TimeSpan.Zero;
+                    sequence.SoundObject.Play();
+                }
+
                 foreach (ImageSource image in sequence)
                 {
                     // Return is case that this is no longer the running session
