@@ -3,6 +3,7 @@ using GameEngine;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 namespace OA_Game
 {
@@ -19,7 +20,11 @@ namespace OA_Game
             LevelView.Height = Preferences.ViewHeight;
             LevelView.Width = Preferences.ViewWidth;
 
-            Backscreen.Source = new BitmapImage(Assets.GetUri("Images/StartScreen/Background.jpg"));
+            Backscreen.Source = new BitmapImage(Assets.GetUri("Images/Environment/back.png"));
+
+            Level1.Background = new ImageBrush(new BitmapImage(Assets.GetUri("Images/StartScreen/Buttons/button_background_1.jpg")));
+            Level2.Background = new ImageBrush(new BitmapImage(Assets.GetUri("Images/StartScreen/Buttons/button_background_2.jpg")));
+            Level3.Background = new ImageBrush(new BitmapImage(Assets.GetUri("Images/StartScreen/Buttons/button_background_3.jpg")));
 
             EnableButton();
         }
@@ -32,15 +37,16 @@ namespace OA_Game
 
         private void OpenLevel_Click(object sender, RoutedEventArgs e)
         {
+
             Button senderButton = (Button)sender;
             OpenLevel(senderButton.Content switch
             {
-                "Level 1" =>1,
-                "Level 2" =>2,
-                "Level 3" =>3,
-                _ => throw new ArgumentOutOfRangeException(nameof(sender),"You didn't click on a Button HOW??")
+                "Level 1" => 1,
+                "Level 2" => 2,
+                "Level 3" => 3,
+                _ => throw new ArgumentOutOfRangeException(nameof(sender), "You didn't click on a Button HOW??")
             });
-            
+
         }
         /// <summary>
         /// Call the constructer if Gamescreen to start the level and hide the Startscreen.
@@ -68,6 +74,10 @@ namespace OA_Game
         /// </summary>
         private void EnableButton()
         {
+            Level1.IsEnabled = true;
+            Level2.IsEnabled = false;
+            Level3.IsEnabled = false;
+
             Saving saving = new(Preferences.GameDataPath);
 
 
@@ -82,7 +92,5 @@ namespace OA_Game
             }
         }
 
-
     }
 }
-
