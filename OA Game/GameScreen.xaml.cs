@@ -10,6 +10,7 @@ using GameEngine;
 using GameEngine.GameObjects;
 using OA_Game.Enemies;
 using OA_Game.Items;
+
 using OA_Game.Bullets;
 
 namespace OA_Game
@@ -132,6 +133,7 @@ namespace OA_Game
             gameLoop.Events += GameOver;
             gameLoop.Events += CheckCollisionWithMovingObjects;
             gameLoop.Events += MoveEnemies;
+            gameLoop.Events += MoveBullets;
             gameLoop.Events += CollectGarbage;
             gameLoop.Events += UpdateStatusBar;
             gameLoop.Start();
@@ -196,6 +198,14 @@ namespace OA_Game
             }
         }
 
+        private void MoveBullets()
+        {
+            foreach (AnimatedObject obj in map.SpawnedObjects)
+            {
+                if (obj is Bullet bullet)
+                    ((IInteractable)bullet).Move(map);
+            }
+        }
 
         /// <summary>
         /// Check the user input to move the player or attack.
@@ -215,7 +225,20 @@ namespace OA_Game
             {
                 player.Velocity = player.Velocity with { X = 1.4 };
             }
+            if (Keyboard.IsKeyDown(Key.Space))
+            {  
+                if (player.CanShoot && player.Munition > 0)
+                {
+                    Tone shot = new Tone(16, 16, new BitmapImage(Assets.GetUri("Images/Note/Note_1.png")));
+                    shot.Position = player.Position;
+                    shot.DirectionLeft = player.DirectionLeft;
+                    mapCanvas.Children.Add(shot.Rectangle);
+                    map.SpawnedObjects.Add(shot);
+                }
+                player.Shoot();
+            }
         }
+
         /// <summary>
         /// Checks collision with items and enemies
         /// gets damage if collision with enemie
@@ -313,7 +336,7 @@ namespace OA_Game
 
                         newObject.Position = toSpawn.Position;
 
-                        if(element is IInteractable directable)
+                        if (element is IInteractable directable)
                             ((IInteractable)newObject).DirectionLeft = directable.DirectionLeft;
 
                         map.SpawnedObjects.Add(newObject);
