@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using GameEngine;
 using GameEngine.GameObjects;
 using OA_Game.Enemies;
+using OA_Game.Items;
 
 namespace OA_Game
 {
@@ -128,7 +129,7 @@ namespace OA_Game
             gameLoop.Events += SpawnObjects;
             gameLoop.Events += GameOver;
             gameLoop.Events += CheckCollisionWithMovingObjects;
-            gameLoop.Events += Move_Enemies;
+            gameLoop.Events += MoveEnemies;
             gameLoop.Events += CollectGarbage;
             gameLoop.Events += UpdateStatusBar;
             gameLoop.Start();
@@ -234,14 +235,20 @@ namespace OA_Game
 
         }
 
-        private void Move_Enemies()
+        /// <summary>
+        /// Move all enemies
+        /// </summary>
+        private void MoveEnemies()
         {
-            foreach (Skeleton obj in map.SpawnedObjects)
+            foreach (AnimatedObject obj in map.SpawnedObjects)
             {
-                obj.Move(map);
+                if(obj is Enemie enemie)
+                    enemie.Move(map);
             }
 
         }
+
+
         /// <summary>
         /// Check the user input to move the player or attack.
         /// </summary>
@@ -346,20 +353,20 @@ namespace OA_Game
         {
             NotSpawnedObject? toSpawn = map.SpawnObjectNearby(player.Position, Preferences.ViewWidth);
             if (toSpawn == null) return;
-            var newObject = toSpawn.ClassName switch
+            AnimatedObject newObject = toSpawn.ClassName switch
             {
                 "Enemy" => toSpawn.Name switch
                 {
                     "Skeleton" => new Skeleton(32, 32, new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_1.png"))),
-                    "FliegeVieh" => throw new NotImplementedException(),
-                    "KonkeyDong" => throw new NotImplementedException(),
+                    "FliegeVieh" => new FliegeVieh(32, 32, new BitmapImage(Assets.GetUri("Images/FliegeVieh/FliegeVieh_1.png"))),
+                    "KonkeyDong" => new KonkeyDong(32, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Boombox/Boombox_1.png"))),
                     _ => throw new ArgumentException("Enemy Not Known")
 
                 },
                 "Item" => toSpawn.Name switch
                 {
-                    "Hat" => throw new NotImplementedException(),
-                    "Note" => throw new NotImplementedException(),
+                    "Hat" => new Hat(32, 32, new BitmapImage(Assets.GetUri("Images/Cap/Cap_1.png"))),
+                    "Note" => new Note(32, 32, new BitmapImage(Assets.GetUri("Images/Note/Note_1.png"))),
                     _ => throw new ArgumentException("Item Not Known")
 
                 },

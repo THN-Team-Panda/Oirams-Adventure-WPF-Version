@@ -17,16 +17,17 @@ namespace OA_Game.Enemies
 
         public override void Attack()
         {
-            this.PlaySequenceAsync("attack_skeleton", false, true);
+
         }
 
         public override void Move(Map map)
         {
-            throw new System.NotImplementedException();
+
         }
 
         public KonkeyDong(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
+
         }
     }
 }
