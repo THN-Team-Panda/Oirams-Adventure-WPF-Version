@@ -20,55 +20,59 @@ namespace OA_Game.Enemies
 
         public bool IsDying { get; set; } = false;
 
+        /// <summary>
+        /// Bool to Indicates if the Player can jump
+        /// </summary>
+        public bool CanJump { get; set; }
+
         public KonkeyDong(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
             DirectionLeft = true;
             PlayableSequence donkeykongMove = new PlayableSequence(new ImageSource[]
             {
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_1.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_2.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_3.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_4.png"))
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong_Movement_1.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong_Movement_2.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong_Movement_2.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong_Movement_2.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong_Movement_2.png"))
             });
             donkeykongMove.Between = TimeSpan.FromMilliseconds(150);
-            this.AddSequence("move_donkeykong", donkeykongMove);
+            this.AddSequence("move_konkeydong", donkeykongMove);
 
             PlayableSequence konkeydongAttack = new PlayableSequence(new ImageSource[]
             {
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_1.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_2.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_3.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_4.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_5.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_6.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_7.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_8.png"))
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Attack/KonkeyDong_Attack_1.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Attack/KonkeyDong_Attack_2.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Attack/KonkeyDong_Attack_3.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Attack/KonkeyDong_Attack_4.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Attack/KonkeyDong_Attack_5.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Attack/KonkeyDong_Attack_6.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Attack/KonkeyDong_Attack_7.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Attack/KonkeyDong_Attack_8.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Attack/KonkeyDong_Attack_9.png"))
             });
             konkeydongAttack.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("attack_konkeydong", konkeydongAttack);
 
             PlayableSequence konkeydongDying = new PlayableSequence(new ImageSource[]
             {
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_1.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_2.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_3.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_4.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_5.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_6.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_7.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_8.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_9.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_10.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_11.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_12.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_13.png")),
-                new BitmapImage(Assets.GetUri("Images/Skeleton/Dying/Skeleton_Dying_14.png"))
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Dying/KonkeyDong_Dying_1.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Dying/KonkeyDong_Dying_2.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Dying/KonkeyDong_Dying_3.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Dying/KonkeyDong_Dying_4.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Dying/KonkeyDong_Dying_5.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Dying/KonkeyDong_Dying_6.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Dying/KonkeyDong_Dying_7.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Dying/KonkeyDong_Dying_8.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Dying/KonkeyDong_Dying_9.png")),
+                new BitmapImage(Assets.GetUri("Images/KonkeyDong/Dying/KonkeyDong_Dying_10.png"))
 
             });
             konkeydongDying.SequenceFinished += (object sender) => { ObjectIsTrash = true; };
             konkeydongDying.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("dying_konkeydong", konkeydongDying);
-            Spawn_Boombox();
+            
         }
         /// <summary>
         /// spawn boombox (enemy)
@@ -91,7 +95,41 @@ namespace OA_Game.Enemies
 
         public void Move(Map map)
         {
-            // TODO
+            if (IsDying)
+                return;
+            TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, this);
+            Random rnd = new Random();
+            if (DirectionLeft)
+            {
+                Velocity = Velocity with { X = -1.4 };
+                if (collidedWithWhat[0] == TileTypes.Ground) 
+                {                   
+                    CanJump = false;
+                    Velocity = Velocity with { Y = rnd.Next(-5, -2) };
+                }               
+                PlaySequenceAsync("move_konkeydong", true, true);
+            }
+            else if (!DirectionLeft)
+            {
+                Velocity = Velocity with { X = +1.4 };
+                if (collidedWithWhat[0] == TileTypes.Ground) 
+                {                   
+                    CanJump = false;
+                    Velocity = Velocity with { Y = rnd.Next(-5, -2) };
+                }  
+                PlaySequenceAsync("move_konkeydong", false, true);
+            }
+            Velocity += Physics.Gravity;
+            
+            if (collidedWithWhat[1] == TileTypes.Ground)
+            {
+                DirectionLeft = false;
+            }
+            else if (collidedWithWhat[3] == TileTypes.Ground)
+            {
+                DirectionLeft = true;
+            }
+            Position += Velocity;
         }
 
         public void GetDamage(int damage)
