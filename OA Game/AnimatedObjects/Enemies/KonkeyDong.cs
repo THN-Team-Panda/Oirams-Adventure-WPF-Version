@@ -1,8 +1,16 @@
 ﻿using GameEngine;
 using GameEngine.GameObjects;
+using System.Windows;
+using GameEngine.GameObjects;
 using System;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using GameEngine.Exceptions;
+using TiledCS;
+using System.Windows.Controls;
+using System.Linq;
+
 
 namespace OA_Game.Enemies
 {
@@ -20,13 +28,15 @@ namespace OA_Game.Enemies
 
         public bool IsDying { get; set; } = false;
 
+        public double BoomboxArea;
+
         /// <summary>
         /// Bool to Indicates if the Player can jump
         /// </summary>
         public bool CanJump { get; set; }
 
-        public KonkeyDong(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
-        {
+        public KonkeyDong(int height, int width, ImageSource defaultSprite, Map karte, Vector position) : base(height, width, defaultSprite)
+        {           
             DirectionLeft = true;
             PlayableSequence donkeykongMove = new PlayableSequence(new ImageSource[]
             {
@@ -72,14 +82,18 @@ namespace OA_Game.Enemies
             konkeydongDying.SequenceFinished += (object sender) => { ObjectIsTrash = true; };
             konkeydongDying.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("dying_konkeydong", konkeydongDying);
+            Spawn_Boombox(karte, position);
             
         }
         /// <summary>
         /// spawn boombox (enemy)
         /// </summary>
-        public void Spawn_Boombox()
-        {
-
+        public void Spawn_Boombox(Map karte, Vector position)
+        {                
+            
+            karte.NotSpawnedObjects.Add(new NotSpawnedObject("Boombox", "Enemy", position));
+            BoomboxArea = position.X;
+            karte.NotSpawnedObjects = karte.NotSpawnedObjects.OrderBy(obj => obj.Position.X).ToList();
         }
 
         public void Attack(AnimatedObject obj)
@@ -97,6 +111,7 @@ namespace OA_Game.Enemies
         {
             if (IsDying)
                 return;
+            System.Diagnostics.Debug.WriteLine(Position);
             TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, this);
             Random rnd = new Random();
             if (DirectionLeft)
@@ -121,11 +136,11 @@ namespace OA_Game.Enemies
             }
             Velocity += Physics.Gravity;
             
-            if (collidedWithWhat[1] == TileTypes.Ground)
+            if (collidedWithWhat[1] == TileTypes.Ground || Position.X < BoomboxArea - 8 * 16 && collidedWithWhat[0] == TileTypes.Ground)
             {
                 DirectionLeft = false;
             }
-            else if (collidedWithWhat[3] == TileTypes.Ground)
+            else if (collidedWithWhat[3] == TileTypes.Ground || Position.X > BoomboxArea + 8 * 16 && collidedWithWhat[0] == TileTypes.Ground)
             {
                 DirectionLeft = true;
             }
