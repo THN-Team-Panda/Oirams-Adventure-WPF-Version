@@ -92,7 +92,7 @@ namespace OA_Game
              */
             player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")));
             mapCanvas.Children.Add(player.Rectangle); // a x to the canvas
-            player.Position = new Vector(100, 100);
+            player.Position = (Vector)map.StartPoint;
 
 
             /**
