@@ -7,6 +7,8 @@ using OA_Game.AnimatedObjects.Enemies;
 using OA_Game.AnimatedObjects.Items;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Collections.Generic;
+using OA_Game.AnimatedObjects.Bullets;
 
 namespace OA_Game.AnimatedObjects
 {
@@ -24,6 +26,43 @@ namespace OA_Game.AnimatedObjects
         /// Max amount of munition the player can carry.
         /// </summary>
         public const int MaxMunition = 10;
+
+        /// <summary>
+        /// Is the amount of munition the player has to shoot.
+        /// </summary>
+        public int Munition { get; set; } = 0;
+
+        /// <summary>
+        /// min TimeSpan between two shots 
+        /// </summary>
+        public readonly TimeSpan CooldownTime = TimeSpan.FromMilliseconds(1000);
+
+        /// <summary>
+        /// show if the player is able to shoot (no munition check)
+        /// </summary>
+        public bool CanShoot
+        {
+            get
+            {
+                return canShootState;
+            }
+            set
+            {
+                if (value)
+                {
+                    canShootState = true;
+                    return;
+                }
+
+                canShootState = false;
+                Cooledown();
+            }
+        }
+        /// <summary>
+        /// Private canShootState
+        /// do not chage this value
+        /// </summary>
+        private bool canShootState = true;
 
         /// <summary>
         /// TimeSpan Object how long the player invincible state should least
@@ -57,10 +96,8 @@ namespace OA_Game.AnimatedObjects
         }
 
         /// <summary>
-        /// Is the amount of munition the player has to shoot.
+        /// Interrup every other action.
         /// </summary>
-        public int Munition { get; set; } = 0;
-
         public bool IsDying { get; set; } = false;
 
         /// <summary>
@@ -263,6 +300,10 @@ namespace OA_Game.AnimatedObjects
             }
         }
 
+        /// <summary>
+        /// move player on map
+        /// </summary>
+        /// <param name="map"></param>
         public void Move(Map map)
         {
             if (IsDying)
@@ -302,14 +343,35 @@ namespace OA_Game.AnimatedObjects
 
         public void Attack(AnimatedObject obj)
         {
+            throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Shoot bullet
+        /// </summary>
+        public void Shoot(Map map)
+        {
+            if (IsDying || !CanShoot || Munition < 1)
+                return;
+
+            CanShoot = false;
+            map.AddNotSpawnedObject(new NotSpawnedObject("Tone", "Bullet", Position));
+            Munition--;
+        }
+
+        /// <summary>
+        /// Kills player gameover
+        /// </summary>
         public void Die()
         {
             IsDying = true;
             PlaySequenceAsync("dying", DirectionLeft, true, true);
         }
 
+        /// <summary>
+        /// decrese players live
+        /// </summary>
+        /// <param name="damage"></param>
         public void GetDamage(int damage)
         {
             if (Invincible)
@@ -345,6 +407,19 @@ namespace OA_Game.AnimatedObjects
             await Task.Delay(InvincibleTime);
 
             invincibleState = false;
+        }
+
+        /// <summary>
+        /// Helper method to reset the shoot cooldown
+        /// </summary>
+        private async void Cooledown()
+        {
+            if (CanShoot)
+                return;
+
+            await Task.Delay(CooldownTime);
+
+            CanShoot = true;
         }
     }
 }
