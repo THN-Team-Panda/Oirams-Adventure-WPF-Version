@@ -3,12 +3,12 @@ using GameEngine.GameObjects;
 using GameEngine;
 using System;
 using System.Windows.Media.Imaging;
-using OA_Game.Enemies;
-using OA_Game.Items;
+using OA_Game.AnimatedObjects.Enemies;
+using OA_Game.AnimatedObjects.Items;
 using System.Threading.Tasks;
 using System.Linq;
 
-namespace OA_Game
+namespace OA_Game.AnimatedObjects
 {
     /// <summary>
     /// Represent the main character O'iram.

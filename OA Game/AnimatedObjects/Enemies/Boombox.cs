@@ -1,5 +1,5 @@
 ﻿using GameEngine;
-using OA_Game.Enemies;
+using OA_Game.AnimatedObjects.Enemies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using TiledCS;
 
 namespace OA_Game.AnimatedObjects.Enemies
 {
-    internal class Boombox : Enemy, IInteractable
+    public class Boombox : Enemy, IInteractable
     {
         /// <summary>
         /// property to check the damage output

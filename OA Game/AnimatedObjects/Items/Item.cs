@@ -1,7 +1,7 @@
 ﻿using GameEngine.GameObjects;
 using System.Windows.Media;
 
-namespace OA_Game.Items
+namespace OA_Game.AnimatedObjects.Items
 {
     /// <summary>
     /// Parent class for items(hat and note).

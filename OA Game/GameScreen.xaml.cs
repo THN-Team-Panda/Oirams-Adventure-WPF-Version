@@ -8,8 +8,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GameEngine;
 using GameEngine.GameObjects;
-using OA_Game.Enemies;
-using OA_Game.Items;
+using OA_Game.AnimatedObjects;
+using OA_Game.AnimatedObjects.Items;
+using OA_Game.AnimatedObjects.Enemies;
 
 namespace OA_Game
 {
@@ -129,7 +130,7 @@ namespace OA_Game
             gameLoop.Events += SpawnObjects;
             gameLoop.Events += GameOver;
             gameLoop.Events += CheckCollisionWithMovingObjects;
-            gameLoop.Events += MoveEnemies;
+            gameLoop.Events += MoveInteractableObjects;
             gameLoop.Events += CollectGarbage;
             gameLoop.Events += UpdateStatusBar;
             gameLoop.Start();
@@ -183,15 +184,13 @@ namespace OA_Game
         }
 
         /// <summary>
-        /// Move all enemies
+        /// Move all objects
         /// </summary>
-        private void MoveEnemies()
+        private void MoveInteractableObjects()
         {
             foreach (AnimatedObject obj in map.SpawnedObjects)
-            {
-                if (obj is Enemy enemie)
-                    ((IInteractable)enemie).Move(map);
-            }
+                if (obj is IInteractable moveable)
+                    moveable.Move(map);
         }
 
 
@@ -228,7 +227,6 @@ namespace OA_Game
                     if (obj is Item item)
                         player.Collect(item);
                     
-
                     if (obj is Enemy enemy)
                         ((IInteractable)enemy).Attack(player);
                 }
@@ -268,7 +266,8 @@ namespace OA_Game
                 {
                     "Skeleton" => new Skeleton(32, 32, new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_1.png"))),
                     "FliegeVieh" => new FliegeVieh(32, 32, new BitmapImage(Assets.GetUri("Images/FliegeVieh/FliegeVieh_1.png"))),
-                    "KonkeyDong" => new KonkeyDong(32, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Boombox/Boombox_1.png"))),
+                    "KonkeyDong" => new KonkeyDong(32, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong.png")), map, toSpawn.Position),
+                    "Boombox" => new Boombox(20, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Boombox/Boombox_1.png"))),
                     _ => throw new ArgumentException("Enemy Not Known")
 
                 },
