@@ -1,5 +1,5 @@
 using System;
-using System.IO;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,8 +8,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GameEngine;
 using GameEngine.GameObjects;
-using OA_Game.Enemies;
-using OA_Game.Items;
+using OA_Game.AnimatedObjects;
+using OA_Game.AnimatedObjects.Items;
+using OA_Game.AnimatedObjects.Enemies;
+using OA_Game.AnimatedObjects.Bullets;
 
 namespace OA_Game
 {
@@ -44,6 +46,11 @@ namespace OA_Game
         public int levelId;
 
         /// <summary>
+        /// Stop the time in game
+        /// </summary>
+        public Stopwatch stopwatch = new Stopwatch();
+
+        /// <summary>
         /// The GameScreen is the main game window.
         /// The Constructor loads all nessesary objects!
         /// </summary>
@@ -60,11 +67,11 @@ namespace OA_Game
             map = new Map($"Level{levelId}.tmx", Assets.GetPath("Level_Panda"), Preferences.MapGroundTileIds, Preferences.MapObstacleTileIds);
 
             //render tiles and save image of tilemap in x
-            Image tileMapImage = map.RenderTiles(); 
+            Image tileMapImage = map.RenderTiles();
 
             mapCanvas.Children.Add(tileMapImage);
 
-            Canvas.SetLeft(tileMapImage, 0); 
+            Canvas.SetLeft(tileMapImage, 0);
             Canvas.SetTop(tileMapImage, 0);
             Panel.SetZIndex(tileMapImage, 1);
 
@@ -87,7 +94,7 @@ namespace OA_Game
              */
             player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")));
             mapCanvas.Children.Add(player.Rectangle); // a x to the canvas
-            player.Position = new Vector(100, 100);
+            player.Position = (Vector)map.StartPoint;
 
 
             /**
@@ -102,6 +109,18 @@ namespace OA_Game
             // Init the camera at player start position
             camera = new ViewPort(viewPort, mapCanvas, (Point)player.Position);
 
+            /**
+             * Init StatusBar Icons
+             */
+            StatusBarClockIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Clock/Clock_1.png")));
+            StatusBarHatIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Cap/Cap_1.png")));
+            StatusBarAmmoIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Note/Note_big.png")));
+
+
+            /**
+             * Start the stopwatch
+             */
+            stopwatch.Start();
 
             /**
              * Init the Game Loop Dispatcher
@@ -112,8 +131,9 @@ namespace OA_Game
             gameLoop.Events += SpawnObjects;
             gameLoop.Events += GameOver;
             gameLoop.Events += CheckCollisionWithMovingObjects;
-            gameLoop.Events += Move_Enemies;
+            gameLoop.Events += MoveInteractableObjects;
             gameLoop.Events += CollectGarbage;
+            gameLoop.Events += UpdateStatusBar;
             gameLoop.Start();
         }
 
@@ -123,70 +143,18 @@ namespace OA_Game
         /// </summary>
         private void MovePlayer()
         {
-            player.Velocity = player.Velocity with { X = player.Velocity.X * .9 };
-            player.Velocity += Physics.Gravity;
-            TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, player);
-            if (collidedWithWhat.Contains(TileTypes.Obstacle))
-            {
-                if (player.GetDamage())
-                {
-                    if (player.DirectionLeft)
-                    {
-                        player.PlaySequence("dying", true, false);
-                    }
-                    else if (!player.DirectionLeft)
-                    {
-                        player.PlaySequence("dying", false, false);
-                    }
-
-                    player.ObjectIsTrash = true;
-                }
-                else if (!player.GetDamage())
-                {
-                    if (player.DirectionLeft)
-                    {
-                        player.PlaySequenceAsync("damage", true, true);
-                    }
-                    else if (!player.DirectionLeft)
-                    {
-                        player.PlaySequenceAsync("damage", false, true);
-                    }
-                }
-            }
-
-            if (collidedWithWhat[0] == TileTypes.Ground) player.CanJump = true;
-            else player.CanJump = false;
-
-            player.Position += player.Velocity;
+            player.Move(map);
 
             // Bugfix: https://git.informatik.fh-nuernberg.de/team-panda/oa-game/-/issues/102
             // Make sure that the player is unable to leave the viewPort Area
             if (player.Position.X < -camera.CurrentAngelHorizontal)
-               player.Position = new Vector(-camera.CurrentAngelHorizontal, player.Position.Y);
-
-            if (player.HasHat)
-            {
-                if (!player.CanJump)
-                {
-                    player.PlayPlayerSpriteMovement("jumpCap");
-                }
-                player.PlayPlayerSpriteMovement("moveCap");
-            }
-            else
-            {
-                if (!player.CanJump)
-                {
-                    player.PlayPlayerSpriteMovement("jump");
-                }
-                player.PlayPlayerSpriteMovement("move");
-            }
+                player.Position = new Vector(-camera.CurrentAngelHorizontal, player.Position.Y);
         }
         /// <summary>
         /// Check if Player is dead or in finish or out of map
         /// </summary>
         private void GameOver()
         {
-
             //checks if Player is dead
             if (player.ObjectIsTrash)
             {
@@ -207,24 +175,26 @@ namespace OA_Game
                 Close();
             }
 
-            ////if Player falls out of map
+            // if Player falls out of map
             else if (player.Position.Y >= map.MapHeight)
             {
                 gameLoop.Stop();
 
                 Close();
             }
-
         }
 
-        private void Move_Enemies()
+        /// <summary>
+        /// Move all objects
+        /// </summary>
+        private void MoveInteractableObjects()
         {
-            foreach(Skeleton obj in map.SpawnedObjects)
-            {
-                obj.Move(map);
-            }
-            
+            foreach (AnimatedObject obj in map.SpawnedObjects)
+                if (obj is IInteractable moveable)
+                    moveable.Move(map);
         }
+
+
         /// <summary>
         /// Check the user input to move the player or attack.
         /// </summary>
@@ -243,7 +213,12 @@ namespace OA_Game
             {
                 player.Velocity = player.Velocity with { X = 1.4 };
             }
+            if (Keyboard.IsKeyDown(Key.Space) || Keyboard.IsKeyDown(Key.E))
+            {
+                player.Shoot(map);
+            }
         }
+
         /// <summary>
         /// Checks collision with items and enemies
         /// gets damage if collision with enemie
@@ -255,44 +230,11 @@ namespace OA_Game
             {
                 if (Physics.CheckCollisionBetweenGameObjects(player, obj))
                 {
+                    if (obj is Item item)
+                        player.Collect(item);
 
-                    if (obj is Items.Item)
-                    {
-                        if (player.Collect((Items.Item)obj))
-                        {
-                            obj.ObjectIsTrash = true;
-                        }
-                    }
-
-                    if (obj is Enemies.Enemie)
-                    {
-                        if (player.GetDamage((Enemie)obj))
-                        {
-                            if (player.DirectionLeft)
-                            {
-                                player.PlaySequence("dying", true, false);
-                            }
-                            else if (!player.DirectionLeft)
-                            {
-                                player.PlaySequence("dying", false, false);
-                            }
-                            player.ObjectIsTrash = true;
-                        }
-
-                        else if (player.GetDamage((Enemie)obj) == false)
-                        {
-                            if (player.DirectionLeft)
-                            {
-                                player.PlaySequenceAsync("damage", true, true);
-                                
-                            }
-                            else if (!player.DirectionLeft)
-                            {
-                                player.PlaySequenceAsync("damage", false, true);
-                            }
-                            
-                        }
-                    }
+                    if (obj is Enemy enemy)
+                        ((IInteractable)enemy).Attack(player);
                 }
             }
         }
@@ -300,26 +242,21 @@ namespace OA_Game
         /// <summary>
         /// Update ViewPort to the current Position of Player.
         /// </summary>
-        private void UpdateCamera()
-        {
-            camera.SmartCamera((Point)player.Position);
-        }
+        private void UpdateCamera() => camera.SmartCamera((Point)player.Position);
 
         /// <summary>
         /// Delete all collected items, dead Enemies or shot notes.
         /// </summary>
         private void CollectGarbage()
         {
-            for (int i = map.SpawnedObjects.Count-1; i >=0; i--)
+            for (int i = map.SpawnedObjects.Count - 1; i >= 0; i--)
             {
-                if(map.SpawnedObjects[i].ObjectIsTrash == true)
+                if (map.SpawnedObjects[i].ObjectIsTrash == true)
                 {
                     mapCanvas.Children.Remove(map.SpawnedObjects[i].Rectangle);
-                    map.SpawnedObjects.Remove(map.SpawnedObjects[i]); 
+                    map.SpawnedObjects.Remove(map.SpawnedObjects[i]);
                 }
-                
-            }          
-            
+            }
         }
 
         /// <summary>
@@ -329,29 +266,47 @@ namespace OA_Game
         {
             NotSpawnedObject? toSpawn = map.SpawnObjectNearby(player.Position, Preferences.ViewWidth);
             if (toSpawn == null) return;
-            var newObject = toSpawn.ClassName switch
+            AnimatedObject newObject = toSpawn.ClassName switch
             {
                 "Enemy" => toSpawn.Name switch
                 {
                     "Skeleton" => new Skeleton(32, 32, new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_1.png"))),
-                    "FliegeVieh" => throw new NotImplementedException(),
-                    "KonkeyDong" => throw new NotImplementedException(),
+                    "FliegeVieh" => new FliegeVieh(32, 32, new BitmapImage(Assets.GetUri("Images/FliegeVieh/FliegeVieh_1.png"))),
+                    "KonkeyDong" => new KonkeyDong(32, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong.png")), map, toSpawn.Position),
+                    "Boombox" => new Boombox(20, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Boombox/Boombox_1.png"))),
                     _ => throw new ArgumentException("Enemy Not Known")
 
                 },
                 "Item" => toSpawn.Name switch
                 {
-                    "Hat" => throw new NotImplementedException(),
-                    "Note" => throw new NotImplementedException(),
+                    "Hat" => new Hat(32, 32, new BitmapImage(Assets.GetUri("Images/Cap/Cap_1.png"))),
+                    "Note" => new Note(32, 32, new BitmapImage(Assets.GetUri("Images/Note/Note_1.png"))),
                     _ => throw new ArgumentException("Item Not Known")
 
                 },
+                "Bullet" => toSpawn.Name switch
+                {
+                    "Tone" => new Tone(16, 16, new BitmapImage(Assets.GetUri("Images/Note/Note_1.png")), player.DirectionLeft),
+                    "Egg" => throw new NotImplementedException(),
+                    _ => throw new ArgumentException("Item Not Known")
+                },
+
                 _ => throw new ArgumentException("Class Not Known"),
 
             };
             newObject.Position = toSpawn.Position;
             map.SpawnedObjects.Add(newObject);
             mapCanvas.Children.Add(newObject.Rectangle);
+        }
+
+        /// <summary>
+        /// Apply the latest status bar stats
+        /// </summary>
+        private void UpdateStatusBar()
+        {
+            StatusBarHatLabel.Content = $"{(player.HasHat ? "1" : "0")}/1";
+            StatusBarAmmoLabel.Content = $"{player.Munition}/{Player.MaxMunition}";
+            StatusBarClockLabel.Content = $"{stopwatch.Elapsed.Minutes:00}:{stopwatch.Elapsed.Seconds:00}";
         }
     }
 }
