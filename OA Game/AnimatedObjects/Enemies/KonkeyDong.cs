@@ -1,9 +1,7 @@
 ﻿using GameEngine;
-using GameEngine.GameObjects;
 using System.Windows;
 using GameEngine.GameObjects;
 using System;
-using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GameEngine.Exceptions;
@@ -28,6 +26,9 @@ namespace OA_Game.Enemies
 
         public bool IsDying { get; set; } = false;
 
+        /// <summary>
+        /// x-position of the boombox
+        /// </summary>
         public double BoomboxArea;
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace OA_Game.Enemies
         /// </summary>
         public bool CanJump { get; set; }
 
-        public KonkeyDong(int height, int width, ImageSource defaultSprite, Map karte, Vector position) : base(height, width, defaultSprite)
+        public KonkeyDong(int height, int width, ImageSource defaultSprite, Map map, Vector position) : base(height, width, defaultSprite)
         {           
             DirectionLeft = true;
             PlayableSequence donkeykongMove = new PlayableSequence(new ImageSource[]
@@ -82,20 +83,23 @@ namespace OA_Game.Enemies
             konkeydongDying.SequenceFinished += (object sender) => { ObjectIsTrash = true; };
             konkeydongDying.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("dying_konkeydong", konkeydongDying);
-            Spawn_Boombox(karte, position);
+            Spawn_Boombox(map, position);
             
         }
         /// <summary>
         /// spawn boombox (enemy)
         /// </summary>
-        public void Spawn_Boombox(Map karte, Vector position)
+        public void Spawn_Boombox(Map map, Vector position)
         {                
             
-            karte.NotSpawnedObjects.Add(new NotSpawnedObject("Boombox", "Enemy", position));
+            map.NotSpawnedObjects.Add(new NotSpawnedObject("Boombox", "Enemy", position));
             BoomboxArea = position.X;
-            karte.NotSpawnedObjects = karte.NotSpawnedObjects.OrderBy(obj => obj.Position.X).ToList();
+            map.NotSpawnedObjects = map.NotSpawnedObjects.OrderBy(obj => obj.Position.X).ToList();
         }
 
+        /// <summary>
+        /// attack player
+        /// </summary>
         public void Attack(AnimatedObject obj)
         {
             if (IsDying)
@@ -107,11 +111,14 @@ namespace OA_Game.Enemies
             PlaySequenceAsync("attack_konkeydong", DirectionLeft, true, true);
         }
 
+        /// <summary>
+        /// konkeydong jumps in the area of the boombox
+        /// if konkeydong isnt in the area of his boombox, the next time he touches the ground, he changes his direction to the boombox
+        /// </summary>
         public void Move(Map map)
         {
             if (IsDying)
                 return;
-            System.Diagnostics.Debug.WriteLine(Position);
             TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, this);
             Random rnd = new Random();
             if (DirectionLeft)
@@ -147,6 +154,9 @@ namespace OA_Game.Enemies
             Position += Velocity;
         }
 
+        /// <summary>
+        /// animation for get damage and call die
+        /// </summary>
         public void GetDamage(int damage)
         {
             if (IsDying)
@@ -156,6 +166,9 @@ namespace OA_Game.Enemies
                 Die();
         }
 
+        /// <summary>
+        /// animation for dying
+        /// </summary>
         public void Die()
         {
             IsDying = true;
