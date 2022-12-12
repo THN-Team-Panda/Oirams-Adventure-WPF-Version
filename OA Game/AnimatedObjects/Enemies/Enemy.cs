@@ -2,7 +2,7 @@
 using GameEngine.GameObjects;
 using GameEngine;
 
-namespace OA_Game.Enemies
+namespace OA_Game.AnimatedObjects.Enemies
 {
     /// <summary>
     /// Class Enemies is the parent class for FliegeVieh, KonkeyDong, Skeleton. 

@@ -2,7 +2,7 @@
 using GameEngine.GameObjects;
 using System.Windows.Media;
 
-namespace OA_Game.Enemies
+namespace OA_Game.AnimatedObjects.Enemies
 {
     /// <summary>
     /// FliegeVieh is an enemy that fly around and drops eggs.

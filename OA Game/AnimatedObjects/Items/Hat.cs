@@ -3,7 +3,7 @@ using System;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace OA_Game.Items
+namespace OA_Game.AnimatedObjects.Items
 {
     /// <summary>
     /// Class for item hat. Is the extra live for player.

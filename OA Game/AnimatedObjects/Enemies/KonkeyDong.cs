@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Linq;
 
 
-namespace OA_Game.Enemies
+namespace OA_Game.AnimatedObjects.Enemies
 {
     /// <summary>
     /// KonkeyDong is an enemy that jumps around his jukebox and try to hit the player if he comes close.
@@ -91,10 +91,8 @@ namespace OA_Game.Enemies
         /// </summary>
         public void Spawn_Boombox(Map map, Vector position)
         {                
-            
-            map.NotSpawnedObjects.Add(new NotSpawnedObject("Boombox", "Enemy", position));
             BoomboxArea = position.X;
-            map.NotSpawnedObjects = map.NotSpawnedObjects.OrderBy(obj => obj.Position.X).ToList();
+            map.AddNotSpawnedObject(new NotSpawnedObject("Boombox", "Enemy", position));
         }
 
         /// <summary>
