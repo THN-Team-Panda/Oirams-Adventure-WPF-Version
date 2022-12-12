@@ -314,12 +314,10 @@ namespace OA_Game
             GameEndScreen.Visibility = Visibility.Visible;
             GameEndText.Width = Preferences.ViewWidth - 2 * Preferences.TileSize;
 
-            Random rnd = new Random();
-
             GameEndText.Text = win switch
             {
-                true => Preferences.GameWinTexts[rnd.Next(Preferences.GameWinTexts.Length)],
-                false => Preferences.GameLossTexts[rnd.Next(Preferences.GameLossTexts.Length)]
+                true => Preferences.GameWinTexts[(new Random()).Next(Preferences.GameWinTexts.Length)],
+                false => Preferences.GameLossTexts[(new Random()).Next(Preferences.GameLossTexts.Length)]
             };
 
             GameEndTime.Text = $"{stopwatch.Elapsed.Minutes:00}:{stopwatch.Elapsed.Seconds:00}:{stopwatch.Elapsed.Milliseconds:000}";
