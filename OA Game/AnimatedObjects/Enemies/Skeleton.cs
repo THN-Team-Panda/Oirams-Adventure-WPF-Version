@@ -100,11 +100,11 @@ namespace OA_Game.AnimatedObjects.Enemies
             }
             Velocity += Physics.Gravity;
             TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, this);
-            if (collidedWithWhat[1] == TileTypes.Ground)
+            if (collidedWithWhat[1] is TileTypes.Ground or TileTypes.Obstacle)
             {
                 DirectionLeft = false;
             }
-            else if (collidedWithWhat[3] == TileTypes.Ground)
+            else if (collidedWithWhat[3] is TileTypes.Ground or TileTypes.Obstacle)
             {
                 DirectionLeft = true;
             }
