@@ -29,33 +29,37 @@ namespace GameEngine
 
             TileTypes down1 = map.TileMap[(int)Math.Ceiling((position.Y + gameObject.Height) / map.TileSize) + 1, (int)(position.X) / map.TileSize];
             TileTypes down2 = map.TileMap[(int)Math.Ceiling((position.Y + gameObject.Height) / map.TileSize) + 1, (int)Math.Floor((position.X + gameObject.Width * 0.9) / map.TileSize)];
-            TileTypes down = FindTileInDirection(down1, down2);
+            TileTypes down3 = map.TileMap[(int)Math.Ceiling((position.Y + gameObject.Height) / map.TileSize) + 1, (int)Math.Floor((position.X + gameObject.Width * 0.5) / map.TileSize)];
+            TileTypes down = FindTileInDirection(FindTileInDirection(down1, down2), down3);
 
             TileTypes up1 = map.TileMap[(int)Math.Ceiling((position.Y) / map.TileSize + 1), (int)(position.X) / map.TileSize];
             TileTypes up2 = map.TileMap[(int)Math.Ceiling((position.Y) / map.TileSize + 1), (int)Math.Floor((position.X + gameObject.Width * 0.9) / map.TileSize)];
-            TileTypes up = FindTileInDirection(up1, up2);
+            TileTypes up3 = map.TileMap[(int)Math.Ceiling((position.Y) / map.TileSize + 1), (int)Math.Floor((position.X + gameObject.Width * 0.5) / map.TileSize)];
+            TileTypes up = FindTileInDirection(FindTileInDirection(up1, up2), up3);
 
             TileTypes right1 = map.TileMap[(int)Math.Ceiling((position.Y) / map.TileSize + 1), (int)Math.Floor((position.X + gameObject.Width) / map.TileSize)];
             TileTypes right2 = map.TileMap[(int)Math.Ceiling((position.Y + gameObject.Height * 0.9) / map.TileSize) + 1, (int)Math.Floor((position.X + gameObject.Width) / map.TileSize)];
-            TileTypes right = FindTileInDirection(right1, right2);
+            TileTypes right3 = map.TileMap[(int)Math.Ceiling((position.Y + gameObject.Height * 0.5) / map.TileSize) + 1, (int)Math.Floor((position.X + gameObject.Width) / map.TileSize)];
+            TileTypes right = FindTileInDirection(FindTileInDirection(right1, right2),right3);
 
             TileTypes left1 = map.TileMap[(int)Math.Ceiling((position.Y) / map.TileSize + 1), (int)Math.Floor((position.X) / map.TileSize)];
             TileTypes left2 = map.TileMap[(int)Math.Ceiling((position.Y + gameObject.Height * 0.9) / map.TileSize) + 1, (int)Math.Floor((position.X) / map.TileSize)];
-            TileTypes left = FindTileInDirection(left1, left2);
+            TileTypes left3 = map.TileMap[(int)Math.Ceiling((position.Y + gameObject.Height * 0.5) / map.TileSize) + 1, (int)Math.Floor((position.X) / map.TileSize)];
+            TileTypes left = FindTileInDirection(FindTileInDirection(left1, left2),left3);
 
-            if (down == TileTypes.Ground && gameObject.Velocity.Y > 0)
+            if (down is TileTypes.Ground or TileTypes.Obstacle && gameObject.Velocity.Y > 0)
             {
                 gameObject.Velocity = gameObject.Velocity with { Y = 0 };
             }
-            if (up == TileTypes.Ground && gameObject.Velocity.Y < 0)
+            if (up is TileTypes.Ground or TileTypes.Obstacle && gameObject.Velocity.Y < 0)
             {
                 gameObject.Velocity = gameObject.Velocity with { Y = 0 };
             }
-            if (right == TileTypes.Ground && gameObject.Velocity.X > 0)
+            if (right is TileTypes.Ground or TileTypes.Obstacle && gameObject.Velocity.X > 0)
             {
                 gameObject.Velocity = gameObject.Velocity with { X = 0 };
             }
-            if (left == TileTypes.Ground && gameObject.Velocity.X < 0)
+            if (left is TileTypes.Ground or TileTypes.Obstacle && gameObject.Velocity.X < 0)
             {
                 gameObject.Velocity = gameObject.Velocity with { X = 0 };
             }

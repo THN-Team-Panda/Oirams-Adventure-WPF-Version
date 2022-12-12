@@ -275,8 +275,8 @@ namespace GameEngine
             //convert raw data to 
             for (int i = 0; i < TileMapDataRaw.Length; i++)
             {
-                int data = TileMapDataRaw[i];
-                if (data == 0) continue;
+                int data = TileMapDataRaw[i] - 1;
+                if (data == -1) continue;
                 int posX = i % TileColumns;
                 int posY = i / TileColumns;
                 if (Array.IndexOf(GroundTileIds, data) > -1) TileMap[posY, posX] = TileTypes.Ground;
