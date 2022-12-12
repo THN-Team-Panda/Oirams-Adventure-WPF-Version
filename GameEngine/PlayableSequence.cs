@@ -58,10 +58,9 @@ namespace GameEngine
         /// <param name="spriteOrder">A list of sprite numbers; at least two</param>
         /// <param name="soundFile">Uri to the sound file</param>
         /// <exception cref="ArgumentException">If the sequence is to small</exception>
-        public PlayableSequence(ImageSource[] spriteOrder, Uri soundFile) : this(spriteOrder)
+        public PlayableSequence(ImageSource[] spriteOrder, MediaPlayer soundObj) : this(spriteOrder)
         {
-            SoundObject = new MediaPlayer();
-            SoundObject.Open(soundFile);
+            SoundObject = soundObj;
 
             if (SoundObject.NaturalDuration > Between * spriteOrder.Length)
                 Debug.WriteLine("Sound Media is longer than the animation sequence.");
