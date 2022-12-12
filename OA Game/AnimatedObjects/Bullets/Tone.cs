@@ -1,6 +1,5 @@
 ﻿using GameEngine;
 using GameEngine.GameObjects;
-using OA_Game.Enemies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +7,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using OA_Game.AnimatedObjects.Enemies;
 
-namespace OA_Game.Bullets
+namespace OA_Game.AnimatedObjects.Bullets
 {
-    internal class Tone : Bullet, IInteractable
+    public class Tone : Bullet, IInteractable
     {
-        public Tone(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
+
+        public bool DirectionLeft { get; set; }
+        public bool IsDying { get; set; } = false;
+        public Tone(int height, int width, ImageSource defaultSprite, bool directionLeft) : base(height, width, defaultSprite)
         {
+            DirectionLeft = directionLeft;
+
             PlayableSequence toneAnimation = new PlayableSequence(new ImageSource[]
          {
                 new BitmapImage(Assets.GetUri("Images/Note/Note_1.png")),
@@ -39,9 +44,6 @@ namespace OA_Game.Bullets
             AddSequence("collide_tone", toneCollide);
         }
 
-        public bool DirectionLeft { get; set; }
-        public bool IsDying { get; set; } = false;
-
         public void Attack(AnimatedObject obj)
         {
             throw new NotImplementedException();
@@ -50,7 +52,7 @@ namespace OA_Game.Bullets
         public void Die()
         {
             IsDying = true;
-            PlaySequenceAsync("collide_tone", DirectionLeft, false, true);
+            PlaySequenceAsync("collide_tone", !DirectionLeft, false, true);
         }
 
         public void GetDamage(int damage)
@@ -63,15 +65,15 @@ namespace OA_Game.Bullets
             if (IsDying)
                 return;
 
-            if (!DirectionLeft) 
+            if (DirectionLeft) 
                 Velocity = Velocity with { X = -3 };
                
             else
                 Velocity = Velocity with { X = 3 };
                 
-            this.PlaySequenceAsync("animation_tone", DirectionLeft, true, false);
+            this.PlaySequenceAsync("animation_tone", !DirectionLeft, true, false);
             TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, this);
-            if (collidedWithWhat[1] == TileTypes.Ground || collidedWithWhat[3] == TileTypes.Ground)  // fliegt von rechts gegen wand || fliegt von links gegen Wand 
+            if (collidedWithWhat[1] is TileTypes.Ground or TileTypes.Obstacle || collidedWithWhat[3] is TileTypes.Ground or TileTypes.Obstacle)  // fliegt von rechts gegen wand || fliegt von links gegen Wand 
             {
                 Die();
             }

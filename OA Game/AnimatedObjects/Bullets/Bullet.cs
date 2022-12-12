@@ -8,9 +8,9 @@ using System.Windows.Media.Imaging;
 using GameEngine;
 using GameEngine.GameObjects;
 
-namespace OA_Game.Bullets
+namespace OA_Game.AnimatedObjects.Bullets
 {
-    internal abstract class Bullet: AnimatedObject
+    public abstract class Bullet: AnimatedObject
     {
         public Bullet(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {      

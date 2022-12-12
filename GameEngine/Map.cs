@@ -176,10 +176,20 @@ namespace GameEngine
 
                 NotSpawnedObjects.Add(new NotSpawnedObject(obj.name, obj.@class, new Vector(obj.x, obj.y)));
 
-            }
+            }                        
             // sort list by X coordinate
             NotSpawnedObjects = NotSpawnedObjects.OrderBy(obj => obj.Position.X).ToList();
 
+        }
+
+        /// <summary>
+        /// Add an element to the NotSpawnedObjects list
+        /// </summary>
+        /// <param name="obj">element to add</param>
+        public void AddNotSpawnedObject(NotSpawnedObject obj)
+        {
+            NotSpawnedObjects.Add(obj);
+            NotSpawnedObjects = NotSpawnedObjects.OrderBy(obj => obj.Position.X).ToList();
         }
 
         /// <summary>
@@ -265,8 +275,8 @@ namespace GameEngine
             //convert raw data to 
             for (int i = 0; i < TileMapDataRaw.Length; i++)
             {
-                int data = TileMapDataRaw[i];
-                if (data == 0) continue;
+                int data = TileMapDataRaw[i] - 1;
+                if (data == -1) continue;
                 int posX = i % TileColumns;
                 int posY = i / TileColumns;
                 if (Array.IndexOf(GroundTileIds, data) > -1) TileMap[posY, posX] = TileTypes.Ground;

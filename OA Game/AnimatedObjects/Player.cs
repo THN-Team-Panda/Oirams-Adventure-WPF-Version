@@ -3,19 +3,19 @@ using GameEngine.GameObjects;
 using GameEngine;
 using System;
 using System.Windows.Media.Imaging;
-using OA_Game.Enemies;
-using OA_Game.Items;
+using OA_Game.AnimatedObjects.Enemies;
+using OA_Game.AnimatedObjects.Items;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
-using OA_Game.Bullets;
+using OA_Game.AnimatedObjects.Bullets;
 
-namespace OA_Game
+namespace OA_Game.AnimatedObjects
 {
     /// <summary>
     /// Represent the main character O'iram.
     /// </summary>
-    public class Player : AnimatedObject, IInteractable, ICanSpawnObjects
+    public class Player : AnimatedObject, IInteractable
     {
         /// <summary>
         /// Represent the extra Live.
@@ -129,11 +129,6 @@ namespace OA_Game
         /// Default should be false, means direction: right
         /// </summary>
         public bool DirectionLeft { get; set; }
-
-        /// <summary>
-        /// List of Objects that player spwan on map (tones to shoot)
-        /// </summary>
-        public List<NotSpawnedObject> SpawnList { get; set; } = new();
 
         public Player(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
@@ -348,21 +343,20 @@ namespace OA_Game
 
         public void Attack(AnimatedObject obj)
         {
-
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// Shoot bullet
         /// </summary>
-        public void Shoot()
+        public void Shoot(Map map)
         {
             if (IsDying || !CanShoot || Munition < 1)
                 return;
 
             CanShoot = false;
-            SpawnList.Add(new NotSpawnedObject("Tone","Bullet",this.Position));
+            map.AddNotSpawnedObject(new NotSpawnedObject("Tone", "Bullet", Position));
             Munition--;
-            return;
         }
 
         /// <summary>

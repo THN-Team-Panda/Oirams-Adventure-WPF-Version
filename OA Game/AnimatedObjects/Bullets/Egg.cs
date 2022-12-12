@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace OA_Game.Bullets
+namespace OA_Game.AnimatedObjects.Bullets
 {
-    internal class Egg : Bullet, IInteractable
+    public class Egg : Bullet, IInteractable
     {
         public Egg(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
