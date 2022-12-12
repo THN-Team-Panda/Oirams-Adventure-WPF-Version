@@ -316,10 +316,11 @@ namespace OA_Game
 
             Random rnd = new Random();
 
-            if(win)
-                GameEndText.Text = Preferences.GameWinTexts[rnd.Next(Preferences.GameWinTexts.Length)];
-            else
-                GameEndText.Text = Preferences.GameLossTexts[rnd.Next(Preferences.GameLossTexts.Length)];
+            GameEndText.Text = win switch
+            {
+                true => Preferences.GameWinTexts[rnd.Next(Preferences.GameWinTexts.Length)],
+                false => Preferences.GameLossTexts[rnd.Next(Preferences.GameLossTexts.Length)]
+            };
 
             GameEndTime.Text = $"{stopwatch.Elapsed.Minutes:00}:{stopwatch.Elapsed.Seconds:00}:{stopwatch.Elapsed.Milliseconds:000}";
         }
@@ -330,6 +331,6 @@ namespace OA_Game
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void CloseGameScreen(object sender, RoutedEventArgs e) => Close();
-        
+
     }
 }
