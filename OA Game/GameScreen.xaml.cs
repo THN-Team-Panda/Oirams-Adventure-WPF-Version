@@ -11,6 +11,7 @@ using GameEngine.GameObjects;
 using OA_Game.AnimatedObjects;
 using OA_Game.AnimatedObjects.Items;
 using OA_Game.AnimatedObjects.Enemies;
+using OA_Game.AnimatedObjects.Bullets;
 
 namespace OA_Game
 {
@@ -141,7 +142,7 @@ namespace OA_Game
         /// check if the player gets damage from touching a obstacle
         /// </summary>
         private void MovePlayer()
-        { 
+        {
             player.Move(map);
 
             // Bugfix: https://git.informatik.fh-nuernberg.de/team-panda/oa-game/-/issues/102
@@ -212,7 +213,12 @@ namespace OA_Game
             {
                 player.Velocity = player.Velocity with { X = 1.4 };
             }
+            if (Keyboard.IsKeyDown(Key.Space) || Keyboard.IsKeyDown(Key.E))
+            {
+                player.Shoot(map);
+            }
         }
+
         /// <summary>
         /// Checks collision with items and enemies
         /// gets damage if collision with enemie
@@ -226,7 +232,7 @@ namespace OA_Game
                 {
                     if (obj is Item item)
                         player.Collect(item);
-                    
+
                     if (obj is Enemy enemy)
                         ((IInteractable)enemy).Attack(player);
                 }
@@ -278,6 +284,13 @@ namespace OA_Game
                     _ => throw new ArgumentException("Item Not Known")
 
                 },
+                "Bullet" => toSpawn.Name switch
+                {
+                    "Tone" => new Tone(16, 16, new BitmapImage(Assets.GetUri("Images/Note/Note_1.png")), player.DirectionLeft),
+                    "Egg" => throw new NotImplementedException(),
+                    _ => throw new ArgumentException("Item Not Known")
+                },
+
                 _ => throw new ArgumentException("Class Not Known"),
 
             };
