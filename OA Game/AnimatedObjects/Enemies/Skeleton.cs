@@ -6,7 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 
-namespace OA_Game.Enemies
+namespace OA_Game.AnimatedObjects.Enemies
 {
     /// <summary>
     /// Skeleton is an enemy that walk around and try to hit the player if the player comes close to it.

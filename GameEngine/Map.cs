@@ -94,7 +94,7 @@ namespace GameEngine
         /// <summary>
         /// List of all GameObjects that are on the Map but not yet spawned
         /// </summary>
-        public List<NotSpawnedObject> NotSpawnedObjects { get; set; } = new();
+        private List<NotSpawnedObject> NotSpawnedObjects { get; set; } = new();
 
         private readonly TiledTileset tileset;
 
@@ -180,6 +180,16 @@ namespace GameEngine
             // sort list by X coordinate
             NotSpawnedObjects = NotSpawnedObjects.OrderBy(obj => obj.Position.X).ToList();
 
+        }
+
+        /// <summary>
+        /// Add an element to the NotSpawnedObjects list
+        /// </summary>
+        /// <param name="obj">element to add</param>
+        public void AddNotSpawnedObject(NotSpawnedObject obj)
+        {
+            NotSpawnedObjects.Add(obj);
+            NotSpawnedObjects = NotSpawnedObjects.OrderBy(obj => obj.Position.X).ToList();
         }
 
         /// <summary>
