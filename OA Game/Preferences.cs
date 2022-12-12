@@ -50,7 +50,8 @@ namespace OA_Game
         /// </summary>
         public static readonly string[] GameLossTexts = new string[]
         {
-            "Konkey Dong lacht über dich, weil du so schlecht bist!" // Marvin
+            "Konkey Dong lacht über dich, weil du so schlecht bist!", // Marvin
+            "Ich bin in einer Glückskeksfabrik  gefangen. Holt mich hier heraus! Btw. du hast verloren." // Anne
         };
     }
 }
