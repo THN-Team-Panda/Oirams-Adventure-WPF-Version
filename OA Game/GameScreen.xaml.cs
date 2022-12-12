@@ -156,31 +156,27 @@ namespace OA_Game
         private void GameOver()
         {
             //checks if Player is dead
-            if (player.ObjectIsTrash)
+            if (player.ObjectIsTrash || player.Position.Y >= map.MapHeight)
             {
+                stopwatch.Stop();
+
                 gameLoop.Stop();
 
-                Close();
+                OpenGameEndScreen(false);
             }
 
             //if Player reaches goal
             else if (player.Position.X > map.EndPoint.X)
             {
+                stopwatch.Stop();
+
+                gameLoop.Stop();
+
                 Saving save = new Saving(Preferences.GameDataPath);
 
                 save.Save(levelId);
 
-                gameLoop.Stop();
-
-                Close();
-            }
-
-            // if Player falls out of map
-            else if (player.Position.Y >= map.MapHeight)
-            {
-                gameLoop.Stop();
-
-                Close();
+                OpenGameEndScreen(true);
             }
         }
 
@@ -308,5 +304,32 @@ namespace OA_Game
             StatusBarAmmoLabel.Content = $"{player.Munition}/{Player.MaxMunition}";
             StatusBarClockLabel.Content = $"{stopwatch.Elapsed.Minutes:00}:{stopwatch.Elapsed.Seconds:00}";
         }
+
+        /// <summary>
+        /// Open a game end screen
+        /// </summary>
+        /// <param name="win">indicates if the game ends with a win</param>
+        private void OpenGameEndScreen(bool win)
+        {
+            GameEndScreen.Visibility = Visibility.Visible;
+            GameEndText.Width = Preferences.ViewWidth - 2 * Preferences.TileSize;
+
+            Random rnd = new Random();
+
+            if(win)
+                GameEndText.Text = Preferences.GameWinTexts[rnd.Next(Preferences.GameWinTexts.Length)];
+            else
+                GameEndText.Text = Preferences.GameLossTexts[rnd.Next(Preferences.GameLossTexts.Length)];
+
+            GameEndTime.Text = $"{stopwatch.Elapsed.Minutes:00}:{stopwatch.Elapsed.Seconds:00}:{stopwatch.Elapsed.Milliseconds:000}";
+        }
+
+        /// <summary>
+        /// Closes the current window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CloseGameScreen(object sender, RoutedEventArgs e) => Close();
+        
     }
 }

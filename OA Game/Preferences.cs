@@ -36,5 +36,21 @@ namespace OA_Game
         /// Map Ground ids from the tiled level design
         /// </summary>
         public static readonly int[] MapGroundTileIds = (int[])Enum.GetValues(typeof(MapCollections.GroundTiles));
+
+        /// <summary>
+        /// Collection of texts to display when the game ends with an win
+        /// </summary>
+        public static readonly string[] GameWinTexts = new string[]
+        {
+            "Das nennst du einen Sieg? In der Zeit hätte meine Oma das auch geschafft!" // Marvin
+        };
+
+        /// <summary>
+        /// Collection of texts to display when the game ends with an !win
+        /// </summary>
+        public static readonly string[] GameLossTexts = new string[]
+        {
+            "Konkey Dong lacht über dich, weil du so schlecht bist!" // Marvin
+        };
     }
 }
