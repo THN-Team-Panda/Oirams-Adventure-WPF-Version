@@ -8,26 +8,27 @@
         Title="Welcome!" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
 
     <Window.Resources>
-        <Style x:Key="MenuButtons" TargetType="Button">
+        <Style x:Key="MenuButtons" TargetType="Button" > 
             <Setter Property="FontSize" Value="30"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontFamily" Value="{StaticResource Silkscreen}"/>
-            <Setter Property="Foreground" Value="WhiteSmoke"/>
-            <Setter Property="Width" Value="400"/>
+            <Setter Property="Foreground" Value="AliceBlue"/>
+            <Setter Property="Width" Value="500"/>
             <Setter Property="Height" Value="50"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="0,20,0,0"></Setter>
         </Style>
+   
     </Window.Resources>
     <Window.Background>
         <ImageBrush/>
     </Window.Background>
+
     <Grid Name="LevelView">
 
         <Image Name="Backscreen" Stretch ="Fill"  VerticalAlignment="Center" HorizontalAlignment="Center" />
-
-        <Button Name ="Level1" Content="Level 1"  Style="{StaticResource MenuButtons}" Margin="0,150,0,0" Click="OpenLevel_Click"/>
-        <Button Name ="Level2" Content="Level 2"  Style="{StaticResource MenuButtons}" Margin="0,220,0,0" Click ="OpenLevel_Click"/>
-        <Button Name ="Level3" Content="Level 3"  Style="{StaticResource MenuButtons}" Margin="0,290,0,0" Click="OpenLevel_Click"/>
-
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" >
+            <StackPanel Name="Levels"/>
+        </ScrollViewer>
     </Grid>
 </Window>
