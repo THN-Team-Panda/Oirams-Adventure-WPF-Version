@@ -62,12 +62,12 @@ namespace OA_Game.AnimatedObjects.Enemies
 
         public void GetDamage(int damage)
         {
-            
+            throw new NotImplementedException();
         }
 
         public void Die()
         {
-            
+            throw new NotImplementedException();
         }
     }
 }
