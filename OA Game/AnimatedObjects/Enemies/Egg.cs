@@ -103,9 +103,7 @@ namespace OA_Game.AnimatedObjects.Enemies
                 return;
             //5 sec warten
             if (damage > 0)
-                Height = 5;
-                Width = 20;
-                PlaySequenceAsync("damage_egg", DirectionLeft, false, true);
+                PlaySequenceAsync("damage_egg", DirectionLeft, false, false);
         }
         /// <summary>
         /// cooldown before egg disapears after hitting the ground
@@ -115,14 +113,21 @@ namespace OA_Game.AnimatedObjects.Enemies
         {
             await Task.Delay(CooldownTime);
             Die();
-
         }
         public void Move(Map map)
         {
             TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, this);
-            
-            Velocity += Physics.Gravity;
-            Position += Velocity;
+
+
+            if ((collidedWithWhat[1] == TileTypes.Ground))
+            {
+                GetDamage(2);
+            }
+            else
+            {
+                Velocity += Physics.Gravity;
+                Position += Velocity;
+            }
         }
     }
 }
