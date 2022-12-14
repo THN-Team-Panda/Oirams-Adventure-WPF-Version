@@ -36,101 +36,46 @@
             file.Close(); //Closes file stream
         }
 
-        /// <summary>
-        /// a function that saves the current game progress in a data file;
-        /// it needs a level as parameter in order to know which level so save
-        /// </summary>
-        /// <param name="level"></param>
-        public void Save(int level)
-        {
-            //TODO English
-            //erst öffnen StreamReader dann StreamWriter
-            //und Exceptions für versch. Fälle machen                    
-
-            StreamReader str = new(path);
-
-            string[] allLines = new string[4];
-
-            while (!str.EndOfStream)
-            {
-
-                for (int i = 0; i < allLines.Length; i++) //content of file is written into an Array
-                {
-                    allLines[i] = str.ReadLine();
-                }
-
-            }
-            str.Close();
-
-            StreamWriter stw = new StreamWriter(path);
-            //string[] coordinate = new string[4];
-
-            allLines[level] = "1";
-
-
-            for (int i = 0; i < allLines.Length; i++)
-            {
-                stw.WriteLine(allLines[i]);
-            }
-
-
-
-            stw.Close();
-
-        }
 
         /// <summary>
-        /// this function checks on request whether a level has already been saved or not 
+        /// Read File and return all Level Times as Timespan
         /// </summary>
-        /// <param name="level"></param>
         /// <returns></returns>
-        public bool AlreadySaved(int level)
+        public TimeSpan[] ReadLevels()
         {
-            
-            //TODO nochmal überarbeiten
-            StreamReader str = new StreamReader(path);
-            bool issaved = false;
-
-            while (!str.EndOfStream)
+            string[] levels = File.ReadAllLines(path); 
+            TimeSpan[] levelsTime = new TimeSpan[levels.Length];
+            for (int i = 0; i < levels.Length; i++) //conert
             {
-                string[] alllines = new string[4];
-                string line = str.ReadLine();
-
-                for (int i = 0; i < alllines.Length; i++) //lines of the file are being put into an array for locating the level of the parameter
-                {
-                    alllines[i] = str.ReadLine();
-                }
-
-                for (int j = 0; j < alllines.Length; j++)
-                {
-                    try
-                    {
-                        if (alllines[level - 1] == "1") // level - 1 because the index is shifted and without it would the return value be incorrect
-                        {
-                            issaved = true;
-                        }
-                        else if (line == "0")
-                        {
-                            issaved = false;
-                        }
-                        j++;
-                    }
-                    catch
-                    {
-                        throw new IndexOutOfRangeException("Level muss zwischen einschließlich 0 und 3 liegen!");
-                    }
-
-
-
-                }
-
+                levelsTime[i] = TimeSpan.FromMilliseconds(Convert.ToDouble(levels[i]));
             }
 
-
-            str.Close();
-
-            return issaved;
+            return levelsTime;
         }
 
+        /// <summary>
+        /// Write Timespan to file 
+        /// </summary>
+        /// <param name="levelNumber">level what got finished</param>
+        /// <param name="newTime"></param>
+        /// <exception cref="ArgumentOutOfRangeException">Throws when you want to write a level without finishing the level before</exception>
+        public async void SaveLevel(int levelNumber, TimeSpan newTime)
+        {
+            levelNumber--;
+            string[] levels = await File.ReadAllLinesAsync(path); //read
+            if (levelNumber == levels.Length) //append
+            {
+                Array.Resize(ref levels, levels.Length + 1);
+            }
+            else if (levelNumber > levels.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(levelNumber), "value is to big ");
+            }
+            // check if current time is bigger than the saved one
+
+            if (TimeSpan.FromMilliseconds(Convert.ToDouble(levels[levelNumber])) <= newTime && levels[levelNumber] != null) return; 
+            levels[levelNumber] = newTime.TotalMilliseconds.ToString();
+            await File.WriteAllLinesAsync(path, levels);
+        }
     }
 }
