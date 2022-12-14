@@ -150,31 +150,31 @@ namespace OA_Game
         private void GameOver()
         {
             //checks if Player is dead
-            if (player.ObjectIsTrash)
+            if (player.ObjectIsTrash || player.Position.Y >= map.MapHeight)
             {
+                stopwatch.Stop();
+
                 gameLoop.Stop();
 
-                Close();
+                OpenGameEndScreen(false);
             }
 
             //if Player reaches goal
             else if (player.Position.X > map.EndPoint.X)
             {
+                stopwatch.Stop();
+
                 Saving save = new Saving(Preferences.GameDataPath);
 
                 save.SaveLevel(levelId,new TimeSpan(stopwatch.ElapsedTicks));
 
                 gameLoop.Stop();
 
-                Close();
-            }
+                Saving save = new Saving(Preferences.GameDataPath);
 
-            // if Player falls out of map
-            else if (player.Position.Y >= map.MapHeight)
-            {
-                gameLoop.Stop();
+                save.Save(levelId);
 
-                Close();
+                OpenGameEndScreen(true);
             }
         }
 
@@ -302,5 +302,34 @@ namespace OA_Game
             StatusBarAmmoLabel.Content = $"{player.Munition}/{Player.MaxMunition}";
             StatusBarClockLabel.Content = $"{stopwatch.Elapsed.Minutes:00}:{stopwatch.Elapsed.Seconds:00}";
         }
+
+        /// <summary>
+        /// Open a game end screen
+        /// </summary>
+        /// <param name="win">indicates if the game ends with a win</param>
+        private void OpenGameEndScreen(bool win)
+        {
+            GameEndScreen.Visibility = Visibility.Visible;
+            GameEndText.Width = Preferences.ViewWidth - 2 * Preferences.TileSize;
+
+            GameEndText.Text = win switch
+            {
+                true => Preferences.GameWinTexts[(new Random()).Next(Preferences.GameWinTexts.Length)],
+                false => Preferences.GameLossTexts[(new Random()).Next(Preferences.GameLossTexts.Length)]
+            };
+
+            GameEndTime.Text = win switch {
+                true => $"{stopwatch.Elapsed.Minutes:00}:{stopwatch.Elapsed.Seconds:00}:{stopwatch.Elapsed.Milliseconds:000}",
+                false => "Du bist gestorben!",
+            };
+        }
+
+        /// <summary>
+        /// Closes the current window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CloseGameScreen(object sender, RoutedEventArgs e) => Close();
+
     }
 }
