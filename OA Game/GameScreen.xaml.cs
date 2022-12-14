@@ -320,7 +320,10 @@ namespace OA_Game
                 false => Preferences.GameLossTexts[(new Random()).Next(Preferences.GameLossTexts.Length)]
             };
 
-            GameEndTime.Text = $"{stopwatch.Elapsed.Minutes:00}:{stopwatch.Elapsed.Seconds:00}:{stopwatch.Elapsed.Milliseconds:000}";
+            GameEndTime.Text = win switch {
+                true => $"{stopwatch.Elapsed.Minutes:00}:{stopwatch.Elapsed.Seconds:00}:{stopwatch.Elapsed.Milliseconds:000}",
+                false => "Du bist gestorben!",
+            };
         }
 
         /// <summary>

@@ -58,7 +58,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <!-- Stopwatch label -->
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Name="GameEndTime" FontSize="45" Foreground="WhiteSmoke" FontFamily="{StaticResource Silkscreen}">00:00:00</TextBlock>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Name="GameEndTime" FontSize="45" Foreground="WhiteSmoke" FontFamily="{StaticResource Silkscreen}">Loading</TextBlock>
             <!-- Game End Massage -->
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Name="GameEndText" FontSize="24" Foreground="WhiteSmoke" FontWeight="Bold" FontFamily="{StaticResource Silkscreen}" TextWrapping="Wrap" TextAlignment="Center" Margin="16,0,16,0">Loading</TextBlock>
             <!-- Back Button-->
