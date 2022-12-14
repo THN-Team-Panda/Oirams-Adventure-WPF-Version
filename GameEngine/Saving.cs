@@ -61,6 +61,7 @@
         /// <exception cref="ArgumentOutOfRangeException">Throws when you want to write a level without finishing the level before</exception>
         public async void SaveLevel(int levelNumber, TimeSpan newTime)
         {
+            levelNumber--;
             string[] levels = await File.ReadAllLinesAsync(path); //read
             if (levelNumber == levels.Length) //append
             {
@@ -70,9 +71,9 @@
             {
                 throw new ArgumentOutOfRangeException(nameof(levelNumber), "value is to big ");
             }
+            // check if current time is bigger than the saved one
 
-            if (TimeSpan.FromMilliseconds(Convert.ToDouble(levels[levelNumber])) <= newTime &&
-                levels[levelNumber] != null) return; // check if current time is bigger than the saved one
+            if (TimeSpan.FromMilliseconds(Convert.ToDouble(levels[levelNumber])) <= newTime && levels[levelNumber] != null) return; 
             levels[levelNumber] = newTime.TotalMilliseconds.ToString();
             await File.WriteAllLinesAsync(path, levels);
         }

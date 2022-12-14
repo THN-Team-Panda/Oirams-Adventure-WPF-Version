@@ -60,10 +60,9 @@ namespace OA_Game
             this.levelId = levelId;
             InitializeComponent();
 
-            /**
-             * Init the map
-             * Note: Map means the map obj, not the canvas map
-             */
+           
+            //Init the map
+             
             map = new Map($"Level{levelId}.tmx", Assets.GetPath("Level_Panda"), Preferences.MapGroundTileIds, Preferences.MapObstacleTileIds);
 
             //render tiles and save image of tilemap in x
@@ -89,17 +88,15 @@ namespace OA_Game
             });
 
 
-            /**
-             * Init the Player
-             */
+            // Init the Player
+            
             player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")));
             mapCanvas.Children.Add(player.Rectangle); // a x to the canvas
             player.Position = (Vector)map.StartPoint;
 
 
-            /**
-             * Init the Camera
-             */
+            //Init the Camera
+            
             viewPort.Focus();
 
             // Set the height/width from the preferences
@@ -109,22 +106,19 @@ namespace OA_Game
             // Init the camera at player start position
             camera = new ViewPort(viewPort, mapCanvas, (Point)player.Position);
 
-            /**
-             * Init StatusBar Icons
-             */
+            // Init StatusBar Icons
+            
             StatusBarClockIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Clock/Clock_1.png")));
             StatusBarHatIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Cap/Cap_1.png")));
             StatusBarAmmoIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Note/Note_big.png")));
 
 
-            /**
-             * Start the stopwatch
-             */
+            // Start the stopwatch
+             
             stopwatch.Start();
 
-            /**
-             * Init the Game Loop Dispatcher
-             */
+            //Init the Game Loop Dispatcher
+             
             gameLoop.Events += InputKeyboard;
             gameLoop.Events += UpdateCamera;
             gameLoop.Events += MovePlayer;
@@ -168,7 +162,7 @@ namespace OA_Game
             {
                 Saving save = new Saving(Preferences.GameDataPath);
 
-                save.Save(levelId);
+                save.SaveLevel(levelId,new TimeSpan(stopwatch.ElapsedTicks));
 
                 gameLoop.Stop();
 
