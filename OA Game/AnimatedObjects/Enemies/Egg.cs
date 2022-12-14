@@ -23,9 +23,12 @@ namespace OA_Game.AnimatedObjects.Enemies
     public class Egg : Enemy, IInteractable
     {
         public bool DirectionLeft { get; set; } = false;
+
         public bool IsDying { get; set; } = false;
+
         public override int Damage { get; } = 1;
-        public readonly TimeSpan CooldownTime = TimeSpan.FromMilliseconds(5000);
+
+        public readonly TimeSpan CooldownTime = TimeSpan.FromMilliseconds(1000);
 
 
         public Egg(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
@@ -103,13 +106,13 @@ namespace OA_Game.AnimatedObjects.Enemies
                 return;
             //5 sec warten
             if (damage > 0)
-                PlaySequenceAsync("damage_egg", DirectionLeft, false, false);
+                Die();
         }
         /// <summary>
         /// cooldown before egg disapears after hitting the ground
         /// </summary>
         /// <param name="map"></param>
-        private async void Cooledown(Map map)
+        private async void Cooledown()
         {
             await Task.Delay(CooldownTime);
             Die();
@@ -119,14 +122,15 @@ namespace OA_Game.AnimatedObjects.Enemies
             TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, this);
 
 
-            if ((collidedWithWhat[1] == TileTypes.Ground))
-            {
-                GetDamage(2);
-            }
-            else
+            if (!(collidedWithWhat[1] == TileTypes.Ground))
             {
                 Velocity += Physics.Gravity;
                 Position += Velocity;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Boden");
+                GetDamage(2);
             }
         }
     }
