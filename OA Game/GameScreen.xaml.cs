@@ -170,10 +170,6 @@ namespace OA_Game
 
                 gameLoop.Stop();
 
-                Saving save = new Saving(Preferences.GameDataPath);
-
-                save.Save(levelId);
-
                 OpenGameEndScreen(true);
             }
         }
@@ -319,7 +315,7 @@ namespace OA_Game
             };
 
             GameEndTime.Text = win switch {
-                true => $"{stopwatch.Elapsed.Minutes:00}:{stopwatch.Elapsed.Seconds:00}:{stopwatch.Elapsed.Milliseconds:000}",
+                true => $"{stopwatch.Elapsed.Minutes:00}:{stopwatch.Elapsed.Seconds:00}.{stopwatch.Elapsed.Milliseconds:000}",
                 false => "Du bist gestorben!",
             };
         }
