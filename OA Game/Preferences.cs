@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace OA_Game
 {
@@ -42,7 +42,12 @@ namespace OA_Game
         /// </summary>
         public static readonly string[] GameWinTexts = new string[]
         {
-            "Das nennst du einen Sieg? In der Zeit hätte meine Oma das auch geschafft!" // Marvin
+            "Das nennst du einen Sieg? In der Zeit hätte meine Oma das auch geschafft!", // Marvin
+            "Let´s Goo!", // Eddi
+            "Du hast das Spiel ja richtig gut gesmashed!", // Vinc
+            "Joa, war trotzdem schneller als Du!", // Yannes
+            "Bassd scho!", // Andi
+            "Akzeptabel!" // Yannes
         };
 
         /// <summary>
@@ -51,7 +56,9 @@ namespace OA_Game
         public static readonly string[] GameLossTexts = new string[]
         {
             "Konkey Dong lacht über dich, weil du so schlecht bist!", // Marvin
-            "Ich bin in einer Glückskeksfabrik  gefangen. Holt mich hier heraus! Btw. du hast verloren." // Anne
+            "Ich bin in einer Glückskeksfabrik  gefangen. Holt mich hier heraus! Btw. du hast verloren.", // Anne
+            "Nächstes Mal wirds besser!", // Eddi
+            "Bassd scho!" // Andi
         };
     }
 }
