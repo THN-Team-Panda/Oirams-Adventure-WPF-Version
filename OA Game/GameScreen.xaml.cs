@@ -273,7 +273,8 @@ namespace OA_Game
                     "Skeleton" => new Skeleton(32, 32, new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_1.png"))),
                     "FliegeVieh" => new FliegeVieh(32, 32, new BitmapImage(Assets.GetUri("Images/FliegeVieh/FliegeVieh_1.png")), map, toSpawn.Position),
                     "KonkeyDong" => new KonkeyDong(32, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong.png")), map, toSpawn.Position),
-                    "Egg" => new Egg(20, 20, new BitmapImage(Assets.GetUri("Images/FliegeVieh/Egg/Egg_8.png"))),
+                    "Egg" => new Egg(9, 8, new BitmapImage(Assets.GetUri("Images/FliegeVieh/Egg/Egg.png"))),
+                    "FriedEgg" => new FriedEgg(20, 32, new BitmapImage(Assets.GetUri("Images/FliegeVieh/Egg/Egg_1.png"))),
                     "Boombox" => new Boombox(20, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Boombox/Boombox_1.png"))),
                     _ => throw new ArgumentException("Enemy Not Known")
 
