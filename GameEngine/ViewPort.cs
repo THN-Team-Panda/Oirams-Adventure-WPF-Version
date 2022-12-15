@@ -40,6 +40,9 @@ namespace GameEngine
         /// </summary>
         private readonly double mapLimitLeftMin;
 
+        /// <summary>
+        /// Background image object, can be null
+        /// </summary>
         private readonly Image? background;
 
         /// <summary>
