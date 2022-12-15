@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Diagnostics;
+using System.Windows.Media;
 
 namespace GameEngine
 {
@@ -72,7 +72,18 @@ namespace GameEngine
         /// </summary>
         private double horizontalFocusAngel = 0.35;
 
+        /// <summary>
+        /// Parameter for the parallax background effect.
+        /// Factor for the horizontal background expansion to each side.
+        /// Also for how strong the focus object movement moves the background.
+        /// </summary>
         private double horizontalBackgroundOffset = 0.2;
+
+        /// <summary>
+        /// Parameter for the parallax background effect.
+        /// Factor for the vertical background expansion to each side.
+        /// Also for how strong the focus object movement moves the background.
+        /// </summary>
 
         private double verticalBackgroundOffset = 0.0125;
 
@@ -200,6 +211,37 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// Method to get/set the horizontalBackgroundOffset
+        /// Note: Value between 0 and 1
+        /// </summary>
+        public double HorizontalBackgroundOffset
+        {
+            get => horizontalBackgroundOffset;
+            set
+            {
+                if (value is < 0 or > 1)
+                    throw new ArgumentOutOfRangeException($"VerticalFreeMovementZoneBottom", "Value must be between 0 and 1!");
+
+                horizontalBackgroundOffset = value;
+            }
+        }
+
+        /// <summary>
+        /// Method to get/set the verticalBackgroundOffset
+        /// Note: Value between 0 and 1
+        /// </summary>
+        public double VerticalBackgroundOffset
+        {
+            get => verticalBackgroundOffset;
+            set
+            {
+                if (value is < 0 or > 1)
+                    throw new ArgumentOutOfRangeException($"VerticalFreeMovementZoneBottom", "Value must be between 0 and 1!");
+
+                verticalBackgroundOffset = value;
+            }
+        }
+        /// <summary>
         /// Helper Method for the view width
         /// </summary>
         public double ViewWidth
@@ -243,6 +285,17 @@ namespace GameEngine
             Camera(initPosition);
         }
 
+        /// <summary>
+        /// Construct the view port. Pass a background image for a parallax effect
+        /// which can be applied by calling the BackgroundEffect method
+        /// Note: the map object must be a child of the view object, background must be a child of map
+        /// </summary>
+        /// <param name="view">view canvas with a init size</param>
+        /// <param name="map">map canvas with a init size</param>
+        /// <param name="initPosition">position where the camera starts</param>
+        /// <param name="background">Background image object</param>
+        /// <exception cref="ArgumentException">Map must be a child element of view!</exception>
+
         public ViewPort(Canvas view, Canvas map, Point initPosition, Image background) : this(view, map, initPosition)
         {
             this.background = background;
@@ -250,9 +303,14 @@ namespace GameEngine
             if (!map.Children.Contains(background))
                 throw new ArgumentException("Background must be a child element of map!");
 
+            // Stretch the image
+            this.background.Stretch = Stretch.Fill;
+
+            // Calc size
             background.Height = map.Height * (1 + verticalBackgroundOffset);
             background.Width = map.Width * (1 + horizontalBackgroundOffset);
 
+            // Size background
             Canvas.SetTop(background, -1 * map.Height * verticalBackgroundOffset * 2);
             Canvas.SetLeft(background, -1 * map.Width * horizontalBackgroundOffset * 2);
 
@@ -309,6 +367,19 @@ namespace GameEngine
         }
 
         /// <summary>
+        /// Apply the parallax effect to the background
+        /// </summary>
+        /// <param name="focusObject">Point of focus for the effect</param>
+        public void BackgroundEffect(Point focusObject)
+        {
+            if (background == null)
+                return;
+
+            Canvas.SetLeft(background, -1 * focusObject.X * horizontalBackgroundOffset);
+            Canvas.SetTop(background, -1 * focusObject.Y * verticalBackgroundOffset);
+        }
+
+        /// <summary>
         /// Calculate the best next point by using the last applyed points
         /// </summary>
         /// <param name="appliedMovement">Current position</param>
@@ -337,15 +408,5 @@ namespace GameEngine
             // Return a changed vector
             return new Vector(newX, newY);
         }
-
-        public void BackgroundEffect(Point focusObject)
-        {
-            if (background == null)
-                return;
-
-            Canvas.SetLeft(background, -1 * focusObject.X * horizontalBackgroundOffset);
-            Canvas.SetTop(background, -1 * focusObject.Y * verticalBackgroundOffset);
-        }
-
     }
 }
