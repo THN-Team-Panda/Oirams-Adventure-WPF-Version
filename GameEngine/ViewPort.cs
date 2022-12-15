@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Diagnostics;
 
 namespace GameEngine
 {
@@ -39,6 +40,8 @@ namespace GameEngine
         /// </summary>
         private readonly double mapLimitLeftMin;
 
+        private readonly Image? background;
+
         /// <summary>
         /// The horizontal free movement zone describes the horizontal border before the camera starts to move
         /// Note: Value starts from the left hand side 
@@ -68,6 +71,10 @@ namespace GameEngine
         /// Note: Start on the left edge
         /// </summary>
         private double horizontalFocusAngel = 0.35;
+
+        private double horizontalBackgroundOffset = 0.2;
+
+        private double verticalBackgroundOffset = 0.0125;
 
         /// <summary>
         /// Method to get vertical the map position. Sets the vertical map position
@@ -122,7 +129,7 @@ namespace GameEngine
             set
             {
                 if (value is < 0 or > 1)
-                    throw new ArgumentOutOfRangeException($"VerticalFocusAngel","Value must be between 0 and 1!");
+                    throw new ArgumentOutOfRangeException($"VerticalFocusAngel", "Value must be between 0 and 1!");
 
                 verticalFocusAngel = value;
             }
@@ -138,7 +145,7 @@ namespace GameEngine
             set
             {
                 if (value is < 0 or > 1)
-                    throw new ArgumentOutOfRangeException($"HorizontalFocusAngel","Value must be between 0 and 1!");
+                    throw new ArgumentOutOfRangeException($"HorizontalFocusAngel", "Value must be between 0 and 1!");
 
                 horizontalFocusAngel = value;
             }
@@ -186,7 +193,7 @@ namespace GameEngine
             set
             {
                 if (value is < 0 or > 1)
-                    throw new ArgumentOutOfRangeException($"VerticalFreeMovementZoneBottom","Value must be between 0 and 1!");
+                    throw new ArgumentOutOfRangeException($"VerticalFreeMovementZoneBottom", "Value must be between 0 and 1!");
 
                 verticalFreeMovementZoneBottom = value;
             }
@@ -234,6 +241,24 @@ namespace GameEngine
 
             // Move camera
             Camera(initPosition);
+        }
+
+        public ViewPort(Canvas view, Canvas map, Point initPosition, Image background) : this(view, map, initPosition)
+        {
+            this.background = background;
+
+            if (!map.Children.Contains(background))
+                throw new ArgumentException("Background must be a child element of map!");
+
+            background.Height = map.Height * (1 + verticalBackgroundOffset);
+            background.Width = map.Width * (1 + horizontalBackgroundOffset);
+
+            Canvas.SetTop(background, -1 * map.Height * verticalBackgroundOffset * 2);
+            Canvas.SetLeft(background, -1 * map.Width * horizontalBackgroundOffset * 2);
+
+            if (background != null)
+                BackgroundEffect(initPosition);
+
         }
 
         /// <summary>
@@ -306,11 +331,20 @@ namespace GameEngine
 
             if (-appliedMovement.Y > verticalBorderTop)
                 newY = appliedMovement.Y + verticalBorderTop;
-            else if(-appliedMovement.Y < verticalBorderBottom)
-             newY = appliedMovement.Y + verticalBorderBottom;
+            else if (-appliedMovement.Y < verticalBorderBottom)
+                newY = appliedMovement.Y + verticalBorderBottom;
 
             // Return a changed vector
             return new Vector(newX, newY);
+        }
+
+        public void BackgroundEffect(Point focusObject)
+        {
+            if (background == null)
+                return;
+
+            Canvas.SetLeft(background, -1 * focusObject.X * horizontalBackgroundOffset);
+            Canvas.SetTop(background, -1 * focusObject.Y * verticalBackgroundOffset);
         }
 
     }

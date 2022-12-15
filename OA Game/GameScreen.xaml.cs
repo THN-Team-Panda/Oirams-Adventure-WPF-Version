@@ -79,17 +79,17 @@ namespace OA_Game
             mapCanvas.Height = map.MapHeight;
 
             // Set the background image
-            mapCanvas.Children.Add(new Image()
+            Image background = new Image()
             {
                 Source = map.BackgroundImage,
-                Height = map.MapHeight,
-                Width = map.MapWidth,
                 Stretch = Stretch.Fill,
-            });
+            };
+
+            mapCanvas.Children.Add(background);
 
 
             // Init the Player
-            
+
             player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")));
             mapCanvas.Children.Add(player.Rectangle); // a x to the canvas
             player.Position = (Vector)map.StartPoint;
@@ -104,7 +104,7 @@ namespace OA_Game
             viewPort.Width = Preferences.ViewWidth;
 
             // Init the camera at player start position
-            camera = new ViewPort(viewPort, mapCanvas, (Point)player.Position);
+            camera = new ViewPort(viewPort, mapCanvas, (Point)player.Position, background);
 
             // Init StatusBar Icons
             
@@ -143,6 +143,8 @@ namespace OA_Game
             // Make sure that the player is unable to leave the viewPort Area
             if (player.Position.X < -camera.CurrentAngelHorizontal)
                 player.Position = new Vector(-camera.CurrentAngelHorizontal, player.Position.Y);
+
+            camera.BackgroundEffect((Point)player.Position);
         }
         /// <summary>
         /// Check if Player is dead or in finish or out of map
