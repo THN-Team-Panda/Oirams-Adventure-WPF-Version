@@ -54,7 +54,7 @@ namespace OA_Game.AnimatedObjects.Enemies
             
             if (!(collidedWithWhat[1] == TileTypes.Ground))
             {
-                Velocity += Physics.Gravity;
+                Velocity += Physics.Gravity/2;
                 Position += Velocity;
             }
             
