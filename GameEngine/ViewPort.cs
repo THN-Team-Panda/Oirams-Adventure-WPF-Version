@@ -4,7 +4,7 @@ using System.Windows.Controls;
 namespace GameEngine
 {
     /// <summary>
-    /// TODO Explain
+    /// Camera class for the game
     /// </summary>
     public class ViewPort
     {

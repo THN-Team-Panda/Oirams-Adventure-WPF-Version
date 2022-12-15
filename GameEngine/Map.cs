@@ -96,6 +96,9 @@ namespace GameEngine
         /// </summary>
         private List<NotSpawnedObject> NotSpawnedObjects { get; set; } = new();
 
+        /// <summary>
+        /// A tileset from the tiledCS libary
+        /// </summary>
         private readonly TiledTileset tileset;
 
         /// <summary>
