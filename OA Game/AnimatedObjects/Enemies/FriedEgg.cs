@@ -45,13 +45,12 @@ namespace OA_Game.AnimatedObjects.Enemies
 
         public void Move(Map map)
         {
-            return;
-            //TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, this);
-            //if (!(collidedWithWhat[1] == TileTypes.Ground || collidedWithWhat[2] == TileTypes.Ground || collidedWithWhat[3] == TileTypes.Ground || collidedWithWhat[0] == TileTypes.Ground))
-            //{
-            //    Velocity += Physics.Gravity / 2;
-            //    Position += Velocity;
-            //}
+            TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, this);
+            if (!(collidedWithWhat[1] == TileTypes.Ground || collidedWithWhat[2] == TileTypes.Ground || collidedWithWhat[3] == TileTypes.Ground || collidedWithWhat[0] == TileTypes.Ground))
+            {
+                Velocity += Physics.Gravity / 2;
+                Position += Velocity;
+            }
         }
 
         public void Attack(AnimatedObject obj)

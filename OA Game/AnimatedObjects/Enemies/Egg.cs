@@ -3,6 +3,7 @@ using GameEngine.GameObjects;
 using System;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows;
 
 
 namespace OA_Game.AnimatedObjects.Enemies
@@ -65,8 +66,9 @@ namespace OA_Game.AnimatedObjects.Enemies
             }
             else
             {
-                map.AddNotSpawnedObject(new NotSpawnedObject("FriedEgg", "Enemy", (Position + new System.Windows.Vector(-10,-8))));
-                GetDamage(2);
+                Vector Friedegg_Position = new Vector(Position.X - 10, Position.Y - (20 - Height));
+                map.AddNotSpawnedObject(new NotSpawnedObject("FriedEgg", "Enemy", Friedegg_Position));
+                GetDamage(1);
             }
         }
     }
