@@ -128,11 +128,19 @@ namespace OA_Game.AnimatedObjects.Enemies
         {
             if (IsDying)
                 return;
+            TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, this);
+            Velocity = Velocity with { X = -1.4 }; 
+            if (collidedWithWhat[1] is TileTypes.Ground or TileTypes.Obstacle || collidedWithWhat[3] is TileTypes.Ground or TileTypes.Obstacle || Position.X < 0)
+            {
+                Die();
+            } 
+            else
+            {
+                Position += Velocity;
+                Position = Position with { Y = ((Math.Sin(Position.X/40)* 30) + Anfangsposition) };
+                PlaySequenceAsync("move_fliegevieh", false, true);
+            }
             
-            Velocity = Velocity with { X = -1.4 };            
-            Position += Velocity;
-            Position = Position with { Y = ((Math.Sin(Position.X/40)* 30) + Anfangsposition) };
-            PlaySequenceAsync("move_fliegevieh", false, true);
         }
 
         public void GetDamage(int damage)
