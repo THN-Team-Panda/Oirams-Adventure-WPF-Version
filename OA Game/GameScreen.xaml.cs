@@ -62,7 +62,6 @@ namespace OA_Game
 
            
             //Init the map
-             
             map = new Map($"Level{levelId}.tmx", Assets.GetPath("Level_Panda"), Preferences.MapGroundTileIds, Preferences.MapObstacleTileIds);
 
             //render tiles and save image of tilemap in x
@@ -129,6 +128,7 @@ namespace OA_Game
             gameLoop.Events += CollectGarbage;
             gameLoop.Events += UpdateStatusBar;
             gameLoop.Start();
+            map.AddNotSpawnedObject(new NotSpawnedObject("Finish", "Enemy", new Vector(map.StartPoint.X +10, 0)));
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace OA_Game
             }
 
             //if Player reaches goal
-            else if (player.Position.X > map.EndPoint.X)
+            else if (player.Is_Finish)
             {
                 stopwatch.Stop();
 
@@ -221,8 +221,7 @@ namespace OA_Game
                 if (Physics.CheckCollisionBetweenGameObjects(player, obj))
                 {
                     if (obj is Item item)
-                        player.Collect(item);
-
+                        player.Collect(item);                                                  
                     if (obj is Enemy enemy)
                         ((IInteractable)enemy).Attack(player);
                 }
@@ -263,6 +262,7 @@ namespace OA_Game
                     "Skeleton" => new Skeleton(32, 32, new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_1.png"))),
                     "FliegeVieh" => new FliegeVieh(32, 32, new BitmapImage(Assets.GetUri("Images/FliegeVieh/FliegeVieh_1.png"))),
                     "KonkeyDong" => new KonkeyDong(32, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong.png")), map, toSpawn.Position),
+                    "Finish" => new Finish(128, 30, new BitmapImage(Assets.GetUri("Images/Finish/Finish.png")), map),
                     "Boombox" => new Boombox(20, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Boombox/Boombox_1.png"))),
                     _ => throw new ArgumentException("Enemy Not Known")
 

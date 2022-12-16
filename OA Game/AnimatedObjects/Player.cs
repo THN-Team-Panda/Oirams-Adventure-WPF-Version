@@ -22,6 +22,8 @@ namespace OA_Game.AnimatedObjects
         /// </summary>
         private bool hat = false;
 
+        public bool Is_Finish { get; set; } = false;
+
         /// <summary>
         /// Max amount of munition the player can carry.
         /// </summary>
