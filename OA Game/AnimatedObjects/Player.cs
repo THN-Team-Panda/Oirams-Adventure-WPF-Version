@@ -23,6 +23,11 @@ namespace OA_Game.AnimatedObjects
         private bool hat = false;
 
         /// <summary>
+        /// Represents if the player is in the fishishline
+        /// </summary>
+        public bool IsFinish = false;
+
+        /// <summary>
         /// Max amount of munition the player can carry.
         /// </summary>
         public const int MaxMunition = 10;

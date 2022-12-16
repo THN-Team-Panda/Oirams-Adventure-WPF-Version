@@ -79,13 +79,13 @@ namespace OA_Game.AnimatedObjects.Enemies
             konkeydongDying.SequenceFinished += (object sender) => { ObjectIsTrash = true; };
             konkeydongDying.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("dying_konkeydong", konkeydongDying);
-            Spawn_Boombox(map, position);
+            SpawnBoombox(map, position);
             
         }
         /// <summary>
         /// spawn boombox (enemy)
         /// </summary>
-        public void Spawn_Boombox(Map map, Vector position)
+        public void SpawnBoombox(Map map, Vector position)
         {                
             BoomboxArea = position.X;
             map.AddNotSpawnedObject(new NotSpawnedObject("Boombox", "Enemy", position));

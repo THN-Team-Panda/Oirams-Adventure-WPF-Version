@@ -12,6 +12,7 @@ using OA_Game.AnimatedObjects;
 using OA_Game.AnimatedObjects.Items;
 using OA_Game.AnimatedObjects.Enemies;
 using OA_Game.AnimatedObjects.Bullets;
+using OA_Game.AnimatedObjects.Objectives;
 
 namespace OA_Game
 {
@@ -81,7 +82,7 @@ namespace OA_Game
             // Set the background image
             Image background = new Image() { Source = map.BackgroundImage };
             mapCanvas.Children.Add(background);
-        
+
             // Init the Player
 
             player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")));
@@ -106,6 +107,8 @@ namespace OA_Game
             StatusBarHatIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Cap/Cap_1.png")));
             StatusBarAmmoIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Note/Note_big.png")));
 
+            //spawn finish
+            map.AddNotSpawnedObject(new NotSpawnedObject("Finish", "Objectives", new Vector(map.EndPoint.X, map.EndPoint.Y - Preferences.TileSize * 8)));
 
             // Start the stopwatch
 
@@ -123,6 +126,7 @@ namespace OA_Game
             gameLoop.Events += CollectGarbage;
             gameLoop.Events += UpdateStatusBar;
             gameLoop.Start();
+
         }
 
         /// <summary>
@@ -154,7 +158,7 @@ namespace OA_Game
             }
 
             //if Player reaches goal
-            else if (player.Position.X > map.EndPoint.X)
+            else if (player.IsFinish)
             {
                 stopwatch.Stop();
 
@@ -207,6 +211,7 @@ namespace OA_Game
         /// Checks collision with items and enemies
         /// gets damage if collision with enemie
         /// and the animation is started
+        /// if player collides with finish the property IsFinish gets true
         /// </summary>
         public void CheckCollisionWithMovingObjects()
         {
@@ -216,9 +221,10 @@ namespace OA_Game
                 {
                     if (obj is Item item)
                         player.Collect(item);
-
-                    if (obj is Enemy enemy)
+                    else if (obj is Enemy enemy)
                         ((IInteractable)enemy).Attack(player);
+                    else if (obj is Finish finish)
+                        finish.Goal(player);
                 }
             }
         }
@@ -269,7 +275,7 @@ namespace OA_Game
                 },
                 "Item" => toSpawn.Name switch
                 {
-                    "Hat" => new Hat(32, 32, new BitmapImage(Assets.GetUri("Images/Cap/Cap_1.png"))),
+                    "Hat" => new Hat(24, 24, new BitmapImage(Assets.GetUri("Images/Cap/Cap_1.png"))),
                     "Note" => new Note(32, 32, new BitmapImage(Assets.GetUri("Images/Note/Note_1.png"))),
                     _ => throw new ArgumentException("Item Not Known")
 
@@ -277,6 +283,11 @@ namespace OA_Game
                 "Bullet" => toSpawn.Name switch
                 {
                     "Tone" => new Tone(16, 16, new BitmapImage(Assets.GetUri("Images/Note/Note_1.png")), player.DirectionLeft),
+                    _ => throw new ArgumentException("Item Not Known")
+                },
+                "Objectives" => toSpawn.Name switch
+                {
+                    "Finish" => new Finish(128, 30, new BitmapImage(Assets.GetUri("Images/Finish/Finish.png"))),
                     _ => throw new ArgumentException("Item Not Known")
                 },
 
