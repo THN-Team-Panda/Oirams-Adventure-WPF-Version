@@ -60,7 +60,6 @@ namespace OA_Game
             this.levelId = levelId;
             InitializeComponent();
 
-           
             //Init the map
             map = new Map($"Level{levelId}.tmx", Assets.GetPath("Level_Panda"), Preferences.MapGroundTileIds, Preferences.MapObstacleTileIds);
 
@@ -268,6 +267,8 @@ namespace OA_Game
                     "FliegeVieh" => new FliegeVieh(32, 32, new BitmapImage(Assets.GetUri("Images/FliegeVieh/FliegeVieh_1.png"))),
                     "KonkeyDong" => new KonkeyDong(32, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong.png")), map, toSpawn.Position),
                     "Finish" => new Finish(128, 30, new BitmapImage(Assets.GetUri("Images/Finish/Finish.png")), map),
+                    "Egg" => new Egg(9, 8, new BitmapImage(Assets.GetUri("Images/FliegeVieh/Egg/Egg.png"))),
+                    "FriedEgg" => new FriedEgg(20, 32, new BitmapImage(Assets.GetUri("Images/FliegeVieh/Egg/Egg_1.png"))),
                     "Boombox" => new Boombox(20, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Boombox/Boombox_1.png"))),
                     _ => throw new ArgumentException("Enemy Not Known")
 
