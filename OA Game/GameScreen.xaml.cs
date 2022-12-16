@@ -128,7 +128,9 @@ namespace OA_Game
             gameLoop.Events += CollectGarbage;
             gameLoop.Events += UpdateStatusBar;
             gameLoop.Start();
-            map.AddNotSpawnedObject(new NotSpawnedObject("Finish", "Enemy", new Vector(map.StartPoint.X +10, 0)));
+
+            //spawn finish
+            map.AddNotSpawnedObject(new NotSpawnedObject("Finish", "Enemy", new Vector(map.EndPoint.X, map.EndPoint.Y - 128)));
         }
 
         /// <summary>
@@ -160,7 +162,7 @@ namespace OA_Game
             }
 
             //if Player reaches goal
-            else if (player.Is_Finish)
+            else if (player.IsFinish)
             {
                 stopwatch.Stop();
 
@@ -213,6 +215,7 @@ namespace OA_Game
         /// Checks collision with items and enemies
         /// gets damage if collision with enemie
         /// and the animation is started
+        /// if player collides with finish the property IsFinish gets true
         /// </summary>
         public void CheckCollisionWithMovingObjects()
         {

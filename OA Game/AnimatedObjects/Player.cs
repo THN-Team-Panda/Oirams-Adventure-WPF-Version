@@ -22,7 +22,10 @@ namespace OA_Game.AnimatedObjects
         /// </summary>
         private bool hat = false;
 
-        public bool Is_Finish { get; set; } = false;
+        /// <summary>
+        /// Represents if the player is in the fishishline
+        /// </summary>
+        public bool IsFinish = false;
 
         /// <summary>
         /// Max amount of munition the player can carry.

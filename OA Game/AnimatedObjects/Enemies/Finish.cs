@@ -14,8 +14,24 @@ namespace OA_Game.AnimatedObjects.Enemies
     /// </summary>
     public class Finish : Enemy, IInteractable
     {
+        /// <summary>
+        /// Default should be false, means direction: right
+        /// </summary>
         public bool DirectionLeft { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        /// <summary>
+        /// State befor the object changes to ObjectIsTrash
+        /// </summary>
         public bool IsDying { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        /// <summary>
+        /// Move the Object on the map object
+        /// </summary>
+        /// <param name="map">Map instance</param>
+
+        /// <summary>
+        /// property to check the damage output
+        /// </summary>
         public override int Damage { get; } = 1;
 
         public Finish(int height, int width, ImageSource defaultSprite, Map map) : base(height, width, defaultSprite)
@@ -48,6 +64,10 @@ namespace OA_Game.AnimatedObjects.Enemies
             AddSequence("animation_finish", finishAnimation);
         }
 
+        /// <summary>
+        /// move finish so it is always right above the ground
+        /// </summary>
+        /// <param name="map"></param>
         public void Move(Map map)
         {
             TileTypes[] collidedWithWhat = Physics.IsCollidingWithMap(map, this);
@@ -60,18 +80,29 @@ namespace OA_Game.AnimatedObjects.Enemies
             }
         }
 
+        /// <summary>
+        /// if player touches finishline, game is finished
+        /// </summary>
+        /// <param name="obj"></param>
         public void Attack(AnimatedObject obj)
         {
             PlaySequenceAsync("animation_finish", false, false, true);
             if(obj is Player player)
-                player.Is_Finish = true;
+                player.IsFinish = true;
         }
 
+        /// <summary>
+        /// Receive demage points
+        /// </summary>
+        /// <param name="damage">damage value</param>
         public void GetDamage(int damage)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Method to execute die animations and stuff
+        /// </summary>
         public void Die()
         {
             throw new NotImplementedException();
