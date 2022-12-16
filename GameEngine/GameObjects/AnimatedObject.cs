@@ -61,8 +61,9 @@ namespace GameEngine.GameObjects
         /// <param name="directionLeft">Sets the sprite rotation</param>
         /// <param name="lastIsDefault">Reset the sprite after running the sequence to the defualt sprite</param>
         /// <param name="interrupt">Interrupt the current running sequence</param>
+        /// <param name="endSoundWithSequence">If set the sound ends with the sequence</param>
         /// <exception cref="UnknownAnimationSequenceException">If the sequence name is unkown</exception>
-        public void PlaySequence(string name, bool directionLeft = false, bool lastIsDefault = false, bool interrupt = false)
+        public void PlaySequence(string name, bool directionLeft = false, bool lastIsDefault = false, bool interrupt = false, bool endSoundWithSequence = true)
         {
             if (!AnimationCollection.ContainsKey(name))
                 throw new UnknownAnimationSequenceException();
@@ -90,7 +91,11 @@ namespace GameEngine.GameObjects
             {
                 // Return is case that this is no longer the running session
                 if (session != runningToken)
+                {
+                    if (endSoundWithSequence) sequence.SoundObject?.Stop();
                     return;
+                }
+
 
                 SetSprite(image, directionLeft);
 
@@ -99,7 +104,10 @@ namespace GameEngine.GameObjects
 
             // Return is case that this is no longer the running session
             if (session != runningToken)
+            {
+                if (endSoundWithSequence) sequence.SoundObject?.Stop();
                 return;
+            }
 
             if (lastIsDefault)
                 SetSprite(defaultSprite, directionLeft);
@@ -107,6 +115,11 @@ namespace GameEngine.GameObjects
             // If this is the active session reset the token
             if (session == runningToken)
                 runningToken = -1;
+
+            // If set end sound with sequence
+            if (endSoundWithSequence)
+                sequence.SoundObject?.Stop();
+
 
             // Call all events defined in the sequence
             sequence.CallEvents(this);
@@ -119,8 +132,9 @@ namespace GameEngine.GameObjects
         /// <param name="directionLeft">Sets the sprite rotation</param>
         /// <param name="lastIsDefault">Reset the sprite after running the sequence to the defualt sprite</param>
         /// <param name="interrupt">Interrupt the current running sequence</param>
+        /// <param name="endSoundWithSequence">If set the sound ends with the sequence</param>
         /// <exception cref="UnknownAnimationSequenceException">If the sequence name is unkown</exception>
-        public async void PlaySequenceAsync(string name, bool directionLeft = false, bool lastIsDefault = false, bool interrupt = false)
+        public async void PlaySequenceAsync(string name, bool directionLeft = false, bool lastIsDefault = false, bool interrupt = false, bool endSoundWithSequence = true)
         {
             if (!AnimationCollection.ContainsKey(name))
                 throw new UnknownAnimationSequenceException();
@@ -147,7 +161,10 @@ namespace GameEngine.GameObjects
             {
                 // Return is case that this is no longer the running session
                 if (session != runningToken)
+                {
+                    if (endSoundWithSequence) sequence.SoundObject?.Stop();
                     return;
+                }
 
                 SetSprite(image, directionLeft);
 
@@ -156,7 +173,10 @@ namespace GameEngine.GameObjects
 
             // Return is case that this is no longer the running session
             if (session != runningToken)
+            {
+                if (endSoundWithSequence) sequence.SoundObject?.Stop();
                 return;
+            }
 
             if (lastIsDefault)
                 SetSprite(defaultSprite, directionLeft);
@@ -164,6 +184,10 @@ namespace GameEngine.GameObjects
             // If this is the active session reset the token
             if (session == runningToken)
                 runningToken = -1;
+
+            // If set end sound with sequence
+            if (endSoundWithSequence) 
+                sequence.SoundObject?.Stop();
 
             // Call all events defined in the sequence
             sequence.CallEvents(this);
@@ -204,7 +228,10 @@ namespace GameEngine.GameObjects
                 {
                     // Return is case that this is no longer the running session
                     if (session != runningToken)
+                    {
+                        sequence.SoundObject?.Stop();
                         return;
+                    }
 
                     SetSprite(image, directionLeft);
 
@@ -212,7 +239,10 @@ namespace GameEngine.GameObjects
                 }
 
                 if (session != runningToken)
+                {
+                    sequence.SoundObject?.Stop();
                     return;
+                }
             }
         }
 
