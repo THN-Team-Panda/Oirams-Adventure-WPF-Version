@@ -7,12 +7,12 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace OA_Game.AnimatedObjects.Enemies
+namespace OA_Game.AnimatedObjects.Objectives
 {
     /// <summary>
     /// Class for item hat. Is the extra live for player.
     /// </summary>
-    public class Finish : Enemy, IInteractable
+    public class Finish : AnimatedObject, IInteractable
     {
         /// <summary>
         /// Default should be false, means direction: right
@@ -24,17 +24,7 @@ namespace OA_Game.AnimatedObjects.Enemies
         /// </summary>
         public bool IsDying { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        /// <summary>
-        /// Move the Object on the map object
-        /// </summary>
-        /// <param name="map">Map instance</param>
-
-        /// <summary>
-        /// property to check the damage output
-        /// </summary>
-        public override int Damage { get; } = 1;
-
-        public Finish(int height, int width, ImageSource defaultSprite, Map map) : base(height, width, defaultSprite)
+        public Finish(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
             PlayableSequence finishAnimation = new PlayableSequence(new ImageSource[]
             {

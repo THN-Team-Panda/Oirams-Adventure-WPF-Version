@@ -12,6 +12,7 @@ using OA_Game.AnimatedObjects;
 using OA_Game.AnimatedObjects.Items;
 using OA_Game.AnimatedObjects.Enemies;
 using OA_Game.AnimatedObjects.Bullets;
+using OA_Game.AnimatedObjects.Objectives;
 
 namespace OA_Game
 {
@@ -81,7 +82,7 @@ namespace OA_Game
             // Set the background image
             Image background = new Image() { Source = map.BackgroundImage };
             mapCanvas.Children.Add(background);
-        
+
             // Init the Player
 
             player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")));
@@ -106,6 +107,8 @@ namespace OA_Game
             StatusBarHatIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Cap/Cap_1.png")));
             StatusBarAmmoIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Note/Note_big.png")));
 
+            //spawn finish
+            map.AddNotSpawnedObject(new NotSpawnedObject("Finish", "Objectives", new Vector(map.EndPoint.X, map.EndPoint.Y - Preferences.TileSize * 8)));
 
             // Start the stopwatch
 
@@ -124,8 +127,6 @@ namespace OA_Game
             gameLoop.Events += UpdateStatusBar;
             gameLoop.Start();
 
-            //spawn finish
-            map.AddNotSpawnedObject(new NotSpawnedObject("Finish", "Enemy", new Vector(map.EndPoint.X, map.EndPoint.Y - 128)));
         }
 
         /// <summary>
@@ -219,11 +220,11 @@ namespace OA_Game
                 if (Physics.CheckCollisionBetweenGameObjects(player, obj))
                 {
                     if (obj is Item item)
-                        player.Collect(item);                                                  
-                    if (obj is Enemy enemy && obj is not Finish)
+                        player.Collect(item);
+                    else if (obj is Enemy enemy)
                         ((IInteractable)enemy).Attack(player);
-                        if (obj is Finish finish)
-                            finish.Goal(player);
+                    else if (obj is Finish finish)
+                        finish.Goal(player);
                 }
             }
         }
@@ -266,7 +267,6 @@ namespace OA_Game
                     "Skeleton" => new Skeleton(32, 32, new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_1.png"))),
                     "FliegeVieh" => new FliegeVieh(32, 32, new BitmapImage(Assets.GetUri("Images/FliegeVieh/FliegeVieh_1.png")), map, toSpawn.Position),
                     "KonkeyDong" => new KonkeyDong(32, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong.png")), map, toSpawn.Position),
-                    "Finish" => new Finish(128, 30, new BitmapImage(Assets.GetUri("Images/Finish/Finish.png")), map),
                     "Egg" => new Egg(9, 8, new BitmapImage(Assets.GetUri("Images/FliegeVieh/Egg/Egg.png"))),
                     "FriedEgg" => new FriedEgg(20, 32, new BitmapImage(Assets.GetUri("Images/FliegeVieh/Egg/Egg_1.png"))),
                     "Boombox" => new Boombox(20, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Boombox/Boombox_1.png"))),
@@ -275,7 +275,7 @@ namespace OA_Game
                 },
                 "Item" => toSpawn.Name switch
                 {
-                    "Hat" => new Hat(32, 32, new BitmapImage(Assets.GetUri("Images/Cap/Cap_1.png"))),
+                    "Hat" => new Hat(24, 24, new BitmapImage(Assets.GetUri("Images/Cap/Cap_1.png"))),
                     "Note" => new Note(32, 32, new BitmapImage(Assets.GetUri("Images/Note/Note_1.png"))),
                     _ => throw new ArgumentException("Item Not Known")
 
@@ -283,6 +283,11 @@ namespace OA_Game
                 "Bullet" => toSpawn.Name switch
                 {
                     "Tone" => new Tone(16, 16, new BitmapImage(Assets.GetUri("Images/Note/Note_1.png")), player.DirectionLeft),
+                    _ => throw new ArgumentException("Item Not Known")
+                },
+                "Objectives" => toSpawn.Name switch
+                {
+                    "Finish" => new Finish(128, 30, new BitmapImage(Assets.GetUri("Images/Finish/Finish.png"))),
                     _ => throw new ArgumentException("Item Not Known")
                 },
 
