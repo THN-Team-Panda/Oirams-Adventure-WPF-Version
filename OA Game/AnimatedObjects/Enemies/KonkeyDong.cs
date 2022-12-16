@@ -4,10 +4,6 @@ using GameEngine.GameObjects;
 using System;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using GameEngine.Exceptions;
-using TiledCS;
-using System.Windows.Controls;
-using System.Linq;
 
 
 namespace OA_Game.AnimatedObjects.Enemies
