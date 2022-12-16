@@ -86,8 +86,17 @@ namespace OA_Game.AnimatedObjects.Enemies
         /// <param name="obj"></param>
         public void Attack(AnimatedObject obj)
         {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// if player touches finishline, game is finished
+        /// </summary>
+        /// <param name="obj"></param>
+        public void Goal(AnimatedObject obj)
+        {
             PlaySequenceAsync("animation_finish", false, false, true);
-            if(obj is Player player)
+            if (obj is Player player)
                 player.IsFinish = true;
         }
 

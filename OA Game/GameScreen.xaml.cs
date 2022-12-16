@@ -225,8 +225,10 @@ namespace OA_Game
                 {
                     if (obj is Item item)
                         player.Collect(item);                                                  
-                    if (obj is Enemy enemy)
+                    if (obj is Enemy enemy && obj is not Finish)
                         ((IInteractable)enemy).Attack(player);
+                        if (obj is Finish finish)
+                            finish.Goal(player);
                 }
             }
         }
