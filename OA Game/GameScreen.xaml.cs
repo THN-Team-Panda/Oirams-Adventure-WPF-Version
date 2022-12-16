@@ -60,9 +60,9 @@ namespace OA_Game
             this.levelId = levelId;
             InitializeComponent();
 
-           
+
             //Init the map
-             
+
             map = new Map($"Level{levelId}.tmx", Assets.GetPath("Level_Panda"), Preferences.MapGroundTileIds, Preferences.MapObstacleTileIds);
 
             //render tiles and save image of tilemap in x
@@ -79,24 +79,18 @@ namespace OA_Game
             mapCanvas.Height = map.MapHeight;
 
             // Set the background image
-            mapCanvas.Children.Add(new Image()
-            {
-                Source = map.BackgroundImage,
-                Height = map.MapHeight,
-                Width = map.MapWidth,
-                Stretch = Stretch.Fill,
-            });
-
-
+            Image background = new Image() { Source = map.BackgroundImage };
+            mapCanvas.Children.Add(background);
+        
             // Init the Player
-            
+
             player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")));
             mapCanvas.Children.Add(player.Rectangle); // a x to the canvas
             player.Position = (Vector)map.StartPoint;
 
 
             //Init the Camera
-            
+
             viewPort.Focus();
 
             // Set the height/width from the preferences
@@ -104,21 +98,21 @@ namespace OA_Game
             viewPort.Width = Preferences.ViewWidth;
 
             // Init the camera at player start position
-            camera = new ViewPort(viewPort, mapCanvas, (Point)player.Position);
+            camera = new ViewPort(viewPort, mapCanvas, (Point)player.Position, background);
 
             // Init StatusBar Icons
-            
+
             StatusBarClockIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Clock/Clock_1.png")));
             StatusBarHatIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Cap/Cap_1.png")));
             StatusBarAmmoIcon.Fill = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Note/Note_big.png")));
 
 
             // Start the stopwatch
-             
+
             stopwatch.Start();
 
             //Init the Game Loop Dispatcher
-             
+
             gameLoop.Events += InputKeyboard;
             gameLoop.Events += UpdateCamera;
             gameLoop.Events += MovePlayer;
@@ -166,7 +160,7 @@ namespace OA_Game
 
                 Saving save = new Saving(Preferences.GameDataPath);
 
-                save.SaveLevel(levelId,new TimeSpan(stopwatch.ElapsedTicks));
+                save.SaveLevel(levelId, new TimeSpan(stopwatch.ElapsedTicks));
 
                 gameLoop.Stop();
 
@@ -232,7 +226,11 @@ namespace OA_Game
         /// <summary>
         /// Update ViewPort to the current Position of Player.
         /// </summary>
-        private void UpdateCamera() => camera.SmartCamera((Point)player.Position);
+        private void UpdateCamera()
+        {
+            camera.SmartCamera((Point)player.Position);
+            camera.BackgroundEffect((Point)player.Position);
+        }
 
         /// <summary>
         /// Delete all collected items, dead Enemies or shot notes.
@@ -314,7 +312,8 @@ namespace OA_Game
                 false => Preferences.GameLossTexts[(new Random()).Next(Preferences.GameLossTexts.Length)]
             };
 
-            GameEndTime.Text = win switch {
+            GameEndTime.Text = win switch
+            {
                 true => $"{stopwatch.Elapsed.Minutes:00}:{stopwatch.Elapsed.Seconds:00}.{stopwatch.Elapsed.Milliseconds:000}",
                 false => "Du bist gestorben!",
             };
