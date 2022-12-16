@@ -28,6 +28,9 @@ namespace GameEngine.GameObjects
         /// </summary>
         private Vector position;
 
+        /// <summary>
+        /// Apply the Position to the Canvas Object
+        /// </summary>
         public Vector Position
         {
             get => position;
@@ -56,7 +59,6 @@ namespace GameEngine.GameObjects
         /// <summary>
         /// Helper method to set/get the width
         /// </summary>
-
         public double Width
         {
             get => Rectangle.Width;
@@ -84,6 +86,12 @@ namespace GameEngine.GameObjects
             };
         }
 
+        /// <summary>
+        /// Construct the element
+        /// </summary>
+        /// <param name="height">height of hitbox</param>
+        /// <param name="width">width of hitbox</param>
+        /// <param name="image">Give a image instead of setting a background default color</param>
         public DrawableObject(int height, int width, ImageSource image)
         {
             Rectangle = new Rectangle
@@ -109,9 +117,10 @@ namespace GameEngine.GameObjects
 
             if (directionLeft)
             {
+                // Rotate the image
                 TransformGroup transformGroup = new TransformGroup();
                 transformGroup.Children.Add(new ScaleTransform(-1, 1, 0.5, 0));
-                transformGroup.Children. Add(new SkewTransform(-1, 0, 0.5, 0));
+                transformGroup.Children.Add(new SkewTransform(-1, 0, 0.5, 0));
                 brush.RelativeTransform = transformGroup;
             }
 

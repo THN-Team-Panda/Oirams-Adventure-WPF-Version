@@ -1,7 +1,11 @@
 ﻿using System.Windows;
 using GameEngine.GameObjects;
+
 namespace GameEngine
 {
+    /// <summary>
+    /// Class to handle all physics in the game
+    /// </summary>
     public static class Physics
     {
         /// <summary>
@@ -67,13 +71,13 @@ namespace GameEngine
             //set velocity to 0 if moving in this direction
 
         }
+
         /// <summary>
         /// checks if two Gameobjects collide with each other
         /// </summary>
         /// <param name="obj1"></param>
         /// <param name="obj2"></param>
         /// <returns></returns>
-
         public static bool CheckCollisionBetweenGameObjects(DrawableObject obj1, DrawableObject obj2)
         {
             return (obj1.Position.X + obj1.Width >= obj2.Position.X && obj1.Position.X < obj2.Position.X + obj2.Width) &&
