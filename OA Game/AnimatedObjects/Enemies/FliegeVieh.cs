@@ -60,6 +60,10 @@ namespace OA_Game.AnimatedObjects.Enemies
         public FliegeVieh(int height, int width, ImageSource defaultSprite, Map map, Vector anfangsposition) : base(height, width, defaultSprite)
         {
             DirectionLeft = true;
+
+            MediaPlayer soundfliegeviehMove = new MediaPlayer();
+            soundfliegeviehMove.Open(Assets.GetUri("Sounds/FlyingBird/Bird.wav"));                  
+
             PlayableSequence fliegeviehMove = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/FliegeVieh/FliegeVieh_1.png")),
