@@ -259,8 +259,10 @@ namespace OA_Game
                 "Enemy" => toSpawn.Name switch
                 {
                     "Skeleton" => new Skeleton(32, 32, new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_1.png"))),
-                    "FliegeVieh" => new FliegeVieh(32, 32, new BitmapImage(Assets.GetUri("Images/FliegeVieh/FliegeVieh_1.png"))),
+                    "FliegeVieh" => new FliegeVieh(32, 32, new BitmapImage(Assets.GetUri("Images/FliegeVieh/FliegeVieh_1.png")), map, toSpawn.Position),
                     "KonkeyDong" => new KonkeyDong(32, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong.png")), map, toSpawn.Position),
+                    "Egg" => new Egg(9, 8, new BitmapImage(Assets.GetUri("Images/FliegeVieh/Egg/Egg.png"))),
+                    "FriedEgg" => new FriedEgg(20, 32, new BitmapImage(Assets.GetUri("Images/FliegeVieh/Egg/Egg_1.png"))),
                     "Boombox" => new Boombox(20, 32, new BitmapImage(Assets.GetUri("Images/KonkeyDong/Boombox/Boombox_1.png"))),
                     _ => throw new ArgumentException("Enemy Not Known")
 
@@ -275,7 +277,6 @@ namespace OA_Game
                 "Bullet" => toSpawn.Name switch
                 {
                     "Tone" => new Tone(16, 16, new BitmapImage(Assets.GetUri("Images/Note/Note_1.png")), player.DirectionLeft),
-                    "Egg" => throw new NotImplementedException(),
                     _ => throw new ArgumentException("Item Not Known")
                 },
 
