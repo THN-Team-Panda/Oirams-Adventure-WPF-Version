@@ -27,6 +27,10 @@ namespace OA_Game.AnimatedObjects.Items
             hatAnimation.Between = TimeSpan.FromMilliseconds(150);
             AddSequence("animation_hat", hatAnimation);
 
+            MediaPlayer soundCollectHat = new MediaPlayer();
+            soundCollectHat.Open(Assets.GetUri("Sounds/Player/CollectHat.wav"));
+            soundCollectHat.Volume = 0.3;
+
             PlayableSequence hatCollect = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/Cap/Cap_1.png")),
@@ -40,7 +44,7 @@ namespace OA_Game.AnimatedObjects.Items
                 new BitmapImage(Assets.GetUri("Images/Cap/Cap_7.png")),
                 new BitmapImage(Assets.GetUri("Images/Cap/Cap_6.png")),
                 new BitmapImage(Assets.GetUri("Images/Cap/Cap_5.png"))
-            });
+            },soundCollectHat);
             hatCollect.SequenceFinished += (object sender) => { ObjectIsTrash = true; };
             hatCollect.Between = TimeSpan.FromMilliseconds(150);
             AddSequence("collect_hat", hatCollect);
