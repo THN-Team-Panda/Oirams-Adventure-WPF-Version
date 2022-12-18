@@ -74,6 +74,9 @@ namespace OA_Game.AnimatedObjects.Enemies
             fliegeviehMove.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("move_fliegevieh", fliegeviehMove);
 
+            MediaPlayer soundFliegeViehDying = new MediaPlayer();
+            soundFliegeViehDying.Open(Assets.GetUri("Sounds/FlyingBird/Bird.wav"));
+
             PlayableSequence fliegeviehDying = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/FliegeVieh/Dying/FliegeVieh_Dying_1.png")),
@@ -86,7 +89,7 @@ namespace OA_Game.AnimatedObjects.Enemies
                 new BitmapImage(Assets.GetUri("Images/FliegeVieh/Dying/FliegeVieh_Dying_8.png")),
                 new BitmapImage(Assets.GetUri("Images/FliegeVieh/Dying/FliegeVieh_Dying_9.png")),
 
-            });
+            }, soundFliegeViehDying);
             fliegeviehDying.SequenceFinished += (object sender) => { ObjectIsTrash = true; };
             fliegeviehDying.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("dying_fliegevieh", fliegeviehDying);

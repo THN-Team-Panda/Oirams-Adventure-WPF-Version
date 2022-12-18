@@ -60,6 +60,9 @@ namespace OA_Game
             this.levelId = levelId;
             InitializeComponent();
 
+            MediaPlayer soundBackGround = new MediaPlayer();
+            soundBackGround.Open(Assets.GetUri("Sounds/Game/BackGround.wav"));
+            soundBackGround.Play();
 
             //Init the map
 
@@ -143,6 +146,7 @@ namespace OA_Game
         /// </summary>
         private void GameOver()
         {
+
             //checks if Player is dead
             if (player.ObjectIsTrash || player.Position.Y >= map.MapHeight)
             {
