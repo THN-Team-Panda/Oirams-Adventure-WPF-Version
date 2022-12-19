@@ -15,6 +15,7 @@ namespace OA_Game.AnimatedObjects.Items
 
         public Note(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
+            
             PlayableSequence noteAnimation = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/Note/Note_1.png")),
@@ -24,6 +25,10 @@ namespace OA_Game.AnimatedObjects.Items
             noteAnimation.Between = TimeSpan.FromMilliseconds(150);
             AddSequence("animation_note", noteAnimation);
 
+            MediaPlayer soundCollectAmmo = new MediaPlayer();
+            soundCollectAmmo.Open(Assets.GetUri("Sounds/Player/CollectAmmo.wav"));
+            soundCollectAmmo.Volume = 0.3;
+
             PlayableSequence noteCollect = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/Note/Note_1.png")),
@@ -32,7 +37,7 @@ namespace OA_Game.AnimatedObjects.Items
                 new BitmapImage(Assets.GetUri("Images/Note/Note_4.png")),
                 new BitmapImage(Assets.GetUri("Images/Note/Note_5.png")),
                 new BitmapImage(Assets.GetUri("Images/Note/Note_6.png"))
-            });
+            }, soundCollectAmmo);
 
             noteCollect.SequenceFinished += (object sender) => { ObjectIsTrash = true; };
             noteCollect.Between = TimeSpan.FromMilliseconds(150);

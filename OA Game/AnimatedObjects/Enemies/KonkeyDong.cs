@@ -35,6 +35,10 @@ namespace OA_Game.AnimatedObjects.Enemies
         public KonkeyDong(int height, int width, ImageSource defaultSprite, Map map, Vector position) : base(height, width, defaultSprite)
         {           
             DirectionLeft = true;
+
+            MediaPlayer soundWalk = new MediaPlayer();
+            soundWalk.Open(Assets.GetUri("Sounds/KonkeyDong/KonkeyDongWalk.wav"));
+
             PlayableSequence donkeykongMove = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong.png")),
@@ -43,7 +47,7 @@ namespace OA_Game.AnimatedObjects.Enemies
                 new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong_Movement_2.png")),
                 new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong_Movement_2.png")),
                 new BitmapImage(Assets.GetUri("Images/KonkeyDong/Movement/KonkeyDong_Movement_2.png"))
-            });
+            }, soundWalk);
             donkeykongMove.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("move_konkeydong", donkeykongMove);
 
@@ -62,6 +66,9 @@ namespace OA_Game.AnimatedObjects.Enemies
             konkeydongAttack.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("attack_konkeydong", konkeydongAttack);
 
+            MediaPlayer soundGettingHit = new MediaPlayer();
+            soundGettingHit.Open(Assets.GetUri("Sounds/KonkeyDong/KonkeyDongHit.wav"));
+
             PlayableSequence konkeydongDying = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/KonkeyDong/Dying/KonkeyDong_Dying_1.png")),
@@ -75,17 +82,17 @@ namespace OA_Game.AnimatedObjects.Enemies
                 new BitmapImage(Assets.GetUri("Images/KonkeyDong/Dying/KonkeyDong_Dying_9.png")),
                 new BitmapImage(Assets.GetUri("Images/KonkeyDong/Dying/KonkeyDong_Dying_10.png"))
 
-            });
+            }, soundGettingHit);
             konkeydongDying.SequenceFinished += (object sender) => { ObjectIsTrash = true; };
             konkeydongDying.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("dying_konkeydong", konkeydongDying);
-            Spawn_Boombox(map, position);
+            SpawnBoombox(map, position);
             
         }
         /// <summary>
         /// spawn boombox (enemy)
         /// </summary>
-        public void Spawn_Boombox(Map map, Vector position)
+        public void SpawnBoombox(Map map, Vector position)
         {                
             BoomboxArea = position.X;
             map.AddNotSpawnedObject(new NotSpawnedObject("Boombox", "Enemy", position));

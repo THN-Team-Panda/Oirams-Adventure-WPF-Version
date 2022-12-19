@@ -94,7 +94,7 @@ namespace OA_Game.AnimatedObjects.Enemies
             fliegeviehDying.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("dying_fliegevieh", fliegeviehDying);
             Anfangsposition = anfangsposition.Y;
-            Egg_Attack(map);
+            EggAttack(map);
         }
 
         public void Attack(AnimatedObject obj)
@@ -103,13 +103,10 @@ namespace OA_Game.AnimatedObjects.Enemies
                 return;
 
             if (obj is Player player)
-                player.GetDamage(Damage);
-
-            PlaySequenceAsync("attack_fliegevieh", DirectionLeft, true, true);
-            
+                player.GetDamage(Damage);            
         }
 
-        public void Egg_Attack(Map map)
+        public void EggAttack(Map map)
         {
             if (IsDying || !CanLayEgg || Eggs < 1)
                 return;
@@ -128,7 +125,7 @@ namespace OA_Game.AnimatedObjects.Enemies
             await Task.Delay(CooldownTime);
 
             CanLayEgg = true;
-            Egg_Attack(map);
+            EggAttack(map);
         }
 
         public void Move(Map map)

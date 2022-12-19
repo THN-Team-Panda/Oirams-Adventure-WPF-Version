@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using OA_Game.AnimatedObjects.Bullets;
+using System.Media;
 
 namespace OA_Game.AnimatedObjects
 {
@@ -21,6 +22,11 @@ namespace OA_Game.AnimatedObjects
         /// Represent the extra Live.
         /// </summary>
         private bool hat = false;
+
+        /// <summary>
+        /// Represents if the player is in the fishishline
+        /// </summary>
+        public bool IsFinish = false;
 
         /// <summary>
         /// Max amount of munition the player can carry.
@@ -135,12 +141,16 @@ namespace OA_Game.AnimatedObjects
             HasHat = true;
             DirectionLeft = false;
 
+            MediaPlayer playerWalk = new MediaPlayer();
+            playerWalk.Open(Assets.GetUri("Sounds/Player/PlayerWalking.wav"));
+            playerWalk.Volume = 0.1;
+
             PlayableSequence playerMove = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player1.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player2.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player3.png"))
-            });
+            }, playerWalk);
             playerMove.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("move", playerMove);
 
@@ -149,7 +159,7 @@ namespace OA_Game.AnimatedObjects
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap1.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap2.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap3.png"))
-            });
+            }, playerWalk);
             playerMoveCap.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("moveCap", playerMoveCap);
 
@@ -163,24 +173,30 @@ namespace OA_Game.AnimatedObjects
             playerJump.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("jump", playerJump);
 
+            MediaPlayer soundJump = new MediaPlayer();
+            soundJump.Open(Assets.GetUri("Sounds/Player/PlayerJump.wav"));
+
             PlayableSequence playerCapJump = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Jumping.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Jumping.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap1.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap2.png")),
-            });
+            }, soundJump);
             playerCapJump.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("jumpCap", playerCapJump);
 
+            MediaPlayer soundAttack = new MediaPlayer();
+            soundAttack.Open(Assets.GetUri("Sounds/Player/LongRangeAttack.wav"));
+
             PlayableSequence playerAttack = new PlayableSequence(new ImageSource[]
-            {
+           {
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Normal/Player_Attack_Normal_1.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Normal/Player_Attack_Normal_2.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Normal/Player_Attack_Normal_3.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Normal/Player_Attack_Normal_4.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Normal/Player_Attack_Normal_5.png"))
-            });
+           }, soundAttack);
             playerAttack.Between = TimeSpan.FromMilliseconds(40);
             this.AddSequence("attack", playerAttack);
 
@@ -191,9 +207,14 @@ namespace OA_Game.AnimatedObjects
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Cap/Player_Attack_Cap_3.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Cap/Player_Attack_Cap_4.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Attack/Cap/Player_Attack_Cap_5.png"))
-            });
+            }, soundAttack);
             playerCapAttack.Between = TimeSpan.FromMilliseconds(40);
             this.AddSequence("attackCap", playerCapAttack);
+
+
+
+            MediaPlayer soundPlayerDamage = new MediaPlayer();
+            soundPlayerDamage.Open(Assets.GetUri("Sounds/Player/LoseHat.wav"));
 
             PlayableSequence playerDamage = new PlayableSequence(new ImageSource[]
             {
@@ -204,9 +225,13 @@ namespace OA_Game.AnimatedObjects
                 new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_5.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_6.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_7.png"))
-            });
+            }, soundPlayerDamage);
             playerDamage.Between = TimeSpan.FromMilliseconds(50);
             this.AddSequence("damage", playerDamage);
+
+            MediaPlayer soundPlayerDead = new MediaPlayer();
+            soundPlayerDead.Open(Assets.GetUri("Sounds/Player/PlayerDead.wav"));
+            soundPlayerDead.Volume = 1;
 
             PlayableSequence playerDying = new PlayableSequence(new ImageSource[]
             {
@@ -217,7 +242,7 @@ namespace OA_Game.AnimatedObjects
                 new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_5.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_6.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Dying/Normal/Player_Dying_Normal_7.png"))
-            });
+            }, soundPlayerDead);
 
             playerDying.SequenceFinished += (object sender) => { ObjectIsTrash = true; };
             playerDying.Between = TimeSpan.FromMilliseconds(50);
@@ -357,6 +382,15 @@ namespace OA_Game.AnimatedObjects
             CanShoot = false;
             map.AddNotSpawnedObject(new NotSpawnedObject("Tone", "Bullet", Position));
             Munition--;
+            if(HasHat)
+            {
+                PlaySequenceAsync("attack", DirectionLeft, true, true);
+            }
+            else
+            {
+                PlaySequenceAsync("attackCap", DirectionLeft, true, true);
+            }
+            
         }
 
         /// <summary>
