@@ -6,28 +6,32 @@
         xmlns:local="clr-namespace:OA_Game"
         mc:Ignorable="d"
         Title="Welcome!" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
-
     <Window.Resources>
-        <Style x:Key="MenuButtons" TargetType="Button" > 
-            <Setter Property="FontSize" Value="30"/>
+        <Style x:Key="MenuButtons" TargetType="Button" >
+            <Setter Property="FontSize" Value="28"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontFamily" Value="{StaticResource Silkscreen}"/>
             <Setter Property="Foreground" Value="AliceBlue"/>
-            <Setter Property="Width" Value="500"/>
+            <Setter Property="Width" Value="450"/>
             <Setter Property="Height" Value="50"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Margin" Value="0,20,0,0"></Setter>
         </Style>
-   
     </Window.Resources>
-    <Window.Background>
-        <ImageBrush/>
-    </Window.Background>
-
+    
     <Grid Name="LevelView">
-
-        <Image Name="Backscreen" Stretch ="Fill"  VerticalAlignment="Center" HorizontalAlignment="Center" />
-        <ScrollViewer VerticalScrollBarVisibility="Hidden" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <!-- Game Banner -->
+        <Image Name="GameBanner" Grid.Row="0" Grid.Column="0" Margin="0,20,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        
+        <!-- Level View -->
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="1" Grid.Column="0">
             <StackPanel Name="Levels"/>
         </ScrollViewer>
     </Grid>
