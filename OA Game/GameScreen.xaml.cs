@@ -51,18 +51,24 @@ namespace OA_Game
         public Stopwatch stopwatch = new Stopwatch();
 
         /// <summary>
+        /// Sound for the game
+        /// </summary>
+        public MediaPlayer soundBackGround = new MediaPlayer();
+
+        /// <summary>
         /// The GameScreen is the main game window.
         /// The Constructor loads all nessesary objects!
         /// </summary>
         /// <param name="levelId"></param>
         public GameScreen(int levelId)
         {
+            soundBackGround.Open(Assets.GetUri("Sounds/Game/BackGround.wav"));
+            soundBackGround.Position = TimeSpan.Zero;
+            soundBackGround.Volume = 0.2;
+            soundBackGround.Play();
+
             this.levelId = levelId;
             InitializeComponent();
-
-            MediaPlayer soundBackGround = new MediaPlayer();
-            soundBackGround.Open(Assets.GetUri("Sounds/Game/BackGround.wav"));
-            soundBackGround.Play();
 
             //Init the map
 
@@ -84,7 +90,7 @@ namespace OA_Game
             // Set the background image
             Image background = new Image() { Source = map.BackgroundImage };
             mapCanvas.Children.Add(background);
-        
+
             // Init the Player
 
             player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")));
@@ -126,6 +132,7 @@ namespace OA_Game
             gameLoop.Events += CollectGarbage;
             gameLoop.Events += UpdateStatusBar;
             gameLoop.Start();
+           
         }
 
         /// <summary>

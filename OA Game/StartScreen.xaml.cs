@@ -172,6 +172,8 @@ namespace OA_Game
 
             gameScreen.ShowDialog(); //show the game screen; dialog is a popup-window
 
+            gameScreen.soundBackGround.Stop();
+
             CreateLevelButtons();
 
             Show();
