@@ -59,10 +59,7 @@ namespace OA_Game.AnimatedObjects.Enemies
 
         public FliegeVieh(int height, int width, ImageSource defaultSprite, Map map, Vector anfangsposition) : base(height, width, defaultSprite)
         {
-            DirectionLeft = true;
-
-            MediaPlayer soundfliegeviehMove = new MediaPlayer();
-            soundfliegeviehMove.Open(Assets.GetUri("Sounds/FlyingBird/Bird.wav"));                  
+            DirectionLeft = true;                 
 
             PlayableSequence fliegeviehMove = new PlayableSequence(new ImageSource[]
             {
@@ -75,7 +72,7 @@ namespace OA_Game.AnimatedObjects.Enemies
             this.AddSequence("move_fliegevieh", fliegeviehMove);
 
             MediaPlayer soundFliegeViehDying = new MediaPlayer();
-            soundFliegeViehDying.Open(Assets.GetUri("Sounds/FlyingBird/Bird.wav"));
+            soundFliegeViehDying.Open(Assets.GetUri("Sounds/FlyingBird/BirdAttack.mp3"));
 
             PlayableSequence fliegeviehDying = new PlayableSequence(new ImageSource[]
             {
@@ -115,6 +112,7 @@ namespace OA_Game.AnimatedObjects.Enemies
             map.AddNotSpawnedObject(new NotSpawnedObject("Egg", "Enemy", Position));
             Eggs--;
             Cooledown(map);
+
         }
 
         private async void Cooledown(Map map)
