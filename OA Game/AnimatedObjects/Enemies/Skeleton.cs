@@ -112,10 +112,12 @@ namespace OA_Game.AnimatedObjects.Enemies
             if (collidedWithWhat[1] is TileTypes.Ground or TileTypes.Obstacle)
             {
                 DirectionLeft = false;
+                StopCurrentSequence();
             }
             else if (collidedWithWhat[3] is TileTypes.Ground or TileTypes.Obstacle)
             {
                 DirectionLeft = true;
+                StopCurrentSequence();
             }
             Position += Velocity;
         }
