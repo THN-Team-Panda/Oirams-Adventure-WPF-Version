@@ -24,11 +24,7 @@ namespace OA_Game.AnimatedObjects.Enemies
 
         public Skeleton(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
-
-            MediaPlayer soundskeletonWalk = new MediaPlayer();
-            soundskeletonWalk.Open(Assets.GetUri("Sounds/Player/PlayerWalking.wav"));
-            soundskeletonWalk.Volume = 0.1;
-
+          
             DirectionLeft =true;
             PlayableSequence skeletonMove = new PlayableSequence(new ImageSource[]
             {
@@ -36,7 +32,7 @@ namespace OA_Game.AnimatedObjects.Enemies
                 new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_2.png")),
                 new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_3.png")),
                 new BitmapImage(Assets.GetUri("Images/Skeleton/Movement/Skeleton_Movement_4.png"))
-            }, soundskeletonWalk);
+            });
             skeletonMove.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("move_skeleton", skeletonMove);
 
@@ -55,8 +51,8 @@ namespace OA_Game.AnimatedObjects.Enemies
             this.AddSequence("attack_skeleton", skeletonAttack);
 
             MediaPlayer soundSkeletondying = new MediaPlayer();
-            soundSkeletondying.Open(Assets.GetUri("Sounds/Player/PlayerWalking.wav"));
-            soundSkeletondying.Volume = 0.1;
+            soundSkeletondying.Open(Assets.GetUri("Sounds/Skeleton/Dying.wav"));
+            soundSkeletondying.Volume = 0.3;
 
             PlayableSequence skeletonDying = new PlayableSequence(new ImageSource[]
             {

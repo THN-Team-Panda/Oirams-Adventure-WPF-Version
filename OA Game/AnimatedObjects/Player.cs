@@ -143,7 +143,7 @@ namespace OA_Game.AnimatedObjects
 
             MediaPlayer playerWalk = new MediaPlayer();
             playerWalk.Open(Assets.GetUri("Sounds/Player/PlayerWalking.wav"));
-            playerWalk.Volume = 0.1;
+            playerWalk.Volume = 0.5;
 
             PlayableSequence playerMove = new PlayableSequence(new ImageSource[]
             {
@@ -163,18 +163,18 @@ namespace OA_Game.AnimatedObjects
             playerMoveCap.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("moveCap", playerMoveCap);
 
+            MediaPlayer soundJump = new MediaPlayer();
+            soundJump.Open(Assets.GetUri("Sounds/Player/PlayerJump.wav"));
+
             PlayableSequence playerJump = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Jumping.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Jumping.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player1.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player2.png")),
-            });
+            }, soundJump);
             playerJump.Between = TimeSpan.FromMilliseconds(150);
-            this.AddSequence("jump", playerJump);
-
-            MediaPlayer soundJump = new MediaPlayer();
-            soundJump.Open(Assets.GetUri("Sounds/Player/PlayerJump.wav"));
+            this.AddSequence("jump", playerJump);          
 
             PlayableSequence playerCapJump = new PlayableSequence(new ImageSource[]
             {
@@ -211,10 +211,9 @@ namespace OA_Game.AnimatedObjects
             playerCapAttack.Between = TimeSpan.FromMilliseconds(40);
             this.AddSequence("attackCap", playerCapAttack);
 
-
-
             MediaPlayer soundPlayerDamage = new MediaPlayer();
-            soundPlayerDamage.Open(Assets.GetUri("Sounds/Player/LoseHat.wav"));
+            soundPlayerDamage.Open(Assets.GetUri("Sounds/Player/PlayerDamage.wav"));
+            soundPlayerDamage.Volume = 1;
 
             PlayableSequence playerDamage = new PlayableSequence(new ImageSource[]
             {

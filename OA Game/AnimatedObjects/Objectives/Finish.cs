@@ -26,6 +26,10 @@ namespace OA_Game.AnimatedObjects.Objectives
 
         public Finish(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
+
+            MediaPlayer soundFinish = new MediaPlayer();
+            soundFinish.Open(Assets.GetUri("Sounds/Game/GameWon.wav"));
+
             PlayableSequence finishAnimation = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/Finish/Finish.png")),
@@ -49,7 +53,7 @@ namespace OA_Game.AnimatedObjects.Objectives
                 new BitmapImage(Assets.GetUri("Images/Finish/Finish_18.png")),
                 new BitmapImage(Assets.GetUri("Images/Finish/Finish_19.png"))
 
-            });
+            }, soundFinish);
             finishAnimation.Between = TimeSpan.FromMilliseconds(150);
             AddSequence("animation_finish", finishAnimation);
         }
