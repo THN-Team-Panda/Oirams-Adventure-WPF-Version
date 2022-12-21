@@ -260,11 +260,19 @@ namespace OA_Game.AnimatedObjects
             {
                 if (this.Velocity.X > 0.01) // looking right 
                 {
+                    if (DirectionLeft==true)
+                    {
+                        StopCurrentSequence();
+                    }
                     this.DirectionLeft = false;
                     this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
                 }
                 else if (this.Velocity.X < -0.01) // looking left
                 {
+                    if (DirectionLeft==false)
+                    {
+                        StopCurrentSequence();
+                    }
                     this.DirectionLeft = true;
                     this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
                 }
@@ -277,11 +285,19 @@ namespace OA_Game.AnimatedObjects
             {
                 if (this.Velocity.X > 0.01) // looking right
                 {
+                    if (DirectionLeft==true)
+                    {
+                        StopCurrentSequence();
+                    }
                     this.DirectionLeft = false;
                     this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
                 }
                 else if (this.Velocity.X < -0.01) // looking left
                 {
+                    if (DirectionLeft==false)
+                    {
+                        StopCurrentSequence();
+                    }
                     this.DirectionLeft = true;
                     this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
                 }
@@ -292,11 +308,19 @@ namespace OA_Game.AnimatedObjects
             }
             else if (this.Velocity.X > 0.01) // walking right
             {
+                if (DirectionLeft==true)
+                {
+                    StopCurrentSequence();
+                }
                 this.DirectionLeft = false;
                 this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
             }
             else if (this.Velocity.X < -0.01) // walking left
             {
+                if (DirectionLeft==false)
+                {
+                    StopCurrentSequence();
+                }
                 this.DirectionLeft = true;
                 this.PlaySequenceAsync(sequnece, this.DirectionLeft, true);
             }
