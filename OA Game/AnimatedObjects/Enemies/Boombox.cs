@@ -29,6 +29,7 @@ namespace OA_Game.AnimatedObjects.Enemies
         {
             MediaPlayer soundBoombox = new MediaPlayer();
             soundBoombox.Open(Assets.GetUri("Sounds/Boombox/Boombox.wav"));
+            soundBoombox.Volume = 0.3;
 
             PlayableSequence boombox = new PlayableSequence(new ImageSource[]
             {
