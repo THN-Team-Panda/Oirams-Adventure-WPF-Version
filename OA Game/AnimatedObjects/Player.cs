@@ -164,7 +164,8 @@ namespace OA_Game.AnimatedObjects
             this.AddSequence("moveCap", playerMoveCap);
 
             MediaPlayer soundJump = new MediaPlayer();
-            soundJump.Open(Assets.GetUri("Sounds/Player/PlayerJump.wav"));
+            soundJump.Open(Assets.GetUri("Sounds/Player/PlayerJump1.wav"));
+            soundJump.Volume = 0.7;
 
             PlayableSequence playerJump = new PlayableSequence(new ImageSource[]
             {

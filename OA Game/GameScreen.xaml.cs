@@ -63,9 +63,9 @@ namespace OA_Game
         /// <param name="levelId"></param>
         public GameScreen(int levelId)
         {
-            soundBackGround.Open(Assets.GetUri("Sounds/Game/BackGround.wav"));
+            soundBackGround.Open(Assets.GetUri("Sounds/Game/GameScreen.wav"));
             soundBackGround.Position = TimeSpan.Zero;
-            soundBackGround.Volume = 0.2;
+            soundBackGround.Volume = 0.1;
             soundBackGround.Play();
 
             this.levelId = levelId;

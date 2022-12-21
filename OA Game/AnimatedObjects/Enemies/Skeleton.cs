@@ -52,7 +52,7 @@ namespace OA_Game.AnimatedObjects.Enemies
 
             MediaPlayer soundSkeletondying = new MediaPlayer();
             soundSkeletondying.Open(Assets.GetUri("Sounds/Skeleton/Dying.wav"));
-            soundSkeletondying.Volume = 0.3;
+            soundSkeletondying.Volume = 0.2;
 
             PlayableSequence skeletonDying = new PlayableSequence(new ImageSource[]
             {

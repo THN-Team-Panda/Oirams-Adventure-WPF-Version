@@ -73,6 +73,7 @@ namespace OA_Game.AnimatedObjects.Enemies
 
             MediaPlayer soundFliegeViehDying = new MediaPlayer();
             soundFliegeViehDying.Open(Assets.GetUri("Sounds/FlyingBird/BirdAttack.mp3"));
+            soundFliegeViehDying.Volume = 0.7;
 
             PlayableSequence fliegeviehDying = new PlayableSequence(new ImageSource[]
             {

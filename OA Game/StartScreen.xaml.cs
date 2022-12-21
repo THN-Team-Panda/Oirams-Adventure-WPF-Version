@@ -20,8 +20,13 @@ namespace OA_Game
         /// </summary>
         private Saving save;
 
+        MediaPlayer soundStartScreen = new MediaPlayer();
+
         public StartScreen()
         {
+            soundStartScreen.Open(Assets.GetUri("Sounds/Game/StartScreen.wav"));
+            soundStartScreen.Play();
+
             InitializeComponent();
 
             LevelView.Height = Preferences.ViewHeight;
@@ -167,6 +172,8 @@ namespace OA_Game
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ResizeMode = ResizeMode.NoResize
             };
+
+            soundStartScreen.Stop();
 
             Hide();
 
