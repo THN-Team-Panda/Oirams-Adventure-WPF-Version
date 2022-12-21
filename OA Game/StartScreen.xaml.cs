@@ -29,7 +29,9 @@ namespace OA_Game
 
             Background = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Environment/back.png")));
 
-            GameBanner.Source = new BitmapImage(Assets.GetUri("Images/StartScreen/GameBanner.png"));
+            GameBanner.Source = new BitmapImage(Assets.GetUri("Images/StartScreen/GameBanner4.png"));
+            GameBanner.Width = 400;
+            GameBanner.Height = 150;
 
             CreateLevelButtons();
         }
