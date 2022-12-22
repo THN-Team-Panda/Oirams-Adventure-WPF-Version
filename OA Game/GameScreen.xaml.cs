@@ -65,6 +65,8 @@ namespace OA_Game
         {
             this.levelId = levelId;
             InitializeComponent();
+            
+            Icon = new BitmapImage(Assets.GetUri("Images/Icon.ico"));
 
             soundBackGround.Open(Assets.GetUri("Sounds/Game/GameScreen.wav"));
             soundBackGround.Position = TimeSpan.Zero;
