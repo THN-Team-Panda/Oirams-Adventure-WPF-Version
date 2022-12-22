@@ -27,7 +27,7 @@ namespace OA_Game.AnimatedObjects.Enemies
                 new BitmapImage(Assets.GetUri("Images/FliegeVieh/Egg/Egg_3.png")),
                 new BitmapImage(Assets.GetUri("Images/FliegeVieh/Egg/Egg_4.png"))
             });
-            eggMove.Between = TimeSpan.FromMilliseconds(150);
+            eggMove.Between = TimeSpan.FromMilliseconds(75);
             this.AddSequence("move_egg", eggMove);
         }       
 

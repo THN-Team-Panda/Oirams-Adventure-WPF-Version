@@ -80,7 +80,7 @@ namespace GameEngine
         /// Factor for the horizontal background expansion to each side.
         /// Also for how strong the focus object movement moves the background.
         /// </summary>
-        private double horizontalBackgroundOffset = 0.2;
+        private double horizontalBackgroundOffset = 0.3;
 
         /// <summary>
         /// Parameter for the parallax background effect.

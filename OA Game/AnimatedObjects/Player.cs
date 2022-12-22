@@ -144,7 +144,7 @@ namespace OA_Game.AnimatedObjects
 
         public Player(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
-            HasHat = true;
+            HasHat = false;
             DirectionLeft = false;
 
             MediaPlayer playerWalk = new MediaPlayer();
@@ -234,7 +234,7 @@ namespace OA_Game.AnimatedObjects
                 new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_6.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Damage/Player_Damage_Cap_7.png"))
             }, soundPlayerDamage);
-            playerDamage.Between = TimeSpan.FromMilliseconds(50);
+            playerDamage.Between = TimeSpan.FromMilliseconds(75);
             this.AddSequence("damage", playerDamage);
 
             MediaPlayer soundPlayerDead = new MediaPlayer();
@@ -253,7 +253,7 @@ namespace OA_Game.AnimatedObjects
             }, soundPlayerDead);
 
             playerDying.SequenceFinished += (object sender) => { ObjectIsTrash = true; };
-            playerDying.Between = TimeSpan.FromMilliseconds(50);
+            playerDying.Between = TimeSpan.FromMilliseconds(75);
             this.AddSequence("dying", playerDying);
 
         }
@@ -439,7 +439,7 @@ namespace OA_Game.AnimatedObjects
         public void Die()
         {
             IsDying = true;
-            PlaySequenceAsync("dying", DirectionLeft, true, true);
+            PlaySequenceAsync("dying", DirectionLeft, false, true);
         }
 
         /// <summary>
@@ -459,7 +459,7 @@ namespace OA_Game.AnimatedObjects
             {
                 HasHat = false;
 
-                PlaySequenceAsync("damage", DirectionLeft, true, true);
+                PlaySequenceAsync("damage", DirectionLeft, true, true, false);
             }
 
             else if (damage >= 2)
