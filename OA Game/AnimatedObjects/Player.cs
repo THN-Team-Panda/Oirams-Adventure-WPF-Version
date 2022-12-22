@@ -129,12 +129,18 @@ namespace OA_Game.AnimatedObjects
         /// <summary>
         /// Bool to Indicates if the Player can jump
         /// </summary>
-        public bool CanJump { get; set; }
+        public bool CanJump { get; private set; }
 
         /// <summary>
         /// Default should be false, means direction: right
         /// </summary>
         public bool DirectionLeft { get; set; }
+
+        /// <summary>
+        /// Bugfix: https://git.informatik.fh-nuernberg.de/team-panda/oa-game/-/issues/154
+        /// Prevent playing the jump sound while jumping
+        /// </summary>
+        MediaPlayer soundJump = new MediaPlayer();
 
         public Player(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
@@ -163,7 +169,9 @@ namespace OA_Game.AnimatedObjects
             playerMoveCap.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("moveCap", playerMoveCap);
 
-            MediaPlayer soundJump = new MediaPlayer();
+
+            // Bugfix: https://git.informatik.fh-nuernberg.de/team-panda/oa-game/-/issues/154
+            // dont add the jump sound to the sequence!
             soundJump.Open(Assets.GetUri("Sounds/Player/PlayerJump1.wav"));
             soundJump.Volume = 0.7;
 
@@ -173,9 +181,9 @@ namespace OA_Game.AnimatedObjects
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Jumping.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player1.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player2.png")),
-            }, soundJump);
+            });
             playerJump.Between = TimeSpan.FromMilliseconds(150);
-            this.AddSequence("jump", playerJump);          
+            this.AddSequence("jump", playerJump);
 
             PlayableSequence playerCapJump = new PlayableSequence(new ImageSource[]
             {
@@ -183,7 +191,7 @@ namespace OA_Game.AnimatedObjects
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Jumping.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap1.png")),
                 new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap2.png")),
-            }, soundJump);
+            });
             playerCapJump.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("jumpCap", playerCapJump);
 
@@ -342,8 +350,16 @@ namespace OA_Game.AnimatedObjects
                 GetDamage(1);
 
             // Check if player can jump
-            if (collidedWithWhat[0] == TileTypes.Ground) CanJump = true;
+            if (collidedWithWhat[0] is TileTypes.Ground) CanJump = true;
             else CanJump = false;
+
+            // Bugfix: https://git.informatik.fh-nuernberg.de/team-panda/oa-game/-/issues/154
+            // Play the jump sound only once
+            if (CanJump && (Velocity.Y > 0.1 || Velocity.Y > -0.1))
+            {
+                soundJump.Position = TimeSpan.Zero;
+                soundJump.Play();
+            }
 
             // Apply velocity
             Position += Velocity;
@@ -382,7 +398,7 @@ namespace OA_Game.AnimatedObjects
             CanShoot = false;
             map.AddNotSpawnedObject(new NotSpawnedObject("Tone", "Bullet", Position));
             Munition--;
-            if(HasHat)
+            if (HasHat)
             {
                 PlaySequenceAsync("attack", DirectionLeft, true, true);
             }
@@ -390,7 +406,7 @@ namespace OA_Game.AnimatedObjects
             {
                 PlaySequenceAsync("attackCap", DirectionLeft, true, true);
             }
-            
+
         }
 
         /// <summary>

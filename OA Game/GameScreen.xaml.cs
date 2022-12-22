@@ -63,13 +63,13 @@ namespace OA_Game
         /// <param name="levelId"></param>
         public GameScreen(int levelId)
         {
+            this.levelId = levelId;
+            InitializeComponent();
+
             soundBackGround.Open(Assets.GetUri("Sounds/Game/GameScreen.wav"));
             soundBackGround.Position = TimeSpan.Zero;
             soundBackGround.Volume = 0.1;
             soundBackGround.Play();
-
-            this.levelId = levelId;
-            InitializeComponent();
 
             //Init the map
 
@@ -200,7 +200,6 @@ namespace OA_Game
         {
             if (Keyboard.IsKeyDown(Key.W) && player.CanJump)
             {
-                player.CanJump = false;
                 player.Velocity = player.Velocity with { Y = -5 };
             }
             if (Keyboard.IsKeyDown(Key.A))
