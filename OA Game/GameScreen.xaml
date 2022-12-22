@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OA_Game"
         mc:Ignorable="d"
-        Title="GameScreen" SizeToContent="WidthAndHeight" MinWidth="200" MinHeight="150" ResizeMode="NoResize">
+        Title="O'iram's Adventure" SizeToContent="WidthAndHeight" MinWidth="200" MinHeight="150" ResizeMode="NoResize">
     <Window.Resources>
         <!-- Style Template for all Status Labels -->
         <Style x:Key="StatusLabel" TargetType="Label">

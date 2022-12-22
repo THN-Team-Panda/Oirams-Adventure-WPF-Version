@@ -61,6 +61,8 @@ namespace OA_Game
             this.levelId = levelId;
             InitializeComponent();
 
+            Icon = new BitmapImage(Assets.GetUri("Images/Icon.ico"));
+
 
             //Init the map
 

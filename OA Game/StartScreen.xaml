@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OA_Game"
         mc:Ignorable="d"
-        Title="Welcome!" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+        Title="O'iram's Adventure" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
     <Window.Resources>
         <Style x:Key="MenuButtons" TargetType="Button" >
             <Setter Property="FontSize" Value="28"/>

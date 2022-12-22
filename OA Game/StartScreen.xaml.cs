@@ -24,6 +24,8 @@ namespace OA_Game
         {
             InitializeComponent();
 
+            Icon = new BitmapImage(Assets.GetUri("Images/Icon.ico"));
+
             LevelView.Height = Preferences.ViewHeight;
             LevelView.Width = Preferences.ViewWidth;
 
