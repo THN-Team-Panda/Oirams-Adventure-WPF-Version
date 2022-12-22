@@ -89,7 +89,7 @@ namespace OA_Game.AnimatedObjects.Objectives
         /// <param name="obj"></param>
         public void Goal(AnimatedObject obj)
         {
-            PlaySequenceAsync("animation_finish", false, false, true);
+            PlaySequenceAsync("animation_finish", false, false, false);
             if (obj is Player player)
                 player.IsFinish = true;
         }
