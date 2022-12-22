@@ -424,11 +424,11 @@ namespace OA_Game.AnimatedObjects
             Munition--;
             if (HasHat)
             {
-                PlaySequenceAsync("attack", DirectionLeft, true, true);
+                PlaySequenceAsync("attackCap", DirectionLeft, true, true);
             }
             else
             {
-                PlaySequenceAsync("attackCap", DirectionLeft, true, true);
+                PlaySequenceAsync("attack", DirectionLeft, true, true);
             }
 
         }
