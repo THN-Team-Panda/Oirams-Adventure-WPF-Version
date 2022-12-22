@@ -19,6 +19,7 @@ namespace OA_Game.AnimatedObjects.Enemies
         public Egg(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
             DirectionLeft = true;
+
             PlayableSequence eggMove = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/FliegeVieh/Egg/Egg_1.png")),

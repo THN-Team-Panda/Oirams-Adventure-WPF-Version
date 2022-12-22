@@ -51,6 +51,9 @@ namespace OA_Game.AnimatedObjects.Enemies
             donkeykongMove.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("move_konkeydong", donkeykongMove);
 
+            MediaPlayer soundKDAttack = new MediaPlayer();
+            soundKDAttack.Open(Assets.GetUri("Sounds/KonkeyDong/KonkeyDongHit.wav"));
+
             PlayableSequence konkeydongAttack = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/KonkeyDong/Attack/KonkeyDong_Attack_1.png")),
@@ -62,7 +65,7 @@ namespace OA_Game.AnimatedObjects.Enemies
                 new BitmapImage(Assets.GetUri("Images/KonkeyDong/Attack/KonkeyDong_Attack_7.png")),
                 new BitmapImage(Assets.GetUri("Images/KonkeyDong/Attack/KonkeyDong_Attack_8.png")),
                 new BitmapImage(Assets.GetUri("Images/KonkeyDong/Attack/KonkeyDong_Attack_9.png"))
-            });
+            }, soundKDAttack);
             konkeydongAttack.Between = TimeSpan.FromMilliseconds(150);
             this.AddSequence("attack_konkeydong", konkeydongAttack);
 
