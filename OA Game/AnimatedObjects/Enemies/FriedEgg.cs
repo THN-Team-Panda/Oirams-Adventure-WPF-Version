@@ -64,7 +64,7 @@ namespace OA_Game.AnimatedObjects.Enemies
 
         public void GetDamage(int damage)
         {
-            throw new NotImplementedException();
+            return;
         }
 
         /// <summary>
