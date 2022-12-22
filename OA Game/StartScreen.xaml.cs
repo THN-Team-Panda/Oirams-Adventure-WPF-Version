@@ -18,7 +18,7 @@ namespace OA_Game
         /// <summary>
         /// File where GameSave is located
         /// </summary>
-        private Saving save;
+        private Saving save = new(Preferences.GameDataPath);
 
         public StartScreen()
         {
@@ -27,9 +27,11 @@ namespace OA_Game
             LevelView.Height = Preferences.ViewHeight;
             LevelView.Width = Preferences.ViewWidth;
 
-            Backscreen.Source = new BitmapImage(Assets.GetUri("Images/Environment/back.png"));
-            save = new(Preferences.GameDataPath);
+            Background = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Environment/back.png")));
 
+            GameBanner.Source = new BitmapImage(Assets.GetUri("Images/StartScreen/GameBanner4.png"));
+            GameBanner.Width = 400;
+            GameBanner.Height = 150;
 
             CreateLevelButtons();
         }
@@ -104,12 +106,16 @@ namespace OA_Game
                     HorizontalContentAlignment = HorizontalAlignment.Center,
                     Foreground = btn.IsEnabled == false ? new SolidColorBrush(Colors.Black) : btn.Foreground
                 });
+
+                string timeText = $"{levelTime.Minutes:00}:{levelTime.Seconds:00}.{levelTime.Milliseconds:000}";
+
                 //add level highscore label
                 btnStackPanel.Children.Add(new Label()
                 {
                     Margin = new Thickness(0, -13, 0, 0),
-                    Content = $"{levelTime:g}",
-                    FontSize = 12, HorizontalContentAlignment = HorizontalAlignment.Center,
+                    Content = levelTime == TimeSpan.Zero ? "Noch keine Bestzeit vorhanden." : timeText,
+                    FontSize = 12,
+                    HorizontalContentAlignment = HorizontalAlignment.Center,
                     Foreground = btn.IsEnabled == false ? new SolidColorBrush(Colors.Black) : btn.Foreground
                 });
 
