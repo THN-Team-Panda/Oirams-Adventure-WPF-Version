@@ -20,8 +20,13 @@ namespace OA_Game
         /// </summary>
         private Saving save = new(Preferences.GameDataPath);
 
+        MediaPlayer soundStartScreen = new MediaPlayer();
+
         public StartScreen()
         {
+            soundStartScreen.Open(Assets.GetUri("Sounds/Game/StartScreen.wav"));
+            soundStartScreen.Play();
+
             InitializeComponent();
 
             Icon = new BitmapImage(Assets.GetUri("Images/Icon.ico"));
@@ -176,9 +181,13 @@ namespace OA_Game
                 ResizeMode = ResizeMode.NoResize
             };
 
+            soundStartScreen.Stop();
+
             Hide();
 
             gameScreen.ShowDialog(); //show the game screen; dialog is a popup-window
+
+            gameScreen.soundBackGround.Stop();
 
             CreateLevelButtons();
 

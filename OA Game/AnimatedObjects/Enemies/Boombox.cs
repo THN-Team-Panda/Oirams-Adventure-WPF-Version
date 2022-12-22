@@ -27,13 +27,17 @@ namespace OA_Game.AnimatedObjects.Enemies
 
         public Boombox(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
+            MediaPlayer soundBoombox = new MediaPlayer();
+            soundBoombox.Open(Assets.GetUri("Sounds/Boombox/Boombox.wav"));
+            soundBoombox.Volume = 0.3;
+
             PlayableSequence boombox = new PlayableSequence(new ImageSource[]
             {
                 new BitmapImage(Assets.GetUri("Images/KonkeyDong/Boombox/Boombox_1.png")),
                 new BitmapImage(Assets.GetUri("Images/KonkeyDong/Boombox/Boombox_2.png")),
                 new BitmapImage(Assets.GetUri("Images/KonkeyDong/Boombox/Boombox_3.png")),
                 new BitmapImage(Assets.GetUri("Images/KonkeyDong/Boombox/Boombox_4.png"))               
-            });
+            }, soundBoombox);
             boombox.Between = TimeSpan.FromMilliseconds(150);
             AddSequence("animation_boombox", boombox);
 

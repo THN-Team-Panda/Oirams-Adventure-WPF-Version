@@ -52,6 +52,11 @@ namespace OA_Game
         public Stopwatch stopwatch = new Stopwatch();
 
         /// <summary>
+        /// Sound for the game
+        /// </summary>
+        public MediaPlayer soundBackGround = new MediaPlayer();
+
+        /// <summary>
         /// The GameScreen is the main game window.
         /// The Constructor loads all nessesary objects!
         /// </summary>
@@ -60,9 +65,13 @@ namespace OA_Game
         {
             this.levelId = levelId;
             InitializeComponent();
-
+            
             Icon = new BitmapImage(Assets.GetUri("Images/Icon.ico"));
 
+            soundBackGround.Open(Assets.GetUri("Sounds/Game/GameScreen.wav"));
+            soundBackGround.Position = TimeSpan.Zero;
+            soundBackGround.Volume = 0.1;
+            soundBackGround.Play();
 
             //Init the map
 
@@ -149,6 +158,7 @@ namespace OA_Game
         /// </summary>
         private void GameOver()
         {
+
             //checks if Player is dead
             if (player.ObjectIsTrash || player.Position.Y >= map.MapHeight)
             {
@@ -192,7 +202,6 @@ namespace OA_Game
         {
             if (Keyboard.IsKeyDown(Key.W) && player.CanJump)
             {
-                player.CanJump = false;
                 player.Velocity = player.Velocity with { Y = -5 };
             }
             if (Keyboard.IsKeyDown(Key.A))
