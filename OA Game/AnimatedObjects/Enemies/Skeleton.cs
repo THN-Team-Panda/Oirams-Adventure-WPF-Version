@@ -47,7 +47,7 @@ namespace OA_Game.AnimatedObjects.Enemies
                 new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_7.png")),
                 new BitmapImage(Assets.GetUri("Images/Skeleton/Attack/Skeleton_Attacke_8.png"))
             });
-            skeletonAttack.Between = TimeSpan.FromMilliseconds(150);
+            skeletonAttack.Between = TimeSpan.FromMilliseconds(100);
             this.AddSequence("attack_skeleton", skeletonAttack);
 
             MediaPlayer soundSkeletondying = new MediaPlayer();
