@@ -18,7 +18,7 @@ namespace OA_Game.AnimatedObjects.Enemies
 
         public override int Damage { get; } = 1;
 
-        public readonly TimeSpan CooldownTime = TimeSpan.FromMilliseconds(8000);
+        public readonly TimeSpan CooldownTime = TimeSpan.FromMilliseconds(6000);
 
         public FriedEgg(int height, int width, ImageSource defaultSprite) : base(height, width, defaultSprite)
         {
@@ -38,7 +38,7 @@ namespace OA_Game.AnimatedObjects.Enemies
                 new BitmapImage(Assets.GetUri("Images/FliegeVieh/Egg/Egg_19.png"))
 
             });
-            friedeggDying.Between = TimeSpan.FromMilliseconds(150);
+            friedeggDying.Between = TimeSpan.FromMilliseconds(75);
             this.AddSequence("dying_friedegg", friedeggDying);
             Cooledown();
         }

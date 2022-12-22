@@ -70,7 +70,7 @@ namespace OA_Game
 
             soundBackGround.Open(Assets.GetUri("Sounds/Game/GameScreen.wav"));
             soundBackGround.Position = TimeSpan.Zero;
-            soundBackGround.Volume = 0.1;
+            soundBackGround.Volume = 0.05;
             soundBackGround.Play();
 
             //Init the map
@@ -96,7 +96,7 @@ namespace OA_Game
 
             // Init the Player
 
-            player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Cap/Player_Cap_Standing.png")));
+            player = new Player(32, 32, new BitmapImage(Assets.GetUri("Images/Player/Movement/Normal/Player_Standing.png")));
             mapCanvas.Children.Add(player.Rectangle); // a x to the canvas
             player.Position = (Vector)map.StartPoint;
 
@@ -200,19 +200,19 @@ namespace OA_Game
         /// </summary>
         private void InputKeyboard()
         {
-            if (Keyboard.IsKeyDown(Key.W) && player.CanJump)
+            if ((Keyboard.IsKeyDown(Key.W) || Keyboard.IsKeyDown(Key.Up)) && player.CanJump)
             {
                 player.Velocity = player.Velocity with { Y = -5 };
             }
-            if (Keyboard.IsKeyDown(Key.A))
+            if (Keyboard.IsKeyDown(Key.A) || Keyboard.IsKeyDown(Key.Left))
             {
                 player.Velocity = player.Velocity with { X = -1.4 };
             }
-            if (Keyboard.IsKeyDown(Key.D))
+            if (Keyboard.IsKeyDown(Key.D) || Keyboard.IsKeyDown(Key.Right))
             {
                 player.Velocity = player.Velocity with { X = 1.4 };
             }
-            if (Keyboard.IsKeyDown(Key.Space) || Keyboard.IsKeyDown(Key.E))
+            if (Keyboard.IsKeyDown(Key.Space) || Keyboard.IsKeyDown(Key.E) || Keyboard.IsKeyDown(Key.F))
             {
                 player.Shoot(map);
             }
@@ -326,6 +326,8 @@ namespace OA_Game
         /// <param name="win">indicates if the game ends with a win</param>
         private void OpenGameEndScreen(bool win)
         {
+            soundBackGround.Stop();
+
             GameEndScreen.Visibility = Visibility.Visible;
             GameEndText.Width = Preferences.ViewWidth - 2 * Preferences.TileSize;
 

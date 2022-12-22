@@ -46,7 +46,7 @@ namespace OA_Game.AnimatedObjects.Items
                 new BitmapImage(Assets.GetUri("Images/Cap/Cap_5.png"))
             },soundCollectHat);
             hatCollect.SequenceFinished += (object sender) => { ObjectIsTrash = true; };
-            hatCollect.Between = TimeSpan.FromMilliseconds(150);
+            hatCollect.Between = TimeSpan.FromMilliseconds(60);
             AddSequence("collect_hat", hatCollect);
 
             EndlessLoopSequenceAsync("animation_hat", true);

@@ -36,7 +36,7 @@ namespace OA_Game
 
             Background = new ImageBrush(new BitmapImage(Assets.GetUri("Images/Environment/back.png")));
 
-            GameBanner.Source = new BitmapImage(Assets.GetUri("Images/StartScreen/GameBanner4.png"));
+            GameBanner.Source = new BitmapImage(Assets.GetUri("Images/StartScreen/GameBanner2.png"));
             GameBanner.Width = 400;
             GameBanner.Height = 150;
 
@@ -188,6 +188,10 @@ namespace OA_Game
             gameScreen.ShowDialog(); //show the game screen; dialog is a popup-window
 
             gameScreen.soundBackGround.Stop();
+
+            soundStartScreen.Play();
+
+            gameScreen = null;
 
             CreateLevelButtons();
 

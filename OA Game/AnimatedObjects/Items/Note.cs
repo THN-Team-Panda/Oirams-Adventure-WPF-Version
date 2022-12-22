@@ -40,7 +40,7 @@ namespace OA_Game.AnimatedObjects.Items
             }, soundCollectAmmo);
 
             noteCollect.SequenceFinished += (object sender) => { ObjectIsTrash = true; };
-            noteCollect.Between = TimeSpan.FromMilliseconds(150);
+            noteCollect.Between = TimeSpan.FromMilliseconds(75);
             AddSequence("collect_note", noteCollect);
 
             EndlessLoopSequenceAsync("animation_note", true);
